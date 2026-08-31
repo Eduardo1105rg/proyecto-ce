@@ -75,6 +75,14 @@
    --white-smoke: #f3f3f3; /* Blanco humo - uso: fondo de página, tarjetas, inputs */
    --alice-blue: #EFF6FF; /* Azul muy suave - uso: fondo de highlights, hover de fila */
 
+   /* ----------------------------------------------------------
+     NEGROS - Para dark mode profundo
+     ---------------------------------------------------------- */
+   --black:      #000000;
+   --black-rich: #00030c; /* Negro azulado profundo - fondo dark page */
+   --black-soft: #050915; /* Negro azulado suave - fondo dark cards */
+   --black-nav:  #0a0f1e; /* Negro para navbar en dark */
+
   /* ----------------------------------------------------------
     SUAVES - Hover de variantes soft de botones
     ---------------------------------------------------------- */
@@ -83,6 +91,25 @@
   --orange-soft:     #fed7aa;
   --green-soft:      #bbf7d0;
   --yellow-soft:     #fef08a;
+
+   /* ----------------------------------------------------------
+     NEGROS ADICIONALES - Para dark mode de componentes
+     ---------------------------------------------------------- */
+  --navy-900: #0d1f3c;  /* Azul navy profundo - btn soft dark bg */
+  --navy-800: #0f2a4d;  /* Azul navy medio - btn soft dark hover */
+  --crimson-950: #2d0a0a; /* Rojo muy oscuro - btn danger dark bg */
+  --crimson-900: #3a0d0d; /* Rojo oscuro - btn danger dark hover */
+  --forest-950: #052010;  /* Verde muy oscuro - btn success dark bg */
+  --forest-900: #062818;  /* Verde oscuro - btn success dark hover */
+  --amber-950: #2a1500;   /* Ámbar muy oscuro - btn warning dark bg */
+  --amber-900: #321a00;   /* Ámbar oscuro - btn warning dark hover */
+  --rust-950: #3a1500;    /* Óxido muy oscuro - btn orange soft dark bg */
+  --rust-900: #451a00;    /* Óxido oscuro - btn orange soft dark hover */
+  --ink-900: #0a0f1e;     /* Tinta oscura - navbar dark bg */
+  --ink-800: #141d35;     /* Tinta media - navbar dark hover */
+  --ink-700: #1a2035;     /* Tinta suave - navbar dark border */
+  --ink-600: #1a2540;     /* Tinta clara - navbar dark btn hover */
+  --ink-500: #0d1425;     /* Tinta muy suave - bg subtle dark */
 
    /* ----------------------------------------------------------
    COLORES DE ACENTO - Extras - Hay que ver si se usan o se eliminan
@@ -221,27 +248,24 @@
 }
 
 .dark {
-  --bg-page:   var(--slate-900);
+  --bg-page:   var(--black-rich);
   --bg-light:  var(--slate-800);
-  --bg-white:  var(--slate-800);
-  --bg-subtle: var(--slate-700);
+  --bg-white:  var(--black-soft);
+  --bg-subtle: var(--ink-500);
 
-  --border-default: var(--slate-700);
-  --border-strong:  var(--slate-600);
+  --border-default: var(--ink-700);
+  --border-strong:  var(--slate-700);
 
   --text-primary:   var(--slate-50);
   --text-secondary: var(--slate-400);
   --text-muted:     var(--slate-500);
-  --text-inverse:   var(--slate-900);
+  --text-inverse:   var(--black-rich);
 
-  --red-soft:        #7f1d1d;
-  --red-soft-hover:  #991b1b;
-  --orange-soft:     #7c2d12;
-  --green-soft:      #14532d;
-  --yellow-soft:     #713f12;
-
-  --blue-100: var(--blue-500);
-  --blue-200: #0d3554;
+  --red-soft:       var(--crimson-950);
+  --red-soft-hover: var(--crimson-900);
+  --orange-soft:    var(--rust-950);
+  --green-soft:     var(--forest-950);
+  --yellow-soft:    var(--amber-950);
 }
 
 /*  RESET Y BASE  */

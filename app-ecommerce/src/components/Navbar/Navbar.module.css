@@ -23,13 +23,6 @@
   text-decoration: none;
 }
 
-.brandDot {
-  width: 10px;
-  height: 10px;
-  border-radius: var(--radius-full);
-  background: var(--secondary);
-}
-
 .links {
   display: flex;
   align-items: center;
@@ -86,7 +79,7 @@
   width: auto;
 }
 
-/* -- DARK MODE - navbar maneja su propio fondo -- */
+/* -- DARK MODE -- */
 :global(.dark) .navbar {
   background: var(--ink-900);
   border-bottom-color: transparent;
