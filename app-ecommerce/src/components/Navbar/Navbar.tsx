@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom'
 import styles from './Navbar.module.css'
+import logo from '../../assets/LogoNaranga.png'
+import {UilSun, UilMoon} from '@iconscout/react-unicons'
+
 
 type NavbarProps = {
   theme: 'light' | 'dark'
@@ -11,7 +14,7 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
     <header className={styles.navbar}>
 
       <Link to="/" className={styles.brand}>
-        <span className={styles.brandDot} />
+        <img src={logo} alt="Logo" className={styles.logo} />
         MarketByte
       </Link>
 
@@ -21,13 +24,13 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
         </Link>
       </nav>
 
-      {/* Botón de tema — desktop */}
+      {/* Botón de tema - desktop */}
       <button
         className={styles.themeBtn}
         onClick={onToggleTheme}
         aria-label="Cambiar tema"
       >
-        {theme === 'light' ? 'luna' : 'sol'}
+        {theme === 'light' ? <UilSun /> : <UilMoon />}
       </button>
 
     </header>

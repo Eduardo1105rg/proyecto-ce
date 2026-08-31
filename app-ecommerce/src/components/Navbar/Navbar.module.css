@@ -51,7 +51,7 @@
   color: var(--primary);
 }
 
-/* Responsive — móvil */
+/* Responsive - móvil */
 @media (max-width: 640px) {
   .navbar {
     padding: 0 16px;
@@ -67,7 +67,7 @@
   height: 36px;
   border-radius: var(--radius-md);
   border: 1.5px solid var(--border-default);
-  background: var(--bg-light);
+  background: var(--bg-white);
   color: var(--text-primary);
   cursor: pointer;
   display: flex;
@@ -79,4 +79,38 @@
 
 .themeBtn:hover {
   background: var(--border-default);
+}
+
+.logo {
+  height: 32px;
+  width: auto;
+}
+
+/* -- DARK MODE - navbar maneja su propio fondo -- */
+:global(.dark) .navbar {
+  background: var(--ink-900);
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+
+:global(.dark) .brand {
+  color: var(--slate-50);
+}
+
+:global(.dark) .navLink {
+  color: var(--slate-400);
+}
+
+:global(.dark) .navLink:hover {
+  background: var(--ink-800);
+  color: var(--slate-50);
+}
+
+:global(.dark) .themeBtn {
+  background: var(--ink-900);
+  border-color: var(--ink-700);
+}
+
+:global(.dark) .themeBtn:hover {
+  background: var(--ink-600);
 }
