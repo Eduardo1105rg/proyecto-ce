@@ -3,6 +3,11 @@ export type StockBranch = {
   stock: number
 }
 
+export type B2BPriceTier = {
+  min_qty: number
+  unit_price: number
+}
+
 export type Product = {
   object_id: string
   sku: string
@@ -15,6 +20,8 @@ export type Product = {
   reviews_count: number
   image: string
   images: string[]
+  tiered_b2b_pricing: B2BPriceTier[]
+  payment_methods: string[]
   warranty_months: number
   return_days: number
   stock_by_branch: StockBranch[]
@@ -22,6 +29,7 @@ export type Product = {
     subcategory: string
     color: string | null
     material: string | null
+    style: string | null
     eco_friendly: boolean
     free_shipping: boolean
     tax_exempt: boolean
