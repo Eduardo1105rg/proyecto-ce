@@ -1,0 +1,65 @@
+.page {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 24px 48px;
+  box-sizing: border-box;
+}
+
+/* Barra de búsqueda */
+.searchRow {
+  margin-bottom: 20px;
+}
+
+/* Grid principal - filtros siempre reservan su espacio */
+.main {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  position: sticky;
+  top: 80px; /* debajo de la navbar */
+  transition: width 0.2s, opacity 0.2s;
+}
+
+/* Cuando no hay filtros - colapsa sin mover el catálogo */
+.sidebarHidden {
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Responsive - tablet */
+@media (max-width: 1024px) {
+  .main {
+    grid-template-columns: 220px 1fr;
+    gap: 16px;
+  }
+}
+
+/* Responsive - móvil */
+@media (max-width: 768px) {
+  .page {
+    padding: 16px 16px 48px;
+  }
+
+  /* En móvil los filtros van arriba, no al lado */
+  .main {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: static;
+  }
+
+  .sidebarHidden {
+    display: none;
+  }
+}
