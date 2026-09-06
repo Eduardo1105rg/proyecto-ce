@@ -1,296 +1,354 @@
 :root {
-  /* ----------------------------------------------------------
+   /* ----------------------------------------------------------
      AZULES PRIMARIOS
      Paleta principal de la marca
      ---------------------------------------------------------- */
 
-  --blue-900: #03045e; /* Deep Twilight     - uso: texto sobre fondo claro, headers */
-  --blue-800: #023e8a; /* French Blue       - uso: botones primarios, enlaces */
-  --blue-700: #0077b6; /* Bright Teal Blue  - uso: hover de botón primario */
-  --blue-600: #0096c7; /* Blue Green        - uso: íconos activos, badges */
-  --blue-500: #00b4d8; /* Turquoise Surf    - uso: acentos, bordes activos */
-  --blue-400: #48cae4; /* Sky Aqua          - uso: highlights, chips seleccionados */
-  --blue-300: #90e0ef; /* Frosted Blue      - uso: fondos de tarjetas activas */
-  --blue-200: #ade8f4; /* Frosted Blue 2    - uso: fondos sutiles, tooltips */
-  --blue-100: #caf0f8; /* Light Cyan        - uso: fondos muy suaves, hover de fila */
+   --blue-900: #03045e;
+   /* Deep Twilight     - uso: texto sobre fondo claro, headers */
+   --blue-800: #023e8a;
+   /* French Blue       - uso: botones primarios, enlaces */
+   --blue-700: #0077b6;
+   /* Bright Teal Blue  - uso: hover de botón primario */
+   --blue-600: #0096c7;
+   /* Blue Green        - uso: íconos activos, badges */
+   --blue-500: #00b4d8;
+   /* Turquoise Surf    - uso: acentos, bordes activos */
+   --blue-400: #48cae4;
+   /* Sky Aqua          - uso: highlights, chips seleccionados */
+   --blue-300: #90e0ef;
+   /* Frosted Blue      - uso: fondos de tarjetas activas */
+   --blue-200: #ade8f4;
+   /* Frosted Blue 2    - uso: fondos sutiles, tooltips */
+   --blue-100: #caf0f8;
+   /* Light Cyan        - uso: fondos muy suaves, hover de fila */
 
-  /* ----------------------------------------------------------
+   /* ----------------------------------------------------------
      SLATE (Grises azulados)
      Para fondos, texto, bordes y superficies neutras
      ---------------------------------------------------------- */
 
-  --slate-900: #0f172a; /* Casi negro        - uso: texto principal */
-  --slate-800: #1e293b; /* Midnight slate    - uso: sidebar, navbar oscura */
-  --slate-700: #334155; /* Dark slate        - uso: texto secundario oscuro */
-  --slate-600: #475569; /* Medium slate      - uso: labels, texto de apoyo */
-  --slate-500: #64748b; /* Slate medio       - uso: placeholders, metadata */
-  --slate-400: #94a3b8; /* Slate claro       - uso: bordes, divisores */
-  --slate-300: #cbd5e1; /* Slate muy claro   - uso: bordes suaves */
-  --slate-200: #e2e8f0; /* Borde estándar    - uso: bordes de inputs, tarjetas */
-  --slate-100: #f1f5f9; /* Fondo claro       - uso: fondo de página, inputs */
-  --slate-50:  #f8fafc; /* Blanco roto       - uso: fondo alternativo de sección */
+   --slate-900: #0f172a;
+   /* Casi negro        - uso: texto principal */
+   --slate-800: #1e293b;
+   /* Midnight slate    - uso: sidebar, navbar oscura */
+   --slate-700: #334155;
+   /* Dark slate        - uso: texto secundario oscuro */
+   --slate-600: #475569;
+   /* Medium slate      - uso: labels, texto de apoyo */
+   --slate-500: #64748b;
+   /* Slate medio       - uso: placeholders, metadata */
+   --slate-400: #94a3b8;
+   /* Slate claro       - uso: bordes, divisores */
+   --slate-300: #cbd5e1;
+   /* Slate muy claro   - uso: bordes suaves */
+   --slate-200: #e2e8f0;
+   /* Borde estándar    - uso: bordes de inputs, tarjetas */
+   --slate-100: #f1f5f9;
+   /* Fondo claro       - uso: fondo de página, inputs */
+   --slate-50: #f8fafc;
+   /* Blanco roto       - uso: fondo alternativo de sección */
 
-  /* ----------------------------------------------------------
+   /* ----------------------------------------------------------
      NARANJA - Acento / Llamadas a la acción secundarias
      ---------------------------------------------------------- */
 
-  --orange-700: #c2410c; /* Naranja oscuro    - uso: hover de botón naranja */
-  --orange-600: #ea580c; /* Naranja medio     - uso: active / pressed */
-  --orange-500: #f97316; /* Naranja base      - uso: botón CTA secundario, ofertas */
-  --orange-400: #fb923c; /* Naranja claro     - uso: hover suave */
-  --orange-100: #ffedd5; /* Naranja muy suave - uso: fondo de badge oferta */
+   --orange-700: #c2410c;
+   /* Naranja oscuro    - uso: hover de botón naranja */
+   --orange-600: #ea580c;
+   /* Naranja medio     - uso: active / pressed */
+   --orange-500: #f97316;
+   /* Naranja base      - uso: botón CTA secundario, ofertas */
+   --orange-400: #fb923c;
+   /* Naranja claro     - uso: hover suave */
+   --orange-100: #ffedd5;
+   /* Naranja muy suave - uso: fondo de badge oferta */
 
-  /* ----------------------------------------------------------
+
+   --orange-soft: #fed7aa;
+
+
+   /* ----------------------------------------------------------
      VERDE - Estado de éxito / disponibilidad
      ---------------------------------------------------------- */
 
-  --green-700: #15803d; /* Verde oscuro      - uso: texto de éxito, stock alto */
-  --green-600: #16a34a; /* Verde medio       - uso: botón confirmar, activo */
-  --green-500: #22c55e; /* Verde base        - uso: badge "En stock" */
-  --green-400: #4ade80; /* Verde claro       - uso: hover de elemento exitoso */
-  --green-100: #dcfce7; /* Verde muy suave   - uso: fondo de alerta de éxito */
+   --green-700: #15803d;
+   /* Verde oscuro      - uso: texto de éxito, stock alto */
+   --green-600: #16a34a;
+   /* Verde medio       - uso: botón confirmar, activo */
+   --green-500: #22c55e;
+   /* Verde base        - uso: badge "En stock" */
+   --green-400: #4ade80;
+   /* Verde claro       - uso: hover de elemento exitoso */
+   --green-100: #dcfce7;
+   /* Verde muy suave   - uso: fondo de alerta de éxito */
 
-  /* ----------------------------------------------------------
+   --green-soft: #bbf7d0;
+
+
+   /* ----------------------------------------------------------
      ROJO - Estado de error / cancelación / agotado
      ---------------------------------------------------------- */
 
-  --red-700:   #b91c1c; /* Rojo oscuro       - uso: hover de botón eliminar */
-  --red-600:   #dc2626; /* Rojo medio        - uso: active / pressed */
-  --red-500:   #ef4444; /* Rojo base         - uso: errores, eliminar, agotado */
-  --red-400:   #f87171; /* Rojo claro        - uso: hover suave de error */
-  --red-100:   #fee2e2; /* Rojo muy suave    - uso: fondo de alerta de error */
+   --red-700: #b91c1c;
+   /* Rojo oscuro       - uso: hover de botón eliminar */
+   --red-600: #dc2626;
+   /* Rojo medio        - uso: active / pressed */
+   --red-500: #ef4444;
+   /* Rojo base         - uso: errores, eliminar, agotado */
+   --red-400: #f87171;
+   /* Rojo claro        - uso: hover suave de error */
+   --red-100: #fee2e2;
+   /* Rojo muy suave    - uso: fondo de alerta de error */
 
-  /* ----------------------------------------------------------
+   --red-soft: #fecaca;
+   --red-soft-hover: #fca5a5;
+
+   /* ----------------------------------------------------------
      AMARILLO - Advertencias / pendiente
      ---------------------------------------------------------- */
 
-  --yellow-600: #ca8a04; /* Amarillo oscuro  - uso: texto de advertencia */
-  --yellow-500: #eab308; /* Amarillo base    - uso: badge "Pocas unidades" */
-  --yellow-100: #fef9c3; /* Amarillo suave   - uso: fondo de alerta de advertencia */
+   --yellow-600: #ca8a04;
+   /* Amarillo oscuro  - uso: texto de advertencia */
+   --yellow-500: #eab308;
+   /* Amarillo base    - uso: badge "Pocas unidades" */
+   --yellow-100: #fef9c3;
+   /* Amarillo suave   - uso: fondo de alerta de advertencia */
 
-  /* ----------------------------------------------------------
+   --yellow-soft: #fef08a;
+
+
+   /* ----------------------------------------------------------
      Blancos - Neutros para fondos y superficies
      ---------------------------------------------------------- */
-   --white: #ffffff; /* Blanco puro */
-   --white-smoke: #f3f3f3; /* Blanco humo - uso: fondo de página, tarjetas, inputs */
-   --alice-blue: #EFF6FF; /* Azul muy suave - uso: fondo de highlights, hover de fila */
+   --white: #ffffff;
+   /* Blanco puro */
+   --white-smoke: #f3f3f3;
+   /* Blanco humo - uso: fondo de página, tarjetas, inputs */
+   --alice-blue: #EFF6FF;
+   /* Azul muy suave - uso: fondo de highlights, hover de fila */
 
    /* ----------------------------------------------------------
      NEGROS - Para dark mode profundo
      ---------------------------------------------------------- */
-   --black:      #000000;
-   --black-rich: #00030c; /* Negro azulado profundo - fondo dark page */
-   --black-soft: #050915; /* Negro azulado suave - fondo dark cards */
-   --black-nav:  #0a0f1e; /* Negro para navbar en dark */
+   --black: #000000;
+   --black-rich: #00030c;
+   /* Negro azulado profundo - fondo dark page */
+   --black-soft: #050915;
+   /* Negro azulado suave - fondo dark cards */
+   --black-nav: #0a0f1e;
+   /* Negro para navbar en dark */
 
-  /* ----------------------------------------------------------
-    SUAVES - Hover de variantes soft de botones
-    ---------------------------------------------------------- */
-  --red-soft:        #fecaca;
-  --red-soft-hover:  #fca5a5;
-  --orange-soft:     #fed7aa;
-  --green-soft:      #bbf7d0;
-  --yellow-soft:     #fef08a;
+   --navy-900: #0d1f3c;
+   /* Azul navy profundo - btn soft dark bg */
+   --navy-800: #0f2a4d;
+   /* Azul navy medio - btn soft dark hover */
 
-   /* ----------------------------------------------------------
-     NEGROS ADICIONALES - Para dark mode de componentes
-     ---------------------------------------------------------- */
-  --navy-900: #0d1f3c;  /* Azul navy profundo - btn soft dark bg */
-  --navy-800: #0f2a4d;  /* Azul navy medio - btn soft dark hover */
-  --crimson-950: #2d0a0a; /* Rojo muy oscuro - btn danger dark bg */
-  --crimson-900: #3a0d0d; /* Rojo oscuro - btn danger dark hover */
-  --forest-950: #052010;  /* Verde muy oscuro - btn success dark bg */
-  --forest-900: #062818;  /* Verde oscuro - btn success dark hover */
-  --amber-950: #2a1500;   /* Ámbar muy oscuro - btn warning dark bg */
-  --amber-900: #321a00;   /* Ámbar oscuro - btn warning dark hover */
-  --rust-950: #3a1500;    /* Óxido muy oscuro - btn orange soft dark bg */
-  --rust-900: #451a00;    /* Óxido oscuro - btn orange soft dark hover */
-  --ink-900: #0a0f1e;     /* Tinta oscura - navbar dark bg */
-  --ink-800: #141d35;     /* Tinta media - navbar dark hover */
-  --ink-700: #1a2035;     /* Tinta suave - navbar dark border */
-  --ink-600: #1a2540;     /* Tinta clara - navbar dark btn hover */
-  --ink-500: #0d1425;     /* Tinta muy suave - bg subtle dark */
+   --crimson-950: #2d0a0a;
+   /* Rojo muy oscuro - btn danger dark bg */
+   --crimson-900: #3a0d0d;
+   /* Rojo oscuro - btn danger dark hover */
+
+   --forest-950: #052010;
+   /* Verde muy oscuro - btn success dark bg */
+   --forest-900: #062818;
+   /* Verde oscuro - btn success dark hover */
+
+   --amber-950: #2a1500;
+   /* Ámbar muy oscuro - btn warning dark bg */
+   --amber-900: #321a00;
+   /* Ámbar oscuro - btn warning dark hover */
+
+   --rust-950: #3a1500;
+   /* Óxido muy oscuro - btn orange soft dark bg */
+   --rust-900: #451a00;
+   /* Óxido oscuro - btn orange soft dark hover */
+
+   --ink-900: #0a0f1e;
+   /* Tinta oscura - navbar dark bg */
+   --ink-800: #141d35;
+   /* Tinta media - navbar dark hover */
+   --ink-700: #1a2035;
+   /* Tinta suave - navbar dark border */
+   --ink-600: #1a2540;
+   /* Tinta clara - navbar dark btn hover */
+   --ink-500: #0d1425;
+   /* Tinta muy suave - bg subtle dark */
 
    /* ----------------------------------------------------------
    COLORES DE ACENTO - Extras - Hay que ver si se usan o se eliminan
    ---------------------------------------------------------- */
 
    /* NARANJA - #FF6600 - Pumpkin Spice */
-   --accent-orange-500: #FF6600; /* Regular */
-   --accent-orange-600: #E65C00; /* Hover */
-   --accent-orange-700: #CC5200; /* Active */
-   --accent-orange-100: #FFCC99; /* Disabled */
-   --accent-orange-text: #FFFFFF; /* Texto */
+   --accent-orange-500: #FF6600;
+   /* Regular */
+   --accent-orange-600: #E65C00;
+   /* Hover */
+   --accent-orange-700: #CC5200;
+   /* Active */
+   --accent-orange-100: #FFCC99;
+   /* Disabled */
+   --accent-orange-text: #FFFFFF;
+   /* Texto */
 
 
    /* AMARILLO - #FFB703 - Amber Flame */
-   --accent-yellow-500: #FFB703; /* Regular */
-   --accent-yellow-600: #E6A503; /* Hover */
-   --accent-yellow-700: #CC9202; /* Active */
-   --accent-yellow-100: #FFE7A3; /* Disabled */
-   --accent-yellow-text: #000000; /* Texto */
+   --accent-yellow-500: #FFB703;
+   /* Regular */
+   --accent-yellow-600: #E6A503;
+   /* Hover */
+   --accent-yellow-700: #CC9202;
+   /* Active */
+   --accent-yellow-100: #FFE7A3;
+   /* Disabled */
+   --accent-yellow-text: #000000;
+   /* Texto */
 
 
    /* ROJO - #FF3B30 - Cinnabar */
-   --accent-red-500: #FF3B30; /* Regular */
-   --accent-red-600: #E6352B; /* Hover */
-   --accent-red-700: #CC2F26; /* Active */
-   --accent-red-100: #FFBDB9; /* Disabled */
-   --accent-red-text: #FFFFFF; /* Texto */
+   --accent-red-500: #FF3B30;
+   /* Regular */
+   --accent-red-600: #E6352B;
+   /* Hover */
+   --accent-red-700: #CC2F26;
+   /* Active */
+   --accent-red-100: #FFBDB9;
+   /* Disabled */
+   --accent-red-text: #FFFFFF;
+   /* Texto */
 
 
-  /* ========================================   USOS DE COLOR  ======================================== */
+   /* ========================================   USOS DE COLOR  ======================================== */
 
 
-  /* ----------------------------------------------------------
+   /* ----------------------------------------------------------
      FONDOS Y SUPERFICIES
      ---------------------------------------------------------- */
 
-  --bg-page:      var(--white-smoke); /* Fondo general de la página */
-  --bg-light:     var(--slate-100); /* Fondo de secciones alternas (--slate-100) */
-  --bg-white:     var(--white); /* Tarjetas, modales, inputs */
-  --bg-subtle:    var(--alice-blue); /* Fondo azulado muy suave para highlights */  
+   --bg-page: var(--white-smoke);
+   /* Fondo general de la página */
+   --bg-light: var(--slate-100);
+   /* Fondo de secciones alternas (--slate-100) */
+   --bg-white: var(--white);
+   /* Tarjetas, modales, inputs */
+   --bg-subtle: var(--alice-blue);
+   /* Fondo azulado muy suave para highlights */
 
-  /* ----------------------------------------------------------
+   /* ----------------------------------------------------------
      BORDES
      ---------------------------------------------------------- */
 
-  --border-default:  var(--slate-200); /* Borde estándar (--slate-200) */
-  --border-strong:   var(--slate-300); /* Borde con más peso (--slate-300) */
-  --border-focus:    var(--blue-700); /* Borde al hacer focus en input (--blue-700) */
+   --border-default: var(--slate-200);
+   /* Borde estándar (--slate-200) */
+   --border-strong: var(--slate-300);
+   /* Borde con más peso (--slate-300) */
+   --border-focus: var(--blue-700);
+   /* Borde al hacer focus en input (--blue-700) */
 
-  /* ----------------------------------------------------------
+   /* ----------------------------------------------------------
      TEXTO
      ---------------------------------------------------------- */
 
-   --text-primary:    var(--slate-900); /* Texto principal */
-   --text-secondary:  var(--slate-600); /* Texto de apoyo */
-   --text-muted:      var(--slate-400); /* Texto desactivado / placeholder */
-   --text-inverse:    var(--bg-white);  /* Texto sobre fondos oscuros */
-   --text-link:       var(--blue-700);  /* Links */
-   --text-link-hover: var(--blue-800);  /* Links en hover */
-   
-  /* ----------------------------------------------------------
-     COLOR PRIMARIO - Variables semánticas de uso
-     Apuntan a los azules según el contexto de uso
-     ---------------------------------------------------------- */
+   --text-primary: var(--slate-900);
+   /* Texto principal */
+   --text-secondary: var(--slate-600);
+   /* Texto de apoyo */
+   --text-muted: var(--slate-400);
+   /* Texto desactivado / placeholder */
+   --text-inverse: var(--bg-white);
+   /* Texto sobre fondos oscuros */
+   --text-link: var(--blue-700);
+   /* Links */
+   --text-link-hover: var(--blue-800);
+   /* Links en hover */
 
-   --primary:          var(--blue-800); /* Color base del botón / acción principal */
-   --primary-hover:    var(--blue-700); /* Al pasar el cursor */
-   --primary-active:   var(--blue-900); /* Al hacer click / pressed */
-   --primary-disabled: var(--blue-200); /* Desactivado */
-   --primary-subtle:   var(--bg-subtle); /* Fondo suave relacionado al primario */
-   --primary-text:     var(--text-inverse); /* Texto encima del color primario */
-
-  /* ----------------------------------------------------------
-     COLOR SECUNDARIO (Naranja CTA)
-     ---------------------------------------------------------- */
-
-   --secondary:          var(--orange-500); /* Color base */
-   --secondary-hover:    var(--orange-600); /* Al pasar el cursor */
-   --secondary-active:   var(--orange-700); /* Al hacer click / pressed */
-   --secondary-disabled: var(--orange-100); /* Desactivado */
-   --secondary-text:     var(--text-inverse); /* Texto encima del color secundario */
-
-  /* ----------------------------------------------------------
-     ESTADOS SEMÁNTICOS
-     ---------------------------------------------------------- */
-
-   /* Éxito */
-   --status-success:        var(--green-700);
-   --status-success-bg:     var(--green-100);
-   --status-success-border: var(--green-500);
-
-   /* Error */
-   --status-error:          var(--red-600);
-   --status-error-bg:       var(--red-100);
-   --status-error-border:   var(--red-500);
-
-   /* Advertencia */
-   --status-warning:        var(--yellow-600);
-   --status-warning-bg:     var(--yellow-100);
-   --status-warning-border: var(--yellow-500);
-
-   /* Info */
-   --status-info:           var(--blue-600);
-   --status-info-bg:        var(--blue-100);
-   --status-info-border:    var(--blue-500);
-
-  /* ----------------------------------------------------------
+   /* ----------------------------------------------------------
      SOMBRAS
      ---------------------------------------------------------- */
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.05);
+   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.06);
+   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.05);
 
-  /* ----------------------------------------------------------
+   /* ----------------------------------------------------------
      RADIO DE BORDES
      ---------------------------------------------------------- */
 
-  --radius-sm:   4px;
-  --radius-md:   8px;
-  --radius-lg:   12px;
-  --radius-full: 9999px;
+   --radius-sm: 4px;
+   --radius-md: 8px;
+   --radius-lg: 12px;
+   --radius-full: 9999px;
 
-  /* ----------------------------------------------------------
+   /* ----------------------------------------------------------
      TIPOGRAFÍA
      ---------------------------------------------------------- */
 
-  --text-xs:   0.75rem;   /* 12px */
-  --text-sm:   0.875rem;  /* 14px */
-  --text-base: 1rem;      /* 16px */
-  --text-lg:   1.125rem;  /* 18px */
-  --text-xl:   1.25rem;   /* 20px */
-  --text-2xl:  1.5rem;    /* 24px */
-  --text-3xl:  1.875rem;  /* 30px */
+   --text-xs: 0.75rem;
+   /* 12px */
+   --text-sm: 0.875rem;
+   /* 14px */
+   --text-base: 1rem;
+   /* 16px */
+   --text-lg: 1.125rem;
+   /* 18px */
+   --text-xl: 1.25rem;
+   /* 20px */
+   --text-2xl: 1.5rem;
+   /* 24px */
+   --text-3xl: 1.875rem;
+   /* 30px */
 
 }
 
 .dark {
-  --bg-page:   var(--black-rich);
-  --bg-light:  var(--slate-800);
-  --bg-white:  var(--black-soft);
-  --bg-subtle: var(--ink-500);
+   --bg-page: var(--black-rich);
+   --bg-light: var(--slate-800);
+   --bg-white: var(--black-soft);
+   --bg-subtle: var(--ink-500);
 
-  --border-default: var(--ink-700);
-  --border-strong:  var(--slate-700);
+   --border-default: var(--ink-700);
+   --border-strong: var(--slate-700);
 
-  --text-primary:   var(--slate-50);
-  --text-secondary: var(--slate-400);
-  --text-muted:     var(--slate-500);
-  --text-inverse:   var(--black-rich);
+   --text-primary: var(--slate-50);
+   --text-secondary: var(--slate-400);
+   --text-muted: var(--slate-500);
+   --text-inverse: var(--black-rich);
 
-  --red-soft:       var(--crimson-950);
-  --red-soft-hover: var(--crimson-900);
-  --orange-soft:    var(--rust-950);
-  --green-soft:     var(--forest-950);
-  --yellow-soft:    var(--amber-950);
+   --red-soft: var(--crimson-950);
+   --red-soft-hover: var(--crimson-900);
+   --orange-soft: var(--rust-950);
+   --green-soft: var(--forest-950);
+   --yellow-soft: var(--amber-950);
 }
 
 /*  RESET Y BASE  */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+*,
+*::before,
+*::after {
+   box-sizing: border-box;
+   margin: 0;
+   padding: 0;
 }
 
 body {
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
-  background: var(--bg-page);
-  color: var(--text-primary);
-  font-size: var(--text-base);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
+   font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+   background: var(--bg-page);
+   color: var(--text-primary);
+   font-size: var(--text-base);
+   line-height: 1.5;
+   -webkit-font-smoothing: antialiased;
 }
 
 a {
-  color: var(--text-link);
-  text-decoration: none;
+   color: var(--text-link);
+   text-decoration: none;
 }
-a:hover { color: var(--text-link-hover); }
+
+a:hover {
+   color: var(--text-link-hover);
+}
 
 img {
-  max-width: 100%;
-  display: block;
+   max-width: 100%;
+   display: block;
 }
