@@ -1,5 +1,8 @@
 import styles from './ProductCardList.module.css'
-import type { Product, StockBranch } from '../../types/product'
+import type { Product, StockBranch } from '../../../types/product'
+import { UilStar } from '@iconscout/react-unicons'
+import { UisStar, UisStarHalfAlt } from '@iconscout/react-unicons-solid'
+import { Button } from '../../Button/Button'
 
 type ProductCardListProps = {
   product: Product
@@ -17,12 +20,18 @@ function formatPrice(price: number): string {
 }
 
 function Stars({ rating }: { rating: number }) {
+  const full = Math.floor(rating)
+  const half = rating - full >= 0.5
+  const empty = 5 - full - (half ? 1 : 0)
+
   return (
     <div className={styles.stars}>
-      {[1, 2, 3, 4, 5].map(i => (
-        <span key={i} className={i <= Math.round(rating) ? styles.starFilled : styles.starEmpty}>
-          ★
-        </span>
+      {Array.from({ length: full }).map((_, i) => (
+        <UisStar key={`f${i}`} size="14" className={styles.starFilled} />
+      ))}
+      {half && <UisStarHalfAlt size="14" className={styles.starHalf} />}
+      {Array.from({ length: empty }).map((_, i) => (
+        <UilStar key={`e${i}`} size="14" className={styles.starEmpty} />
       ))}
       <span className={styles.ratingNum}>{rating.toFixed(1)}</span>
     </div>
@@ -64,26 +73,36 @@ export function ProductCardList({ product, imageUrl, onAddToCart, onClick }: Pro
         </div>
       </div>
 
-      {/* Precio y acción */}
+      {/* Acciones - centro */}
       <div className={styles.actions}>
         <div className={styles.price}>{formatPrice(product.price)}</div>
-        <button
-          className={styles.addBtn}
-          disabled={!inStock}
-          onClick={(e) => { e.stopPropagation(); onAddToCart?.(product) }}
-        >
-          {inStock ? '+ Carrito' : 'Avisar'}
-        </button>
+        <div className={styles.btns}>
+          <Button
+            label="Ver detalle"
+            variant="outline"
+            size="md"
+            fullWidth
+            onClick={() => onClick?.(product)}
+          />
+          <Button
+            label="Agregar al carrito"
+            variant="primary"
+            size="md"
+            fullWidth
+            disabled={!inStock}
+            onClick={() => { onAddToCart?.(product) }}
+          />
+        </div>
       </div>
 
       {/* Imagen - derecha */}
       <div className={styles.imgWrapper}>
         <img
-          src={imageUrl ?? 'https://placehold.co/160x140?text=Sin+imagen'}
+          src={imageUrl ?? 'https://placehold.co/220x185?text=Sin+imagen'}
           alt={product.name}
           className={styles.img}
           onError={(e) => {
-            (e.target as HTMLImageElement).src = 'https://placehold.co/160x140?text=Sin+imagen'
+            (e.target as HTMLImageElement).src = 'https://placehold.co/220x185?text=Sin+imagen'
           }}
         />
       </div>

@@ -4,8 +4,7 @@
     border-radius: var(--radius-lg);
     display: flex;
     flex-direction: row;
-    align-items: center;
-    gap: 0;
+    align-items: stretch;
     height: 185px;
     cursor: pointer;
     transition: box-shadow 0.15s;
@@ -25,6 +24,7 @@
     flex-direction: column;
     gap: 6px;
     min-width: 0;
+    justify-content: center;
 }
 
 .meta {
@@ -47,13 +47,15 @@
 }
 
 .name {
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
     font-weight: 700;
     color: var(--text-primary);
     line-height: 1.3;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .row {
@@ -63,6 +65,7 @@
     flex-wrap: wrap;
 }
 
+/* - RATING - */
 .stars {
     display: flex;
     align-items: center;
@@ -71,12 +74,14 @@
 
 .starFilled {
     color: var(--yellow-500);
-    font-size: 13px;
+}
+
+.starHalf {
+    color: var(--yellow-500);
 }
 
 .starEmpty {
     color: var(--slate-300);
-    font-size: 13px;
 }
 
 .ratingNum {
@@ -91,6 +96,7 @@
     color: var(--text-muted);
 }
 
+/* - STOCK y BADGES - */
 .stock {
     font-size: 9px;
     font-weight: 700;
@@ -135,54 +141,37 @@
     color: var(--green-700);
 }
 
-/* - PRECIO y ACCIÓN centro - */
+/* - ACCIONES centro - */
 .actions {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 10px;
-    padding: 15px 24px;
+    padding: 16px 20px;
+    border-left: 1px solid var(--border-default);
     border-right: 1px solid var(--border-default);
-    height: 100%;
-    justify-content: space-around;
-    min-width: 140px;
+    min-width: 180px;
 }
 
 .price {
-    font-size: var(--text-lg);
+    font-size: var(--text-xl);
     font-weight: 800;
     color: var(--blue-800);
-}
-
-.addBtn {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    background: var(--blue-100);
-    color: var(--blue-800);
-    border: none;
-    padding: 6px 14px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: background 0.15s;
     white-space: nowrap;
 }
 
-.addBtn:hover:not(:disabled) {
-    background: var(--blue-200);
-}
-
-.addBtn:disabled {
-    background: var(--bg-light);
-    color: var(--text-muted);
-    cursor: not-allowed;
+.btns {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
 }
 
 /* - IMAGEN derecha - */
 .imgWrapper {
-    width: 250px;
-    min-width: 250px;
+    width: 220px;
+    min-width: 220px;
     height: 100%;
     overflow: hidden;
 }
@@ -222,15 +211,6 @@
 :global(.dark) .badgeEco {
     background: var(--forest-950);
     color: var(--green-400);
-}
-
-:global(.dark) .addBtn {
-    background: var(--navy-900);
-    color: var(--blue-400);
-}
-
-:global(.dark) .addBtn:hover {
-    background: var(--navy-800);
 }
 
 :global(.dark) .price {
