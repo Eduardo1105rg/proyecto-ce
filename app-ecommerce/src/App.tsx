@@ -3,9 +3,9 @@ import { Navbar } from './components/Navbar/Navbar'
 import { useTheme } from './hooks/useTheme'
 import { ButtonTest } from './pages/ButtonTest'
 import { ProductTest } from './pages/ProductTest'
-
-
-import './App.css'
+import { Footer } from './components/Footer/Footer'
+import {Route} from "react-router-dom";
+import {ProductDetailPage} from "./pages/ProductDetailPage";
 
 function App() {
   const { theme, toggleTheme } = useTheme()
@@ -13,11 +13,12 @@ function App() {
   return (
     <HashRouter>
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
-      <ButtonTest />
-      <ProductTest />
       <Routes>
-        {/* rutas aquí */}
+        <Route path="/test" element={<ButtonTest />} />
+        <Route path="/" element={<ProductTest />} />
+        <Route path="/producto/:id" element={<ProductDetailPage />} />
       </Routes>
+      <Footer />
     </HashRouter>
   )
 }
