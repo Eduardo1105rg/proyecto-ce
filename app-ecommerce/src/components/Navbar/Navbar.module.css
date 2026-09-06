@@ -1,3 +1,4 @@
+/* - NAVBAR SUPERIOR - */
 .navbar {
   width: 100%;
   height: 64px;
@@ -19,8 +20,13 @@
   gap: 8px;
   font-size: var(--text-xl);
   font-weight: 700;
-  color: var(--primary);
+  color: var(--blue-800);
   text-decoration: none;
+}
+
+.logo {
+  height: 32px;
+  width: auto;
 }
 
 .links {
@@ -41,18 +47,13 @@
 
 .navLink:hover {
   background: var(--bg-subtle);
-  color: var(--primary);
+  color: var(--blue-800);
 }
 
-/* Responsive - móvil */
-@media (max-width: 640px) {
-  .navbar {
-    padding: 0 16px;
-  }
-
-  .brand {
-    font-size: var(--text-lg);
-  }
+.navLinkActive {
+  background: var(--bg-subtle);
+  color: var(--blue-800);
+  font-weight: 600;
 }
 
 .themeBtn {
@@ -66,7 +67,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
   transition: background 0.15s;
 }
 
@@ -74,12 +74,12 @@
   background: var(--border-default);
 }
 
-.logo {
-  height: 32px;
-  width: auto;
+/* - BOTTOM NAV - solo móvil - */
+.bottomNav {
+  display: none;
 }
 
-/* -- DARK MODE -- */
+/* - DARK MODE - */
 :global(.dark) .navbar {
   background: var(--ink-900);
   border-bottom-color: transparent;
@@ -99,6 +99,11 @@
   color: var(--slate-50);
 }
 
+:global(.dark) .navLinkActive {
+  background: var(--ink-800);
+  color: var(--slate-50);
+}
+
 :global(.dark) .themeBtn {
   background: var(--ink-900);
   border-color: var(--ink-700);
@@ -106,4 +111,100 @@
 
 :global(.dark) .themeBtn:hover {
   background: var(--ink-600);
+}
+
+:global(.dark) .bottomNav {
+  background: var(--ink-900);
+  border-top-color: var(--ink-700);
+}
+
+:global(.dark) .bottomLink {
+  color: var(--slate-500);
+}
+
+:global(.dark) .bottomLinkActive {
+  color: var(--blue-400);
+}
+
+:global(.dark) .bottomThemeBtn {
+  color: var(--slate-500);
+}
+
+/* - RESPONSIVE - */
+@media (max-width: 640px) {
+  .navbar {
+    padding: 0 16px;
+  }
+
+  .brand {
+    font-size: var(--text-lg);
+  }
+
+  /* Ocultar links en desktop navbar en móvil */
+  .links {
+    display: none;
+  }
+
+  /* Ocultar botón de tema en navbar en móvil */
+  .themeBtn {
+    display: none;
+  }
+
+  /* Mostrar bottom nav en móvil */
+  .bottomNav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--bg-white);
+    border-top: 1px solid var(--border-default);
+    z-index: 100;
+    align-items: stretch;
+  }
+
+  .bottomLink {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .bottomLink:hover {
+    color: var(--blue-800);
+  }
+
+  .bottomLinkActive {
+    color: var(--blue-800);
+    font-weight: 600;
+  }
+
+  .bottomThemeBtn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.15s;
+  }
+
+  .bottomThemeBtn:hover {
+    color: var(--blue-800);
+  }
 }
