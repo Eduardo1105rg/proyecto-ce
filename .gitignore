@@ -19,3 +19,5 @@ Gemfile.lock
 */images/*
 app-ecommerce/src/data/images/*
 data/images/*
+
+.env
