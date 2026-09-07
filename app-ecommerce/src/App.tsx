@@ -1,23 +1,25 @@
-// import { useState } from 'react'
-
-// Ejemplo de import de la libreria React Router Dom
-import { HashRouter, Routes } from "react-router-dom";
-//Route
-import './App.css'
+import { HashRouter, Routes } from 'react-router-dom'
+import { Navbar } from './components/Navbar/Navbar'
+import { useTheme } from './hooks/useTheme'
+import { ButtonTest } from './pages/ButtonTest'
+import { ProductTest } from './pages/ProductTest'
+import { Footer } from './components/Footer/Footer'
+import {Route} from "react-router-dom";
+import {ProductDetailPage} from "./pages/ProductDetailPage";
 
 function App() {
-
+  const { theme, toggleTheme } = useTheme()
 
   return (
-    <>
-      <h1>Pagina principal</h1>
-      <HashRouter>
-        <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
-        </Routes>
-
-      </HashRouter>
-    </>
+    <HashRouter>
+      <Navbar theme={theme} onToggleTheme={toggleTheme} />
+      <Routes>
+        <Route path="/test" element={<ButtonTest />} />
+        <Route path="/" element={<ProductTest />} />
+        <Route path="/producto/:id" element={<ProductDetailPage />} />
+      </Routes>
+      <Footer />
+    </HashRouter>
   )
 }
 
