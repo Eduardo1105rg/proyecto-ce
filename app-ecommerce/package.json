@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "pnpm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "seed-algolia": "node scripts/seed-algolia.mjs"
   },
   "dependencies": {
     "@iconscout/react-unicons": "^2.2.5",
