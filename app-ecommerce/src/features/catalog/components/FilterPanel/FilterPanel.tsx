@@ -1,11 +1,8 @@
-import { useState } from 'react'
-import { Range, getTrackBackground } from 'react-range'
+import { useState, useRef } from 'react'
 import styles from './FilterPanel.module.css'
 import { UilAngleDown } from '@iconscout/react-unicons'
 import { Dropdown } from '../../../../components/Dropdown/Dropdown'
-
-const FALLBACK_MIN = 0
-const FALLBACK_MAX = 500000
+import { Button } from '../../../../components/Button/Button'
 
 type SortOption = {
   label: string
@@ -23,14 +20,12 @@ type FilterPanelProps = {
   selectedCategories?: string[]
   onCategoriesChange?: (cats: string[]) => void
   categories?: CategoryItem[]
-  priceRange?: [number, number]
-  priceMin?: number
-  priceMax?: number
   onPriceChange?: (range: [number, number]) => void
   sortBy?: string
   sortOptions?: SortOption[]
   onSortChange?: (value: string) => void
   onClearAll?: () => void
+  maxPrice?: number  // viene de CatalogPage calculado de los hits
 }
 
 function FilterSection({
@@ -61,32 +56,42 @@ function FilterSection({
 export function FilterPanel({
   onCategoriesChange,
   categories = [],
-  priceRange,
-  priceMin = FALLBACK_MIN,
-  priceMax = FALLBACK_MAX,
   onPriceChange,
   sortBy,
   sortOptions,
   onSortChange,
   onClearAll,
+  maxPrice,
 }: FilterPanelProps) {
-  const [localMin, setLocalMin] = useState<string>('')
-  const [localMax, setLocalMax] = useState<string>('')
 
-  const effectiveRange: [number, number] = priceRange ?? [priceMin, priceMax]
-
-  function formatPrice(val: number) {
-    return `₡${val.toLocaleString('es-CR')}`
-  }
+  const minRef = useRef<HTMLInputElement>(null)
+  const maxRef = useRef<HTMLInputElement>(null)
+  const [priceError, setPriceError] = useState<string | null>(null)
 
   const defaultSortValue = sortOptions?.[0]?.value ?? ''
-  const sliderReady = priceMin < priceMax
+  const placeholderMax = maxPrice ? maxPrice.toLocaleString('es-CR') : '500,000'
 
   const hasFilters =
     categories.some(c => c.isRefined) ||
-    effectiveRange[0] > priceMin ||
-    effectiveRange[1] < priceMax ||
+    !!(minRef.current?.value) ||
+    !!(maxRef.current?.value) ||
     (sortBy !== undefined && sortBy !== defaultSortValue)
+
+  function applyPriceFilter() {
+    const minRaw = minRef.current?.value ?? ''
+    const maxRaw = maxRef.current?.value ?? ''
+
+    const min = parseInt(minRaw.replace(/\D/g, '')) || 0
+    const max = parseInt(maxRaw.replace(/\D/g, '')) || maxPrice || 500000
+
+    if (min > max) {
+      setPriceError('El mínimo no puede ser mayor que el máximo.')
+      return
+    }
+
+    setPriceError(null)
+    onPriceChange?.([min, max])
+  }
 
   return (
     <aside className={styles.panel}>
@@ -94,7 +99,12 @@ export function FilterPanel({
       <div className={styles.panelHeader}>
         <span className={styles.panelTitle}>Filtros</span>
         {hasFilters && (
-          <button className={styles.clearAll} onClick={onClearAll}>
+          <button className={styles.clearAll} onClick={() => {
+            if (minRef.current) minRef.current.value = ''
+            if (maxRef.current) maxRef.current.value = ''
+            setPriceError(null)
+            onClearAll?.()
+          }}>
             Limpiar todo
           </button>
         )}
@@ -133,82 +143,37 @@ export function FilterPanel({
           <div className={styles.priceInputWrapper}>
             <span className={styles.priceInputLabel}>Mín</span>
             <input
-              className={styles.priceInput}
+              ref={minRef}
+              className={`${styles.priceInput} ${priceError ? styles.priceInputError : ''}`}
               type="text"
               placeholder="0"
-              value={localMin}
-              onChange={(e) => setLocalMin(e.target.value.replace(/\D/g, ''))}
-              onBlur={() => {
-                const num = parseInt(localMin) || 0
-                onPriceChange?.([num, parseInt(localMax) || priceMax || FALLBACK_MAX])
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  const num = parseInt(localMin) || 0
-                  onPriceChange?.([num, parseInt(localMax) || priceMax || FALLBACK_MAX])
-                }
-              }}
+              onKeyDown={(e) => { if (e.key === 'Enter') applyPriceFilter() }}
             />
           </div>
           <span className={styles.priceSep}> </span>
           <div className={styles.priceInputWrapper}>
             <span className={styles.priceInputLabel}>Máx</span>
             <input
-              className={styles.priceInput}
+              ref={maxRef}
+              className={`${styles.priceInput} ${priceError ? styles.priceInputError : ''}`}
               type="text"
-              placeholder="500000"
-              value={localMax}
-              onChange={(e) => setLocalMax(e.target.value.replace(/\D/g, ''))}
-              onBlur={() => {
-                const num = parseInt(localMax) || FALLBACK_MAX
-                onPriceChange?.([parseInt(localMin) || 0, num])
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  const num = parseInt(localMax) || FALLBACK_MAX
-                  onPriceChange?.([parseInt(localMin) || 0, num])
-                }
-              }}
+              placeholder={placeholderMax}
+              onKeyDown={(e) => { if (e.key === 'Enter') applyPriceFilter() }}
             />
           </div>
         </div>
 
-        {sliderReady && (
-          <div className={styles.sliderWrapper}>
-            <Range
-              step={1000}
-              min={priceMin}
-              max={priceMax}
-              values={effectiveRange}
-              onChange={(vals) => onPriceChange?.([vals[0], vals[1]])}
-              renderTrack={({ props, children }) => (
-                <div
-                  {...props}
-                  className={styles.track}
-                  style={{
-                    ...props.style,
-                    background: getTrackBackground({
-                      values: effectiveRange,
-                      colors: ['var(--slate-200)', 'var(--blue-600)', 'var(--slate-200)'],
-                      min: priceMin,
-                      max: priceMax,
-                    }),
-                  }}
-                >
-                  {children}
-                </div>
-              )}
-              renderThumb={({ props }) => (
-                <div {...props} key={props.key} className={styles.thumb} />
-              )}
-            />
-          </div>
+        {priceError && (
+          <p className={styles.priceError}>{priceError}</p>
         )}
 
-        <div className={styles.priceLabels}>
-          <span>{formatPrice(effectiveRange[0])}</span>
-          <span>{formatPrice(effectiveRange[1])}</span>
-        </div>
+        <Button
+          label="Aplicar Rango"
+          variant="soft"
+          size="sm"
+          fullWidth
+          onClick={applyPriceFilter}
+        />
       </FilterSection>
 
     </aside>
