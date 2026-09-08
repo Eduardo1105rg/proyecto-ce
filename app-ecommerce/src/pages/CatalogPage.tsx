@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { 
-  useHits, 
-  useSearchBox, 
-  useRefinementList, 
+import { liteClient as algoliasearch } from 'algoliasearch/lite'
+import {
+  InstantSearch,
+  useHits,
+  useRefinementList,
   useRange,
   useSortBy,
   useClearRefinements,
-  usePagination        
+  usePagination,
 } from 'react-instantsearch'
 import { CatalogLayout } from '../features/catalog/components/CatalogLayout/CatalogLayout'
 import { ProductGrid } from '../features/catalog/components/ProductGrid/ProductGrid'
@@ -20,84 +21,96 @@ import type { Product } from '../types/product'
 type ViewMode = 'grid' | 'list'
 type Columns = 3 | 4 | 5
 
-function SearchBarWrapper() {
-  const { refine } = useSearchBox()
-  
-  return (
-    <SearchBar 
-      onChange={(value: string) => refine(value)}
-    />
-  )
-}
+const searchClient = algoliasearch(
+  'P312IB0CXE',
+  '0c676ad33cf8f9cb11f0cf0b8d3f125a'
+)
 
-// Componente principal del catálogo
-export function CatalogPage() {
+// Nombres exactos de tus índices en Algolia
+// deben coincidir con el indexName del InstantSearch y los nombres de réplicas reales
+const INDEX_MAIN = 'grupo-03_products_pruebas'
+const INDEX_PRICE_ASC = 'grupo-03_products_pruebas_price_asc'   
+const INDEX_PRICE_DESC = 'grupo-03_products_pruebas_price_desc' //ajustar a la réplica real de Algolia
+
+export const SORT_OPTIONS = [
+  { label: 'Relevancia', value: INDEX_MAIN },
+  { label: 'Precio: menor a mayor', value: INDEX_PRICE_ASC },
+  { label: 'Precio: mayor a menor', value: INDEX_PRICE_DESC },
+]
+
+function CatalogContent() {
   const navigate = useNavigate()
-  
-  // Estados de UI
+
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const [columns, setColumns] = useState<Columns>(4)
-  
+
   // Hooks de Algolia
   const { hits, results } = useHits<Product>()
-  
+  console.log('hits:', hits)
+  console.log('results:', results)
+
   const { items: categoryItems, refine: refineCategory } = useRefinementList({
     attribute: 'category',
   })
-  
-  const { range, refine: refinePrice } = useRange({
+
+  const { range, start, refine: refinePrice } = useRange({
     attribute: 'price',
   })
-  
+
   const { currentRefinement: currentSort, refine: refineSort } = useSortBy({
-    items: [
-      { label: 'Relevancia', value: 'relevance' },
-      { label: 'Precio: menor a mayor', value: 'price_asc' },
-      { label: 'Precio: mayor a menor', value: 'price_desc' },
-      { label: 'Más nuevos', value: 'newest' },
-      { label: 'Más antiguos', value: 'oldest' },
-    ]
+    items: SORT_OPTIONS,
   })
-  
-  const { refine: clearAll } = useClearRefinements()
+
+  const { refine: clearRefinements } = useClearRefinements()
+
   const { currentRefinement: currentPage, nbPages: totalPages, refine: refinePage } = usePagination()
-  
-  // Extraer valores del range de precio de forma segura
-  const currentMinPrice = range?.min ?? 0
-  const currentMaxPrice = range?.max ?? 500000
-  
-  // Obtener la lista de nombres de categorías activas
+
+  const minLimit = range?.min ?? 0
+  const maxLimit = range?.max ?? 500000
+
+  const activePriceRange: [number, number] = [
+    start?.[0] !== undefined && start[0] !== -Infinity ? start[0] : minLimit,
+    start?.[1] !== undefined && start[1] !== Infinity ? start[1] : maxLimit,
+  ]
+
   const selectedCategories = categoryItems
     .filter(item => item.isRefined)
     .map(item => item.label)
 
+  function handleCategoriesChange(cats: string[]) {
+    categoryItems.forEach(item => {
+      const shouldBeActive = cats.includes(item.label)
+      if (item.isRefined !== shouldBeActive) {
+        refineCategory(item.value)
+      }
+    })
+  }
+
+  function handlePriceChange([min, max]: [number, number]) {
+    refinePrice([min, max])
+  }
+
+  function handleClearAll() {
+    clearRefinements()
+    // Volver al índice principal (sort por relevancia)
+    refineSort(INDEX_MAIN)
+  }
+
   return (
-    <CatalogLayout 
-      searchBar={<SearchBarWrapper />}
+    <CatalogLayout
+      searchBar={<SearchBar />}
       sidebar={
         <FilterPanel
-          // Categorías
           selectedCategories={selectedCategories}
-          onCategoriesChange={(cats) => {
-            categoryItems.forEach(item => {
-              const debeEstarActivo = cats.includes(item.label)
-              if (item.isRefined !== debeEstarActivo) {
-                refineCategory(item.value)
-              }
-            })
-          }}
-          // Precio
-          priceRange={[currentMinPrice, currentMaxPrice]}
-          onPriceChange={([min, max]) => {
-            // useRange espera una tupla array [min, max] en vez de un objeto
-            refinePrice([min, max])
-          }}
-          // Ordenamiento
+          onCategoriesChange={handleCategoriesChange}
+          priceRange={activePriceRange}
+          priceMin={minLimit}
+          priceMax={maxLimit}
+          onPriceChange={handlePriceChange}
           sortBy={currentSort}
-          onSortChange={(value) => {
-            refineSort(value)
-          }}
-          
+          sortOptions={SORT_OPTIONS}
+          onSortChange={(value) => refineSort(value)}
+          onClearAll={handleClearAll}
         />
       }
     >
@@ -125,23 +138,33 @@ export function CatalogPage() {
         viewMode={viewMode}
         columns={columns}
         onAddToCart={(p) => {
-          console.log('Agregar al carrito:', p.name)
+          console.log('Agregar al carrito:', p.title ?? p.name)
         }}
-        // Volvemos a p.object_id ya que coincide con interfaz Product
         onProductClick={(p) => navigate(`/producto/${p.object_id}`)}
       />
 
       {/* Paginación */}
       {totalPages > 1 && (
         <Pagination
-          currentPage={currentPage + 1} 
+          currentPage={currentPage + 1}
           totalPages={totalPages}
           onPageChange={(page) => {
-            refinePage(page - 1) 
+            refinePage(page - 1)
             window.scrollTo({ top: 0, behavior: 'smooth' })
           }}
         />
       )}
     </CatalogLayout>
+  )
+}
+
+export function CatalogPage() {
+  return (
+    <InstantSearch
+      searchClient={searchClient}
+      indexName={INDEX_MAIN}
+    >
+      <CatalogContent />
+    </InstantSearch>
   )
 }
