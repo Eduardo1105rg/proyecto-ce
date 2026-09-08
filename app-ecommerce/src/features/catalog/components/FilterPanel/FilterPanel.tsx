@@ -4,34 +4,28 @@ import styles from './FilterPanel.module.css'
 import { UilAngleDown } from '@iconscout/react-unicons'
 import { Dropdown } from '../../../../components/Dropdown/Dropdown'
 
-// Categorías de prueba - luego vienen de Algolia
-const MOCK_CATEGORIES = [
-  'Cocina', 'Blancos para el Hogar', 'Electrónica',
-  'Jardín', 'Deportes', 'Juguetes', 'Oficina'
-]
+const FALLBACK_MIN = 0
+const FALLBACK_MAX = 500000
 
-const SORT_OPTIONS = [
-  { label: 'Relevancia', value: 'relevance' },
-  { label: 'Precio: menor a mayor', value: 'price_asc' },
-  { label: 'Precio: mayor a menor', value: 'price_desc' },
-  { label: 'Más nuevos', value: 'newest' },
-  { label: 'Más antiguos', value: 'oldest' },
-]
-
-const MIN_PRICE = 0
-const MAX_PRICE = 500000
+type SortOption = {
+  label: string
+  value: string
+}
 
 type FilterPanelProps = {
   selectedCategories?: string[]
   onCategoriesChange?: (cats: string[]) => void
   priceRange?: [number, number]
+  priceMin?: number   
+  priceMax?: number   
   onPriceChange?: (range: [number, number]) => void
   sortBy?: string
+  sortOptions?: SortOption[]  
   onSortChange?: (value: string) => void
+  onClearAll?: () => void     
   categories?: string[]
 }
 
-// Componente de sección colapsable
 function FilterSection({
   title,
   children,
@@ -57,16 +51,27 @@ function FilterSection({
   )
 }
 
+
+const MOCK_CATEGORIES = [
+  'Cocina', 'Blancos para el Hogar', 'Electrónica',
+  'Jardín', 'Deportes', 'Juguetes', 'Oficina'
+]
+
 export function FilterPanel({
   selectedCategories = [],
   onCategoriesChange,
-  priceRange = [MIN_PRICE, MAX_PRICE],
+  priceRange,
+  priceMin = FALLBACK_MIN,
+  priceMax = FALLBACK_MAX,
   onPriceChange,
-  sortBy = 'relevance',
+  sortBy,
+  sortOptions,
   onSortChange,
+  onClearAll,
 }: FilterPanelProps) {
 
-  // Toggle de categoría
+  const effectiveRange: [number, number] = priceRange ?? [priceMin, priceMax]
+
   function toggleCategory(cat: string) {
     const next = selectedCategories.includes(cat)
       ? selectedCategories.filter(c => c !== cat)
@@ -74,58 +79,54 @@ export function FilterPanel({
     onCategoriesChange?.(next)
   }
 
-  // Input manual de precio
   function handleMinInput(val: string) {
-    const num = parseInt(val.replace(/\D/g, '')) || 0
-    const clamped = Math.min(num, priceRange[1])
-    onPriceChange?.([clamped, priceRange[1]])
+    const num = parseInt(val.replace(/\D/g, '')) || priceMin
+    const clamped = Math.min(num, effectiveRange[1])
+    onPriceChange?.([clamped, effectiveRange[1]])
   }
 
   function handleMaxInput(val: string) {
-    const num = parseInt(val.replace(/\D/g, '')) || MAX_PRICE
-    const clamped = Math.max(num, priceRange[0])
-    onPriceChange?.([priceRange[0], clamped])
+    const num = parseInt(val.replace(/\D/g, '')) || priceMax
+    const clamped = Math.max(num, effectiveRange[0])
+    onPriceChange?.([effectiveRange[0], clamped])
   }
 
   function formatPrice(val: number) {
     return `₡${val.toLocaleString('es-CR')}`
   }
 
-  // Limpiar todos los filtros
-  function clearAll() {
-    onCategoriesChange?.([])
-    onPriceChange?.([MIN_PRICE, MAX_PRICE])
-    onSortChange?.('relevance')
-  }
+  const defaultSortValue = sortOptions?.[0]?.value ?? ''
 
-  const hasFilters = selectedCategories.length > 0 ||
-    priceRange[0] > MIN_PRICE ||
-    priceRange[1] < MAX_PRICE ||
-    sortBy !== 'relevance'
+  const hasFilters =
+    selectedCategories.length > 0 ||
+    effectiveRange[0] > priceMin ||
+    effectiveRange[1] < priceMax ||
+    (sortBy !== undefined && sortBy !== defaultSortValue)
+  const sliderReady = priceMin < priceMax
+
 
   return (
     <aside className={styles.panel}>
 
-      {/* Header del panel */}
       <div className={styles.panelHeader}>
         <span className={styles.panelTitle}>Filtros</span>
         {hasFilters && (
-          <button className={styles.clearAll} onClick={clearAll}>
+          <button className={styles.clearAll} onClick={onClearAll}>
             Limpiar todo
           </button>
         )}
       </div>
 
-      {/* Ordenar por */}
-      <FilterSection title="Ordenar por">
-        <Dropdown
-          options={SORT_OPTIONS}
-          value={sortBy}
-          onChange={(val) => onSortChange?.(val)}
-        />
-      </FilterSection>
+      {sortOptions && (
+        <FilterSection title="Ordenar por">
+          <Dropdown
+            options={sortOptions}
+            value={sortBy ?? defaultSortValue}
+            onChange={(val) => onSortChange?.(val)}
+          />
+        </FilterSection>
+      )}
 
-      {/* Categorías */}
       <FilterSection title="Categoría">
         <div className={styles.checkList}>
           {MOCK_CATEGORIES.map(cat => (
@@ -142,7 +143,6 @@ export function FilterPanel({
         </div>
       </FilterSection>
 
-      {/* Rango de precio */}
       <FilterSection title="Precio">
         <div className={styles.priceInputs}>
           <div className={styles.priceInputWrapper}>
@@ -150,7 +150,7 @@ export function FilterPanel({
             <input
               className={styles.priceInput}
               type="text"
-              value={priceRange[0].toLocaleString('es-CR')}
+              value={effectiveRange[0].toLocaleString('es-CR')}
               onChange={(e) => handleMinInput(e.target.value)}
             />
           </div>
@@ -160,46 +160,46 @@ export function FilterPanel({
             <input
               className={styles.priceInput}
               type="text"
-              value={priceRange[1].toLocaleString('es-CR')}
+              value={effectiveRange[1].toLocaleString('es-CR')}
               onChange={(e) => handleMaxInput(e.target.value)}
             />
           </div>
         </div>
 
-        {/* Slider doble */}
-        <div className={styles.sliderWrapper}>
-          <Range
-            step={1000}
-            min={MIN_PRICE}
-            max={MAX_PRICE}
-            values={priceRange}
-            onChange={(vals) => onPriceChange?.([vals[0], vals[1]])}
-            renderTrack={({ props, children }) => (
-              <div
-                {...props}
-                className={styles.track}
-                style={{
-                  ...props.style,
-                  background: getTrackBackground({
-                    values: priceRange,
-                    colors: ['var(--slate-200)', 'var(--blue-600)', 'var(--slate-200)'],
-                    min: MIN_PRICE,
-                    max: MAX_PRICE,
-                  }),
-                }}
-              >
-                {children}
-              </div>
-            )}
-            renderThumb={({ props }) => (
-              <div {...props} key={props.key} className={styles.thumb} />
-            )}
-          />
-        </div>
-
+        {sliderReady && (
+          <div className={styles.sliderWrapper}>
+            <Range
+              step={1000}
+              min={priceMin}
+              max={priceMax}
+              values={effectiveRange}
+              onChange={(vals) => onPriceChange?.([vals[0], vals[1]])}
+              renderTrack={({ props, children }) => (
+                <div
+                  {...props}
+                  className={styles.track}
+                  style={{
+                    ...props.style,
+                    background: getTrackBackground({
+                      values: effectiveRange,
+                      colors: ['var(--slate-200)', 'var(--blue-600)', 'var(--slate-200)'],
+                      min: priceMin,
+                      max: priceMax,
+                    }),
+                  }}
+                >
+                  {children}
+                </div>
+              )}
+              renderThumb={({ props }) => (
+                <div {...props} key={props.key} className={styles.thumb} />
+              )}
+            />
+          </div>
+        )}
         <div className={styles.priceLabels}>
-          <span>{formatPrice(priceRange[0])}</span>
-          <span>{formatPrice(priceRange[1])}</span>
+          <span>{formatPrice(effectiveRange[0])}</span>
+          <span>{formatPrice(effectiveRange[1])}</span>
         </div>
       </FilterSection>
 
