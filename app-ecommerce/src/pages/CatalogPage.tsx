@@ -29,8 +29,8 @@ const searchClient = algoliasearch(
 // Nombres exactos de tus índices en Algolia
 // deben coincidir con el indexName del InstantSearch y los nombres de réplicas reales
 const INDEX_MAIN = 'grupo-03_products_pruebas'
-const INDEX_PRICE_ASC = 'grupo-03_products_pruebas_price_asc'   
-const INDEX_PRICE_DESC = 'grupo-03_products_pruebas_price_desc' //ajustar a la réplica real de Algolia
+const INDEX_PRICE_ASC = 'grupo-03_products_pruebas_price_asc'
+const INDEX_PRICE_DESC = 'grupo-03_products_pruebas_price_desc' 
 
 export const SORT_OPTIONS = [
   { label: 'Relevancia', value: INDEX_MAIN },
@@ -73,17 +73,9 @@ function CatalogContent() {
     start?.[1] !== undefined && start[1] !== Infinity ? start[1] : maxLimit,
   ]
 
-  const selectedCategories = categoryItems
-    .filter(item => item.isRefined)
-    .map(item => item.label)
-
   function handleCategoriesChange(cats: string[]) {
-    categoryItems.forEach(item => {
-      const shouldBeActive = cats.includes(item.label)
-      if (item.isRefined !== shouldBeActive) {
-        refineCategory(item.value)
-      }
-    })
+    const item = categoryItems.find(i => i.label === cats[0])
+    if (item) refineCategory(item.value)
   }
 
   function handlePriceChange([min, max]: [number, number]) {
@@ -101,7 +93,7 @@ function CatalogContent() {
       searchBar={<SearchBar />}
       sidebar={
         <FilterPanel
-          selectedCategories={selectedCategories}
+          categories={categoryItems} 
           onCategoriesChange={handleCategoriesChange}
           priceRange={activePriceRange}
           priceMin={minLimit}

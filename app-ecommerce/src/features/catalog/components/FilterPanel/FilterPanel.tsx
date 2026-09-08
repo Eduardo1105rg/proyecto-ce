@@ -12,18 +12,25 @@ type SortOption = {
   value: string
 }
 
+type CategoryItem = {
+  label: string
+  value: string
+  count: number
+  isRefined: boolean
+}
+
 type FilterPanelProps = {
   selectedCategories?: string[]
   onCategoriesChange?: (cats: string[]) => void
+  categories?: CategoryItem[]
   priceRange?: [number, number]
-  priceMin?: number   
-  priceMax?: number   
+  priceMin?: number
+  priceMax?: number
   onPriceChange?: (range: [number, number]) => void
   sortBy?: string
-  sortOptions?: SortOption[]  
+  sortOptions?: SortOption[]
   onSortChange?: (value: string) => void
-  onClearAll?: () => void     
-  categories?: string[]
+  onClearAll?: () => void
 }
 
 function FilterSection({
@@ -51,15 +58,9 @@ function FilterSection({
   )
 }
 
-
-const MOCK_CATEGORIES = [
-  'Cocina', 'Blancos para el Hogar', 'Electrónica',
-  'Jardín', 'Deportes', 'Juguetes', 'Oficina'
-]
-
 export function FilterPanel({
-  selectedCategories = [],
   onCategoriesChange,
+  categories = [],
   priceRange,
   priceMin = FALLBACK_MIN,
   priceMax = FALLBACK_MAX,
@@ -69,41 +70,23 @@ export function FilterPanel({
   onSortChange,
   onClearAll,
 }: FilterPanelProps) {
+  const [localMin, setLocalMin] = useState<string>('')
+  const [localMax, setLocalMax] = useState<string>('')
 
   const effectiveRange: [number, number] = priceRange ?? [priceMin, priceMax]
-
-  function toggleCategory(cat: string) {
-    const next = selectedCategories.includes(cat)
-      ? selectedCategories.filter(c => c !== cat)
-      : [...selectedCategories, cat]
-    onCategoriesChange?.(next)
-  }
-
-  function handleMinInput(val: string) {
-    const num = parseInt(val.replace(/\D/g, '')) || priceMin
-    const clamped = Math.min(num, effectiveRange[1])
-    onPriceChange?.([clamped, effectiveRange[1]])
-  }
-
-  function handleMaxInput(val: string) {
-    const num = parseInt(val.replace(/\D/g, '')) || priceMax
-    const clamped = Math.max(num, effectiveRange[0])
-    onPriceChange?.([effectiveRange[0], clamped])
-  }
 
   function formatPrice(val: number) {
     return `₡${val.toLocaleString('es-CR')}`
   }
 
   const defaultSortValue = sortOptions?.[0]?.value ?? ''
+  const sliderReady = priceMin < priceMax
 
   const hasFilters =
-    selectedCategories.length > 0 ||
+    categories.some(c => c.isRefined) ||
     effectiveRange[0] > priceMin ||
     effectiveRange[1] < priceMax ||
     (sortBy !== undefined && sortBy !== defaultSortValue)
-  const sliderReady = priceMin < priceMax
-
 
   return (
     <aside className={styles.panel}>
@@ -129,15 +112,17 @@ export function FilterPanel({
 
       <FilterSection title="Categoría">
         <div className={styles.checkList}>
-          {MOCK_CATEGORIES.map(cat => (
-            <label key={cat} className={styles.checkItem}>
+          {categories.map(cat => (
+            <label key={cat.value} className={styles.checkItem}>
               <input
                 type="checkbox"
                 className={styles.checkbox}
-                checked={selectedCategories.includes(cat)}
-                onChange={() => toggleCategory(cat)}
+                checked={cat.isRefined}
+                onChange={() => onCategoriesChange?.([cat.label])}
               />
-              <span className={styles.checkLabel}>{cat}</span>
+              <span className={styles.checkLabel}>
+                {cat.label} <span className={styles.checkCount}>({cat.count})</span>
+              </span>
             </label>
           ))}
         </div>
@@ -150,8 +135,19 @@ export function FilterPanel({
             <input
               className={styles.priceInput}
               type="text"
-              value={effectiveRange[0].toLocaleString('es-CR')}
-              onChange={(e) => handleMinInput(e.target.value)}
+              placeholder="0"
+              value={localMin}
+              onChange={(e) => setLocalMin(e.target.value.replace(/\D/g, ''))}
+              onBlur={() => {
+                const num = parseInt(localMin) || 0
+                onPriceChange?.([num, parseInt(localMax) || priceMax || FALLBACK_MAX])
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  const num = parseInt(localMin) || 0
+                  onPriceChange?.([num, parseInt(localMax) || priceMax || FALLBACK_MAX])
+                }
+              }}
             />
           </div>
           <span className={styles.priceSep}> </span>
@@ -160,8 +156,19 @@ export function FilterPanel({
             <input
               className={styles.priceInput}
               type="text"
-              value={effectiveRange[1].toLocaleString('es-CR')}
-              onChange={(e) => handleMaxInput(e.target.value)}
+              placeholder="500000"
+              value={localMax}
+              onChange={(e) => setLocalMax(e.target.value.replace(/\D/g, ''))}
+              onBlur={() => {
+                const num = parseInt(localMax) || FALLBACK_MAX
+                onPriceChange?.([parseInt(localMin) || 0, num])
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  const num = parseInt(localMax) || FALLBACK_MAX
+                  onPriceChange?.([parseInt(localMin) || 0, num])
+                }
+              }}
             />
           </div>
         </div>
@@ -197,6 +204,7 @@ export function FilterPanel({
             />
           </div>
         )}
+
         <div className={styles.priceLabels}>
           <span>{formatPrice(effectiveRange[0])}</span>
           <span>{formatPrice(effectiveRange[1])}</span>
