@@ -54,3 +54,9 @@
 :global(.dark) .btn:hover {
   background: var(--ink-700);
 }
+
+@media (max-width: 640px) {
+  .wrapper {
+    display: none;
+  }
+}

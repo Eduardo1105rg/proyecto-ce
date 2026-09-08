@@ -10,8 +10,10 @@ export type B2BPriceTier = {
 
 export type Product = {
   object_id: string
+  objectID: string 
   sku: string
-  name: string
+  title: string
+  name?: string
   brand: string
   category: string
   price: number

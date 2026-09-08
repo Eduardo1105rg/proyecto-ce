@@ -42,6 +42,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
   const totalStock = getTotalStock(product)
   const inStock = totalStock > 0
   const lowStock = totalStock > 0 && totalStock <= 5
+  const displayName = product.title ?? product.name ?? 'Sin nombre'
 
   // Agregar al inicio del componente junto a los otros estados:
   const [isB2B, setIsB2B] = useState(false)
@@ -54,7 +55,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
   const minQty = product.tiered_b2b_pricing[0]?.min_qty
 
   const images = product.images.length > 0
-    ? product.images.map(_ => `https://placehold.co/600x500?text=${encodeURIComponent(product.name)}`)
+    ? product.images.map(_ => `https://placehold.co/600x500?text=${encodeURIComponent(displayName)}`)
     : ['https://placehold.co/600x500?text=Sin+imagen']
 
   const [activeImg, setActiveImg] = useState(0)
@@ -75,7 +76,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
           <div className={styles.mainImg}>
             <img
               src={images[activeImg]}
-              alt={product.name}
+              alt={displayName}
               className={styles.img}
             />
           </div>
@@ -123,7 +124,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
               )}
             </div>
 
-            <h1 className={styles.name}>{product.name}</h1>
+            <h1 className={styles.name}>{displayName}</h1>
             <p className={styles.brand}>{product.brand}</p>
 
             <div className={styles.ratingRow}>

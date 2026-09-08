@@ -38,10 +38,22 @@ function Stars({ rating }: { rating: number }) {
   )
 }
 
+
+function build_imageUrl(imagePath: string): string {
+  if (!imagePath) {
+    return "https://placehold.co/300x220?text=Sin+imagen";
+  }
+  // Ajusta según tu estructura real en /public
+  return `proyecto-ce/public${imagePath}`;
+  // return `${import.meta.env.BASE_URL}images/${imagePath}`;
+}
+
 export function ProductCardList({ product, imageUrl, onAddToCart, onClick }: ProductCardListProps) {
   const totalStock = getTotalStock(product)
   const inStock = totalStock > 0
   const lowStock = totalStock > 0 && totalStock <= 5
+  const displayName = product.title ?? product.name ?? 'Sin nombre'
+
 
   return (
     <article className={styles.card} onClick={() => onClick?.(product)}>
@@ -53,7 +65,7 @@ export function ProductCardList({ product, imageUrl, onAddToCart, onClick }: Pro
           <span className={styles.brand}>{product.brand}</span>
         </div>
 
-        <h3 className={styles.name}>{product.name}</h3>
+        <h3 className={styles.name}>{displayName}</h3>
 
         <div className={styles.row}>
           <Stars rating={product.rating} />
@@ -98,8 +110,8 @@ export function ProductCardList({ product, imageUrl, onAddToCart, onClick }: Pro
       {/* Imagen - derecha */}
       <div className={styles.imgWrapper}>
         <img
-          src={imageUrl ?? 'https://placehold.co/220x185?text=Sin+imagen'}
-          alt={product.name}
+          src={build_imageUrl(imageUrl)}
+          alt={displayName}
           className={styles.img}
           onError={(e) => {
             (e.target as HTMLImageElement).src = 'https://placehold.co/220x185?text=Sin+imagen'

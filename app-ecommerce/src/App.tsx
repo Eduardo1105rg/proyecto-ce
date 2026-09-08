@@ -6,6 +6,7 @@ import { ProductTest } from './pages/ProductTest'
 import { Footer } from './components/Footer/Footer'
 import {Route} from "react-router-dom";
 import {ProductDetailPage} from "./pages/ProductDetailPage";
+import {CatalogPage} from "./pages/CatalogPage";
 
 function App() {
   const { theme, toggleTheme } = useTheme()
@@ -15,7 +16,8 @@ function App() {
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
       <Routes>
         <Route path="/test" element={<ButtonTest />} />
-        <Route path="/" element={<ProductTest />} />
+        <Route path="/test" element={<ProductTest />} />
+        <Route path="/" element={<CatalogPage />} />
         <Route path="/producto/:id" element={<ProductDetailPage />} />
       </Routes>
       <Footer />
