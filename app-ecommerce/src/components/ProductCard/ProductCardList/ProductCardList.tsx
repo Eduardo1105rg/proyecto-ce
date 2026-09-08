@@ -38,6 +38,16 @@ function Stars({ rating }: { rating: number }) {
   )
 }
 
+
+function build_imageUrl(imagePath: string): string {
+  if (!imagePath) {
+    return "https://placehold.co/300x220?text=Sin+imagen";
+  }
+  // Ajusta según tu estructura real en /public
+  return `proyecto-ce/public${imagePath}`;
+  // return `${import.meta.env.BASE_URL}images/${imagePath}`;
+}
+
 export function ProductCardList({ product, imageUrl, onAddToCart, onClick }: ProductCardListProps) {
   const totalStock = getTotalStock(product)
   const inStock = totalStock > 0
@@ -100,7 +110,7 @@ export function ProductCardList({ product, imageUrl, onAddToCart, onClick }: Pro
       {/* Imagen - derecha */}
       <div className={styles.imgWrapper}>
         <img
-          src={imageUrl ?? 'https://placehold.co/220x185?text=Sin+imagen'}
+          src={build_imageUrl(imageUrl)}
           alt={displayName}
           className={styles.img}
           onError={(e) => {
