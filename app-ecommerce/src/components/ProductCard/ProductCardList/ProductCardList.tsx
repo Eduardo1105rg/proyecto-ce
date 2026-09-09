@@ -110,7 +110,7 @@ export function ProductCardList({ product, imageUrl, onAddToCart, onClick }: Pro
       {/* Imagen - derecha */}
       <div className={styles.imgWrapper}>
         <img
-          src={build_imageUrl(imageUrl)}
+          src={build_imageUrl(imageUrl ?? '')}
           alt={displayName}
           className={styles.img}
           onError={(e) => {

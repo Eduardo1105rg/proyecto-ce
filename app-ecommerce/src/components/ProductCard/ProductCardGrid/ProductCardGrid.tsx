@@ -61,7 +61,7 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
       {/* Imagen */}
       <div className={styles.imgWrapper}>
         <img
-          src={build_imageUrl(imageUrl)}
+          src={build_imageUrl(imageUrl ?? '')}
           alt={displayName}
           className={styles.img}
           onError={(e) => {
