@@ -2,9 +2,9 @@ import { HashRouter, Routes } from 'react-router-dom'
 import { Navbar } from './components/Navbar/Navbar'
 import { useTheme } from './hooks/useTheme'
 import { Footer } from './components/Footer/Footer'
-import {Route} from "react-router-dom";
-import {ProductDetailPage} from "./pages/ProductDetailPage";
-import {CatalogPage} from "./pages/CatalogPage";
+import { Route } from "react-router-dom";
+import { ProductDetailPage } from "./pages/ProductDetailPage";
+import { CatalogPage } from "./pages/CatalogPage";
 
 function App() {
   const { theme, toggleTheme } = useTheme()
