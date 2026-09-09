@@ -13,6 +13,12 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
 
   const isActive = (path: string) => location.pathname === path
 
+  // Función para manejar clics en enlaces deshabilitados
+  const handleDisabledClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    console.log('Página en desarrollo')
+  }
+
   return (
     <>
       {/* Navbar superior */}
@@ -24,13 +30,28 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
 
         {/* Links desktop */}
         <nav className={styles.links}>
-          <Link to="/" className={`${styles.navLink} ${isActive('/') ? styles.navLinkActive : ''}`}>
+          <Link 
+            to="/" 
+            className={`${styles.navLink} ${isActive('/') ? styles.navLinkActive : ''} ${styles.navLinkDisabled}`}
+            onClick={handleDisabledClick}
+            aria-disabled="true"
+            tabIndex={-1}
+          >
             Home
           </Link>
-          <Link to="/catalogo" className={`${styles.navLink} ${isActive('/catalogo') ? styles.navLinkActive : ''}`}>
+          <Link 
+            to="/catalogo" 
+            className={`${styles.navLink} ${isActive('/catalogo') ? styles.navLinkActive : ''}`}
+          >
             Catálogo
           </Link>
-          <Link to="/carrito" className={`${styles.navLink} ${isActive('/carrito') ? styles.navLinkActive : ''}`}>
+          <Link 
+            to="/carrito" 
+            className={`${styles.navLink} ${isActive('/carrito') ? styles.navLinkActive : ''} ${styles.navLinkDisabled}`}
+            onClick={handleDisabledClick}
+            aria-disabled="true"
+            tabIndex={-1}
+          >
             Carrito
           </Link>
         </nav>
@@ -46,15 +67,30 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
 
       {/* Bottom navbar - solo móvil */}
       <nav className={styles.bottomNav}>
-        <Link to="/" className={`${styles.bottomLink} ${isActive('/') ? styles.bottomLinkActive : ''}`}>
+        <Link 
+          to="/" 
+          className={`${styles.bottomLink} ${isActive('/') ? styles.bottomLinkActive : ''} ${styles.bottomLinkDisabled}`}
+          onClick={handleDisabledClick}
+          aria-disabled="true"
+          tabIndex={-1}
+        >
           <UilEstate size="22" />
           <span>Home</span>
         </Link>
-        <Link to="/catalogo" className={`${styles.bottomLink} ${isActive('/catalogo') ? styles.bottomLinkActive : ''}`}>
+        <Link 
+          to="/catalogo" 
+          className={`${styles.bottomLink} ${isActive('/catalogo') ? styles.bottomLinkActive : ''}`}
+        >
           <UilStore size="22" />
           <span>Catálogo</span>
         </Link>
-        <Link to="/carrito" className={`${styles.bottomLink} ${isActive('/carrito') ? styles.bottomLinkActive : ''}`}>
+        <Link 
+          to="/carrito" 
+          className={`${styles.bottomLink} ${isActive('/carrito') ? styles.bottomLinkActive : ''} ${styles.bottomLinkDisabled}`}
+          onClick={handleDisabledClick}
+          aria-disabled="true"
+          tabIndex={-1}
+        >
           <UilShoppingCart size="22" />
           <span>Carrito</span>
         </Link>
