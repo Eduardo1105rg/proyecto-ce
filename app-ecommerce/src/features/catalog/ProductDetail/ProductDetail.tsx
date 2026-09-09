@@ -2,9 +2,14 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './ProductDetail.module.css'
 import type { Product, StockBranch } from '../../../types/product'
-import { UilArrowLeft } from '@iconscout/react-unicons'
+import {
+  UilArrowLeft,
+  UilCardAtm,
+  UilMobileAndroid,
+  UilUniversity,
+  UilStar
+} from '@iconscout/react-unicons'
 import { UisStar, UisStarHalfAlt } from '@iconscout/react-unicons-solid'
-import { UilStar } from '@iconscout/react-unicons'
 import { Button } from '../../../components/Button/Button'
 
 type ProductDetailProps = {
@@ -37,6 +42,50 @@ function Stars({ rating }: { rating: number }) {
   )
 }
 
+function buildImageUrl(imagePath: string | undefined): string {
+  if (!imagePath) {
+    return "https://placehold.co/600x500?text=Sin+imagen"
+  }
+
+  const ruta = 'proyecto-ce/public/images/'
+  return `${ruta}${imagePath}`
+}
+
+const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
+
+const paymentMethodIcons: Record<string, { label: string; icon: React.ReactNode }> = {
+  tarjeta: {
+    label: 'Tarjeta de Crédito/Débito',
+    icon: <UilCardAtm size="18" className={styles.paymentIcon} />
+  },
+  sinpe: {
+    label: 'Sinpe Móvil',
+    icon: <UilMobileAndroid size="18" className={styles.paymentIcon} />
+  },
+  transferencia: {
+    label: 'Transferencia Bancaria',
+    icon: <UilUniversity size="18" className={styles.paymentIcon} />
+  },
+}
+
+function nombreSucursal(branchId: string): string {
+  if (branchId === 'lm-guapiles') {
+    return 'Limón, Guápiles'
+  }
+  if (branchId === 'sj-escazu') {
+    return 'San José, Escazú'
+  }
+  if (branchId === 'ct-central') {
+    return 'Cartago, Central'
+  }
+  if (branchId === 'hr-sarapiqui') {
+    return 'Heredia, Sarapiquí'
+  }
+  else {
+    return branchId.split('-').map(word => capitalize(word)).join(' ')
+  }
+}
+
 export function ProductDetail({ product }: ProductDetailProps) {
   const navigate = useNavigate()
   const totalStock = getTotalStock(product)
@@ -44,18 +93,16 @@ export function ProductDetail({ product }: ProductDetailProps) {
   const lowStock = totalStock > 0 && totalStock <= 5
   const displayName = product.title ?? product.name ?? 'Sin nombre'
 
-  // Agregar al inicio del componente junto a los otros estados:
   const [isB2B, setIsB2B] = useState(false)
 
-  // Precio activo según modo:
   const activePrice = isB2B && product.tiered_b2b_pricing.length > 0
     ? product.tiered_b2b_pricing[0].unit_price
     : product.price
 
   const minQty = product.tiered_b2b_pricing[0]?.min_qty
 
-  const images = product.images.length > 0
-    ? product.images.map(_ => `https://placehold.co/600x500?text=${encodeURIComponent(displayName)}`)
+  const images = product.images && product.images.length > 0
+    ? product.images.map(img => buildImageUrl(img))
     : ['https://placehold.co/600x500?text=Sin+imagen']
 
   const [activeImg, setActiveImg] = useState(0)
@@ -78,6 +125,9 @@ export function ProductDetail({ product }: ProductDetailProps) {
               src={images[activeImg]}
               alt={displayName}
               className={styles.img}
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'https://placehold.co/600x500?text=Sin+imagen'
+              }}
             />
           </div>
           {images.length > 1 && (
@@ -88,7 +138,13 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   className={`${styles.thumb} ${i === activeImg ? styles.thumbActive : ''}`}
                   onClick={() => setActiveImg(i)}
                 >
-                  <img src={img} alt={`Vista ${i + 1}`} />
+                  <img
+                    src={img}
+                    alt={`Vista ${i + 1}`}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://placehold.co/72x72?text=Sin+imagen'
+                    }}
+                  />
                 </button>
               ))}
             </div>
@@ -122,10 +178,13 @@ export function ProductDetail({ product }: ProductDetailProps) {
               {product.facets.eco_friendly && (
                 <span className={`${styles.badge} ${styles.badgeEco}`}>Eco</span>
               )}
+              {product.facets.tax_exempt && (
+                <span className={`${styles.badge} ${styles.badgeTax}`}>Exento de impuestos</span>
+              )}
             </div>
 
             <h1 className={styles.name}>{displayName}</h1>
-            <p className={styles.brand}>{product.brand}</p>
+            <p className={styles.brand}>{product.brand || 'Marca no especificada'}</p>
 
             <div className={styles.ratingRow}>
               <Stars rating={product.rating} />
@@ -143,7 +202,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
             <div className={styles.stockRow}>
               {!inStock && <span className={`${styles.stock} ${styles.stockOut}`}>Agotado</span>}
-              {lowStock && <span className={`${styles.stock} ${styles.stockLow}`}>Pocas unidades — quedan {totalStock}</span>}
+              {lowStock && <span className={`${styles.stock} ${styles.stockLow}`}>Pocas unidades - quedan {totalStock}</span>}
               {inStock && !lowStock && <span className={`${styles.stock} ${styles.stockOk}`}>En stock ({totalStock} disponibles)</span>}
             </div>
 
@@ -182,6 +241,12 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   <span className={styles.detailValue}>{product.facets.material}</span>
                 </div>
               )}
+              {product.facets.style && (
+                <div className={styles.detailRow}>
+                  <span className={styles.detailLabel}>Estilo</span>
+                  <span className={styles.detailValue}>{product.facets.style}</span>
+                </div>
+              )}
               <div className={styles.detailRow}>
                 <span className={styles.detailLabel}>Subcategoría</span>
                 <span className={styles.detailValue}>{product.facets.subcategory}</span>
@@ -195,7 +260,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
             </div>
 
             <span className={styles.cardTitle}>Etiquetas:</span>
-            {product.tags.length > 0 && (
+            {product.tags && product.tags.length > 0 && (
               <div className={styles.tags}>
                 {product.tags.map(tag => (
                   <span key={tag} className={styles.tag}>{tag}</span>
@@ -204,6 +269,46 @@ export function ProductDetail({ product }: ProductDetailProps) {
             )}
           </div>
 
+          {/* Burbuja 3 - Métodos de pago */}
+          {product.payment_methods && product.payment_methods.length > 0 && (
+            <div className={styles.card}>
+              <span className={styles.cardTitle}>Métodos de pago</span>
+              <div className={styles.paymentMethods}>
+                {product.payment_methods.map((method) => {
+                  const info = paymentMethodIcons[method] || {
+                    label: capitalize(method),
+                    icon: <UilCardAtm size="18" className={styles.paymentIcon} />
+                  }
+                  return (
+                    <div key={method} className={styles.paymentMethod}>
+                      {info.icon}
+                      <span className={styles.paymentLabel}>{info.label}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Burbuja 4 - Stock por sucursal */}
+          {product.stock_by_branch && product.stock_by_branch.length > 0 && (
+            <div className={styles.card}>
+              <span className={styles.cardTitle}>Disponibilidad por sucursal</span>
+              <div className={styles.branchStock}>
+                {product.stock_by_branch.map((branch) => {
+                  const branchName = nombreSucursal(branch.branch_id)
+                  return (
+                    <div key={branch.branch_id} className={styles.branchStockRow}>
+                      <span className={styles.branchName}>{branchName}</span>
+                      <span className={branch.stock > 0 ? styles.branchStockOk : styles.branchStockOut}>
+                        {branch.stock > 0 ? `${branch.stock} unidades` : 'Agotado'}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
