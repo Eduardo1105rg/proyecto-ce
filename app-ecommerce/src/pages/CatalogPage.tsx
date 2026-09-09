@@ -131,7 +131,7 @@ function CatalogContent() {
           viewMode={viewMode}
           columns={columns}
           onAddToCart={(p) => console.log('Agregar al carrito:', p.title ?? p.name)}
-          onProductClick={(p) => navigate(`/producto/${p.object_id}`)}
+          onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
         />
 
         {totalPages > 1 && (
