@@ -1,5 +1,5 @@
 import styles from './ViewToggle.module.css'
-import { UilListUl, UilGrid , UilTh, UilGrids } from '@iconscout/react-unicons'
+import { UilListUl, UilGrid, UilTh, UilGrids } from '@iconscout/react-unicons'
 
 type ViewMode = 'grid' | 'list'
 type Columns = 3 | 4 | 5
@@ -9,12 +9,12 @@ type ViewToggleProps = {
   columns: Columns
   onViewChange: (mode: ViewMode) => void
   onColumnsChange: (cols: Columns) => void
+  hideList?: boolean
 }
 
-export function ViewToggle({ viewMode, columns, onViewChange, onColumnsChange }: ViewToggleProps) {
+export function ViewToggle({ viewMode, columns, onViewChange, onColumnsChange, hideList = false }: ViewToggleProps) {
   return (
     <div className={styles.wrapper}>
-
       {/* Selector de columnas - solo visible en modo grid */}
       {viewMode === 'grid' && (
         <div className={styles.group}>
@@ -44,11 +44,7 @@ export function ViewToggle({ viewMode, columns, onViewChange, onColumnsChange }:
           </button>
         </div>
       )}
-
-      {/* Divisor */}
       {viewMode === 'grid' && <div className={styles.divider} />}
-
-      {/* Grid / Lista */}
       <div className={styles.group}>
         <button
           className={`${styles.btn} ${viewMode === 'grid' ? styles.active : ''}`}
@@ -58,16 +54,17 @@ export function ViewToggle({ viewMode, columns, onViewChange, onColumnsChange }:
         >
           <UilTh size="18" />
         </button>
-        <button
-          className={`${styles.btn} ${viewMode === 'list' ? styles.active : ''}`}
-          onClick={() => onViewChange('list')}
-          aria-label="Vista en lista"
-          title="Lista"
-        >
-          <UilListUl size="18" />
-        </button>
+        {!hideList && (
+          <button
+            className={`${styles.btn} ${viewMode === 'list' ? styles.active : ''}`}
+            onClick={() => onViewChange('list')}
+            aria-label="Vista en lista"
+            title="Lista"
+          >
+            <UilListUl size="18" />
+          </button>
+        )}
       </div>
-
     </div>
   )
 }
