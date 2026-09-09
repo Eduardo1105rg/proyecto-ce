@@ -66,6 +66,11 @@
     color: var(--green-700);
 }
 
+.badgeTax {
+    background: var(--yellow-soft);
+    color: var(--slate-800);
+}
+
 /* - STOCK derecha - */
 .stockBadge {
     position: absolute;

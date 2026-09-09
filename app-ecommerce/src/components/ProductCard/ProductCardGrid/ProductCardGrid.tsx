@@ -77,6 +77,9 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
           {product.facets.eco_friendly && (
             <span className={`${styles.badge} ${styles.badgeEco}`}>Eco</span>
           )}
+          {product.facets.tax_exempt && (
+            <span className={`${styles.badge} ${styles.badgeTax}`}>Exento de impuestos</span>
+          )}
         </div>
 
         {/* Stock derecha */}
@@ -121,7 +124,6 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
           onClick={() => onClick?.(product)}
         />
       </div>
-
     </article >
   )
 }
