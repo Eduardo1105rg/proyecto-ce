@@ -5,6 +5,7 @@ import { Footer } from './components/Footer/Footer'
 import { Route } from "react-router-dom";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
 import { CatalogPage } from "./pages/CatalogPage";
+import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 
 function App() {
   const { theme, toggleTheme } = useTheme()
@@ -12,6 +13,7 @@ function App() {
   return (
     <HashRouter>
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<CatalogPage />} />
         <Route path="/catalogo" element={<CatalogPage />} />
