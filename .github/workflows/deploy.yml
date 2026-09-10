@@ -34,14 +34,31 @@ jobs:
         working-directory: app-ecommerce
         run: pnpm install --frozen-lockfile
 
-      - name: Build
+      - name: Check Algolia configuration
         working-directory: app-ecommerce
         env:
-          VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
-          VITE_ALGOLIA_SEARCH_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_KEY }}
-          VITE_ALGOLIA_INDEX_MAIN: ${{ secrets.VITE_ALGOLIA_INDEX_MAIN }}
-          VITE_ALGOLIA_INDEX_PRICE_ASC: ${{ secrets.VITE_ALGOLIA_INDEX_PRICE_ASC }}
-          VITE_ALGOLIA_INDEX_PRICE_DESC: ${{ secrets.VITE_ALGOLIA_INDEX_PRICE_DESC }}
+          VITE_ALGOLIA_APP_ID: ${{ vars.VITE_ALGOLIA_APP_ID }}
+          VITE_ALGOLIA_SEARCH_KEY: ${{ vars.VITE_ALGOLIA_SEARCH_KEY }}
+          VITE_ALGOLIA_INDEX_MAIN: ${{ vars.VITE_ALGOLIA_INDEX_MAIN }}
+          VITE_ALGOLIA_INDEX_PRICE_ASC: ${{ vars.VITE_ALGOLIA_INDEX_PRICE_ASC }}
+          VITE_ALGOLIA_INDEX_PRICE_DESC: ${{ vars.VITE_ALGOLIA_INDEX_PRICE_DESC }}
+        run: |
+          if [ -z "$VITE_ALGOLIA_APP_ID" ]; then
+            echo "ERROR: VITE_ALGOLIA_APP_ID no está configurado"
+            exit 1
+          fi
+
+          if [ -z "$VITE_ALGOLIA_SEARCH_KEY" ]; then
+            echo "ERROR: VITE_ALGOLIA_SEARCH_KEY no está configurado"
+            exit 1
+          fi
+
+          if [ -z "$VITE_ALGOLIA_INDEX_MAIN" ]; then
+            echo "ERROR: VITE_ALGOLIA_INDEX_MAIN no está configurado"
+            exit 1
+          fi
+
+          echo "Configuración de Algolia encontrada correctamente."
         run: pnpm run build
 
       - name: Setup Pages
