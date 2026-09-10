@@ -42,25 +42,8 @@ jobs:
           VITE_ALGOLIA_INDEX_MAIN: ${{ vars.VITE_ALGOLIA_INDEX_MAIN }}
           VITE_ALGOLIA_INDEX_PRICE_ASC: ${{ vars.VITE_ALGOLIA_INDEX_PRICE_ASC }}
           VITE_ALGOLIA_INDEX_PRICE_DESC: ${{ vars.VITE_ALGOLIA_INDEX_PRICE_DESC }}
-        run: |
-          if [ -z "$VITE_ALGOLIA_APP_ID" ]; then
-            echo "ERROR: VITE_ALGOLIA_APP_ID no está configurado"
-            exit 1
-          fi
-
-          if [ -z "$VITE_ALGOLIA_SEARCH_KEY" ]; then
-            echo "ERROR: VITE_ALGOLIA_SEARCH_KEY no está configurado"
-            exit 1
-          fi
-
-          if [ -z "$VITE_ALGOLIA_INDEX_MAIN" ]; then
-            echo "ERROR: VITE_ALGOLIA_INDEX_MAIN no está configurado"
-            exit 1
-          fi
-
-          echo "Configuración de Algolia encontrada correctamente."
+        run: pnpm run build
           
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
