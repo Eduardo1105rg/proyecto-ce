@@ -11,9 +11,11 @@ import {
 } from '@iconscout/react-unicons'
 import { UisStar, UisStarHalfAlt } from '@iconscout/react-unicons-solid'
 import { Button } from '../../../components/Button/Button'
+import { ProductGrid } from '../components/ProductGrid/ProductGrid'
 
 type ProductDetailProps = {
   product: Product
+  relatedProducts?: Product[]
 }
 
 function getTotalStock(product: Product): number {
@@ -69,24 +71,14 @@ const paymentMethodIcons: Record<string, { label: string; icon: React.ReactNode 
 }
 
 function nombreSucursal(branchId: string): string {
-  if (branchId === 'lm-guapiles') {
-    return 'Limón, Guápiles'
-  }
-  if (branchId === 'sj-escazu') {
-    return 'San José, Escazú'
-  }
-  if (branchId === 'ct-central') {
-    return 'Cartago, Central'
-  }
-  if (branchId === 'hr-sarapiqui') {
-    return 'Heredia, Sarapiquí'
-  }
-  else {
-    return branchId.split('-').map(word => capitalize(word)).join(' ')
-  }
+  if (branchId === 'lm-guapiles') return 'Limón, Guápiles'
+  if (branchId === 'sj-escazu') return 'San José, Escazú'
+  if (branchId === 'ct-central') return 'Cartago, Central'
+  if (branchId === 'hr-sarapiqui') return 'Heredia, Sarapiquí'
+  return branchId.split('-').map(word => capitalize(word)).join(' ')
 }
 
-export function ProductDetail({ product }: ProductDetailProps) {
+export function ProductDetail({ product, relatedProducts = [] }: ProductDetailProps) {
   const navigate = useNavigate()
   const totalStock = getTotalStock(product)
   const inStock = totalStock > 0
@@ -311,6 +303,24 @@ export function ProductDetail({ product }: ProductDetailProps) {
           )}
         </div>
       </div>
+
+      {/* Sección de productos relacionados */}
+      {relatedProducts.length > 0 && (
+        <section className={styles.related}>
+          <div className={styles.relatedHeader}>
+            <h2 className={styles.relatedTitle}>Más productos en {product.category}</h2>
+            <span className={styles.relatedCount}>{relatedProducts.length} productos</span>
+          </div>
+          <ProductGrid
+            products={relatedProducts}
+            viewMode="grid"
+            columns={4}
+            onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
+            onAddToCart={(p) => console.log('Agregar al carrito:', p.title ?? p.name)}
+          />
+        </section>
+      )}
+
     </div>
   )
 }

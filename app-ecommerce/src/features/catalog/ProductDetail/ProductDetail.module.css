@@ -442,6 +442,32 @@
   font-weight: 500;
 }
 
+/* - PRODUCTOS RELACIONADOS - */
+.related {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border-default);
+}
+
+.relatedHeader {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.relatedTitle {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.relatedCount {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+}
+
 /* - DARK MODE - */
 :global(.dark) .b2bRow {
   background: var(--black-soft);
@@ -530,6 +556,14 @@
   border-color: var(--ink-700);
 }
 
+:global(.dark) .related {
+    border-color: var(--ink-700);
+}
+
+:global(.dark) .relatedTitle {
+    color: var(--slate-100);
+}
+
 /* - RESPONSIVE - */
 @media (max-width: 768px) {
     .layout {
@@ -547,5 +581,9 @@
 
     .price {
         font-size: var(--text-2xl);
+    }
+
+    .relatedTitle {
+        font-size: var(--text-lg);
     }
 }

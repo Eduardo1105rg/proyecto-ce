@@ -6,7 +6,6 @@ import { InstantSearch } from 'react-instantsearch'
 import { liteClient as algoliasearch } from 'algoliasearch/lite'
 import type { Product } from '../types/product'
 
-// Configuración del cliente Algolia
 const searchClient = algoliasearch(
   import.meta.env.VITE_ALGOLIA_APP_ID,
   import.meta.env.VITE_ALGOLIA_SEARCH_KEY
@@ -14,13 +13,13 @@ const searchClient = algoliasearch(
 
 const INDEX_MAIN = import.meta.env.VITE_ALGOLIA_INDEX_MAIN
 
-// Crear un componente interno que usa useInstantSearch
 function ProductDetailContent() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { results } = useInstantSearch()
-  
+
   const [product, setProduct] = useState<Product | null>(null)
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -29,7 +28,6 @@ function ProductDetailContent() {
       return
     }
 
-    // Buscar en los resultados actuales del catálogo
     const hitFromResults = results?.hits?.find(
       (hit: any) => hit.objectID === id
     ) as Product | undefined
@@ -37,10 +35,10 @@ function ProductDetailContent() {
     if (hitFromResults) {
       setProduct(hitFromResults)
       setLoading(false)
+      fetchRelated(hitFromResults)
       return
     }
 
-    // Buscar específicamente en Algolia
     searchClient.search({
       requests: [{
         indexName: INDEX_MAIN,
@@ -53,6 +51,7 @@ function ProductDetailContent() {
       const hits = (response.results[0] as { hits: Product[] }).hits
       if (hits.length > 0) {
         setProduct(hits[0])
+        fetchRelated(hits[0])
       } else {
         setProduct(null)
       }
@@ -64,10 +63,26 @@ function ProductDetailContent() {
     })
   }, [id, results])
 
+  function fetchRelated(p: Product) {
+    searchClient.search({
+      requests: [{
+        indexName: INDEX_MAIN,
+        query: '',
+        filters: `category:"${p.category}" AND NOT objectID:"${p.objectID}"`,
+        hitsPerPage: 8,
+        attributesToRetrieve: ['*'],
+      }]
+    }).then((res) => {
+      setRelatedProducts((res.results[0] as { hits: Product[] }).hits)
+    }).catch(() => {
+      setRelatedProducts([])
+    })
+  }
+
   if (loading) {
     return (
-      <div style={{ 
-        padding: '48px 24px', 
+      <div style={{
+        padding: '48px 24px',
         textAlign: 'center',
         minHeight: '400px',
         display: 'flex',
@@ -81,9 +96,9 @@ function ProductDetailContent() {
 
   if (!product) {
     return (
-      <div style={{ 
-        padding: '48px 24px', 
-        textAlign: 'center', 
+      <div style={{
+        padding: '48px 24px',
+        textAlign: 'center',
         color: 'var(--text-muted)',
         minHeight: '400px',
         display: 'flex',
@@ -94,9 +109,9 @@ function ProductDetailContent() {
         <p style={{ fontSize: '18px', marginBottom: '16px' }}>
           Producto no encontrado
         </p>
-        <button 
-          onClick={() => navigate(-1)} 
-          style={{ 
+        <button
+          onClick={() => navigate(-1)}
+          style={{
             padding: '10px 24px',
             backgroundColor: 'var(--primary)',
             color: 'white',
@@ -112,7 +127,7 @@ function ProductDetailContent() {
     )
   }
 
-  return <ProductDetail product={product} />
+  return <ProductDetail product={product} relatedProducts={relatedProducts} />
 }
 
 export function ProductDetailPage() {
