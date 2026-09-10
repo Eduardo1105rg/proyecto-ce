@@ -79,6 +79,19 @@
   display: none;
 }
 
+/* - ENLACES DESHABILITADOS - */
+.navLinkDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.bottomLinkDisabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* - DARK MODE - */
 :global(.dark) .navbar {
   background: var(--ink-900);
@@ -128,6 +141,14 @@
 
 :global(.dark) .bottomThemeBtn {
   color: var(--slate-500);
+}
+
+:global(.dark) .bottomLinkDisabled {
+  opacity: 0.3;
+}
+
+:global(.dark) .navLinkDisabled {
+  opacity: 0.4;
 }
 
 /* - RESPONSIVE - */

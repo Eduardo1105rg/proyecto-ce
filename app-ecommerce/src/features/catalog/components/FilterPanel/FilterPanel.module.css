@@ -290,3 +290,27 @@
     background: var(--slate-800);
     border-color: var(--blue-500);
 }
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .panelHeader {
+    padding: 12px 12px;
+  }
+
+  .sectionHeader {
+    padding: 10px 12px;
+  }
+
+  .sectionBody {
+    padding: 4px 12px 12px;
+  }
+
+  .priceInputs {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .priceSep {
+    display: none;
+  }
+}

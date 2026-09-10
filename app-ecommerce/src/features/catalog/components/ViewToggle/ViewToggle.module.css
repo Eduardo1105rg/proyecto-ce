@@ -45,6 +45,10 @@
   box-shadow: var(--shadow-sm);
 }
 
+.listBtn {
+  display: flex;
+}
+
 /* Dark mode */
 :global(.dark) .btn.active {
   background: var(--ink-800);
@@ -55,8 +59,12 @@
   background: var(--ink-700);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 1200px) {
   .wrapper {
+    display: none;
+  }
+
+  .listBtn {
     display: none;
   }
 }
