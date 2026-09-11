@@ -10,9 +10,20 @@ export interface FiltrosDisponibles {
     values: Facet[];
 }
 
-export interface FiltrosBusqueda {
-    filtrosPorFacet?: string[][];
-    filtros?: string;
+export interface CategoriaFacet {
+    label: string;
+    value: string;
+    count: number;
+    isRefined: boolean;
+}
+
+export interface ParametrosBusqueda {
+    query?: string;
+    page?: number;
+    hitsPerPage?: number;
+    indexName?: string;
+    priceRange?: [number, number] | null;
+    categories?: string[];
 }
 
 export type ResultadoBusquedaProductos = {

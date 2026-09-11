@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import styles from './FilterPanel.module.css'
 import { UilAngleDown } from '@iconscout/react-unicons'
 import { Dropdown } from '../../../../components/Dropdown/Dropdown'
@@ -64,8 +64,8 @@ export function FilterPanel({
   maxPrice,
 }: FilterPanelProps) {
 
-  const minRef = useRef<HTMLInputElement>(null)
-  const maxRef = useRef<HTMLInputElement>(null)
+  const [minValue, setMinValue] = useState('')
+  const [maxValue, setMaxValue] = useState('')
   const [priceError, setPriceError] = useState<string | null>(null)
 
   const defaultSortValue = sortOptions?.[0]?.value ?? ''
@@ -73,16 +73,13 @@ export function FilterPanel({
 
   const hasFilters =
     categories.some(c => c.isRefined) ||
-    !!(minRef.current?.value) ||
-    !!(maxRef.current?.value) ||
+    !!minValue ||
+    !!maxValue ||
     (sortBy !== undefined && sortBy !== defaultSortValue)
 
   function applyPriceFilter() {
-    const minRaw = minRef.current?.value ?? ''
-    const maxRaw = maxRef.current?.value ?? ''
-
-    const min = parseInt(minRaw.replace(/\D/g, '')) || 0
-    const max = parseInt(maxRaw.replace(/\D/g, '')) || maxPrice || 500000
+    const min = parseInt(minValue.replace(/\D/g, '')) || 0
+    const max = parseInt(maxValue.replace(/\D/g, '')) || maxPrice || 500000
 
     if (min > max) {
       setPriceError('El mínimo no puede ser mayor que el máximo.')
@@ -100,8 +97,8 @@ export function FilterPanel({
         <span className={styles.panelTitle}>Filtros</span>
         {hasFilters && (
           <button className={styles.clearAll} onClick={() => {
-            if (minRef.current) minRef.current.value = ''
-            if (maxRef.current) maxRef.current.value = ''
+            setMinValue('')
+            setMaxValue('')
             setPriceError(null)
             onClearAll?.()
           }}>
@@ -143,10 +140,11 @@ export function FilterPanel({
           <div className={styles.priceInputWrapper}>
             <span className={styles.priceInputLabel}>Mín</span>
             <input
-              ref={minRef}
               className={`${styles.priceInput} ${priceError ? styles.priceInputError : ''}`}
               type="text"
               placeholder="0"
+              value={minValue}
+              onChange={(e) => setMinValue(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') applyPriceFilter() }}
             />
           </div>
@@ -154,10 +152,11 @@ export function FilterPanel({
           <div className={styles.priceInputWrapper}>
             <span className={styles.priceInputLabel}>Máx</span>
             <input
-              ref={maxRef}
               className={`${styles.priceInput} ${priceError ? styles.priceInputError : ''}`}
               type="text"
               placeholder={placeholderMax}
+              value={maxValue}
+              onChange={(e) => setMaxValue(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') applyPriceFilter() }}
             />
           </div>
