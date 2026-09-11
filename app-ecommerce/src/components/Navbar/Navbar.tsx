@@ -30,8 +30,8 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
 
         {/* Links desktop */}
         <nav className={styles.links}>
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className={`${styles.navLink} ${isActive('/') ? styles.navLinkActive : ''} ${styles.navLinkDisabled}`}
             onClick={handleDisabledClick}
             aria-disabled="true"
@@ -39,13 +39,13 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
           >
             Home
           </Link>
-          <Link 
+          {/* <Link 
             to="/catalogo" 
             className={`${styles.navLink} ${isActive('/catalogo') ? styles.navLinkActive : ''}`}
           >
             Catálogo
-          </Link>
-          <Link 
+          </Link> */}
+          {/* <Link 
             to="/carrito" 
             className={`${styles.navLink} ${isActive('/carrito') ? styles.navLinkActive : ''} ${styles.navLinkDisabled}`}
             onClick={handleDisabledClick}
@@ -53,7 +53,7 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
             tabIndex={-1}
           >
             Carrito
-          </Link>
+          </Link> */}
         </nav>
 
         <button
@@ -67,8 +67,8 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
 
       {/* Bottom navbar - solo móvil */}
       <nav className={styles.bottomNav}>
-        <Link 
-          to="/" 
+        <Link
+          to="/"
           className={`${styles.bottomLink} ${isActive('/') ? styles.bottomLinkActive : ''} ${styles.bottomLinkDisabled}`}
           onClick={handleDisabledClick}
           aria-disabled="true"
@@ -77,15 +77,15 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
           <UilEstate size="22" />
           <span>Home</span>
         </Link>
-        <Link 
-          to="/catalogo" 
+        <Link
+          to="/catalogo"
           className={`${styles.bottomLink} ${isActive('/catalogo') ? styles.bottomLinkActive : ''}`}
         >
           <UilStore size="22" />
           <span>Catálogo</span>
         </Link>
-        <Link 
-          to="/carrito" 
+        <Link
+          to="/carrito"
           className={`${styles.bottomLink} ${isActive('/carrito') ? styles.bottomLinkActive : ''} ${styles.bottomLinkDisabled}`}
           onClick={handleDisabledClick}
           aria-disabled="true"
