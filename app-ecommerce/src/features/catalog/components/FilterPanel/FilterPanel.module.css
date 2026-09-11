@@ -6,7 +6,6 @@
     background: var(--bg-white);
     border: 1px solid var(--border-default);
     border-radius: var(--radius-lg);
-    overflow: hidden;
     box-shadow: var(--shadow-md);
 }
 
@@ -17,6 +16,28 @@
     justify-content: space-between;
     padding: 16px 18px;
     border-bottom: 1px solid var(--border-default);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background: var(--bg-white);
+}
+
+.section:last-child {
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    overflow: hidden;
+}
+
+.panel:not(:has(.section)) .panelHeader {
+    border-bottom: none;
+}
+
+.panelTitleButton {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 0;
 }
 
 .panelTitle {
@@ -25,6 +46,10 @@
     color: var(--text-primary);
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+.panelChevron {
+    display: none;
 }
 
 .clearAll {
@@ -86,6 +111,11 @@
 
 .sectionBody {
     padding: 4px 18px 16px;
+}
+
+.section:first-of-type .sectionBody {
+    position: relative;
+    z-index: 10;
 }
 
 /* - SORT SELECT - */
@@ -155,6 +185,11 @@
 .checkLabel {
     font-size: var(--text-sm);
     color: var(--text-primary);
+}
+
+.checkCount {
+    color: var(--text-muted);
+    font-size: var(--text-xs);
 }
 
 /* - PRECIO - */
@@ -242,14 +277,14 @@
 }
 
 .priceError {
-  font-size: var(--text-xs);
-  color: var(--red-600);
-  margin-top: 4px;
-  margin-bottom: 8px;
+    font-size: var(--text-xs);
+    color: var(--red-600);
+    margin-top: 4px;
+    margin-bottom: 8px;
 }
 
 .priceInputError {
-  border-color: var(--red-500);
+    border-color: var(--red-500);
 }
 
 /* - DARK MODE - */
@@ -291,26 +326,60 @@
     border-color: var(--blue-500);
 }
 
-
+/* - TABLET - */
 @media (min-width: 768px) and (max-width: 1024px) {
-  .panelHeader {
-    padding: 12px 12px;
-  }
+    .panelHeader {
+        padding: 12px 12px;
+    }
 
-  .sectionHeader {
-    padding: 10px 12px;
-  }
+    .sectionHeader {
+        padding: 10px 12px;
+    }
 
-  .sectionBody {
-    padding: 4px 12px 12px;
-  }
+    .sectionBody {
+        padding: 4px 12px 12px;
+    }
 
-  .priceInputs {
-    flex-direction: column;
-    gap: 6px;
-  }
+    .priceInputs {
+        flex-direction: column;
+        gap: 6px;
+    }
 
-  .priceSep {
-    display: none;
-  }
+    .priceSep {
+        display: none;
+    }
+}
+
+/* - MÓVIL - */
+@media (max-width: 767px) {
+
+    .panelChevron {
+        display: block;
+    }
+
+    .panelTitleButton {
+        flex: 1;
+    }
+
+    .panelHeader {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border-default);
+    }
+
+    .sectionHeader {
+        padding: 12px 16px;
+    }
+
+    .sectionBody {
+        padding: 4px 16px 14px;
+    }
+
+    .priceInputs {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .priceSep {
+        display: block;
+    }
 }
