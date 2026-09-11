@@ -3,23 +3,16 @@ import styles from './FilterPanel.module.css'
 import { UilAngleDown } from '@iconscout/react-unicons'
 import { Dropdown } from '../../../../components/Dropdown/Dropdown'
 import { Button } from '../../../../components/Button/Button'
+import type { FacetSection } from '../../../../types/algolia'
 
 type SortOption = {
   label: string
   value: string
 }
 
-type CategoryItem = {
-  label: string
-  value: string
-  count: number
-  isRefined: boolean
-}
-
 type FilterPanelProps = {
-  selectedCategories?: string[]
-  onCategoriesChange?: (cats: string[]) => void
-  categories?: CategoryItem[]
+  facetSections?: FacetSection[]
+  onFacetToggle?: (attribute: string, value: string) => void
   onPriceChange?: (range: [number, number]) => void
   sortBy?: string
   sortOptions?: SortOption[]
@@ -54,8 +47,8 @@ function FilterSection({
 }
 
 export function FilterPanel({
-  onCategoriesChange,
-  categories = [],
+  facetSections = [],
+  onFacetToggle,
   onPriceChange,
   sortBy,
   sortOptions,
@@ -72,7 +65,7 @@ export function FilterPanel({
   const placeholderMax = maxPrice ? maxPrice.toLocaleString('es-CR') : '500,000'
 
   const hasFilters =
-    categories.some(c => c.isRefined) ||
+    facetSections.some(section => section.items.some(item => item.isRefined)) ||
     !!minValue ||
     !!maxValue ||
     (sortBy !== undefined && sortBy !== defaultSortValue)
@@ -117,23 +110,25 @@ export function FilterPanel({
         </FilterSection>
       )}
 
-      <FilterSection title="Categoría">
-        <div className={styles.checkList}>
-          {categories.map(cat => (
-            <label key={cat.value} className={styles.checkItem}>
-              <input
-                type="checkbox"
-                className={styles.checkbox}
-                checked={cat.isRefined}
-                onChange={() => onCategoriesChange?.([cat.label])}
-              />
-              <span className={styles.checkLabel}>
-                {cat.label} <span className={styles.checkCount}>({cat.count})</span>
-              </span>
-            </label>
-          ))}
-        </div>
-      </FilterSection>
+      {facetSections.map(section => (
+        <FilterSection key={section.attribute} title={section.title}>
+          <div className={styles.checkList}>
+            {section.items.map(item => (
+              <label key={item.value} className={styles.checkItem}>
+                <input
+                  type="checkbox"
+                  className={styles.checkbox}
+                  checked={item.isRefined}
+                  onChange={() => onFacetToggle?.(section.attribute, item.value)}
+                />
+                <span className={styles.checkLabel}>
+                  {item.label} <span className={styles.checkCount}>({item.count})</span>
+                </span>
+              </label>
+            ))}
+          </div>
+        </FilterSection>
+      ))}
 
       <FilterSection title="Precio">
         <div className={styles.priceInputs}>

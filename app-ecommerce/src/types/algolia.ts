@@ -10,11 +10,17 @@ export interface FiltrosDisponibles {
     values: Facet[];
 }
 
-export interface CategoriaFacet {
+export interface FacetItem {
     label: string;
     value: string;
     count: number;
     isRefined: boolean;
+}
+
+export interface FacetSection {
+    attribute: string;
+    title: string;
+    items: FacetItem[];
 }
 
 export interface ParametrosBusqueda {
@@ -23,7 +29,7 @@ export interface ParametrosBusqueda {
     hitsPerPage?: number;
     indexName?: string;
     priceRange?: [number, number] | null;
-    categories?: string[];
+    filters?: Record<string, string[]>;
 }
 
 export type ResultadoBusquedaProductos = {

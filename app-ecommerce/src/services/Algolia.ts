@@ -31,6 +31,19 @@ export const SORT_OPTIONS = [
 const HITS_PER_PAGE = 20
 const RELATED_HITS_PER_PAGE = 8
 
+export const FACET_ATTRIBUTES = [
+    'brand',
+    'category',
+    'payment_methods',
+    'facets.color',
+    'facets.eco_friendly',
+    'facets.free_shipping',
+    'facets.material',
+    'facets.style',
+    'facets.subcategory',
+    'facets.tax_exempt',
+]
+
 type AlgoliaHit = Record<string, unknown> & { objectID: string }
 
 type SearchResponse = {
@@ -54,9 +67,16 @@ function buildNumericFilters(priceRange?: [number, number] | null): string[] {
     return filters
 }
 
-function buildFacetFilters(categories: string[]): string[][] | undefined {
-    if (categories.length === 0) return undefined
-    return [categories.map((c) => `category:${escapeFilterValue(c)}`)]
+function buildFacetFilters(
+    filters?: Record<string, string[]>
+): string[][] | undefined {
+    const entries = Object.entries(filters ?? {}).filter(([, values]) => values.length > 0)
+
+    if (entries.length === 0) return undefined
+
+    return entries.map(([attribute, values]) =>
+        values.map((value) => `${attribute}:${escapeFilterValue(value)}`)
+    )
 }
 
 function normalizeHit(hit: AlgoliaHit): Product {
@@ -89,7 +109,7 @@ export async function buscarProductos(
         hitsPerPage = HITS_PER_PAGE,
         indexName = INDEX_MAIN,
         priceRange,
-        categories = [],
+        filters,
     } = params
 
     const response = await searchSingleIndex(indexName, {
@@ -97,7 +117,7 @@ export async function buscarProductos(
         page,
         hitsPerPage,
         numericFilters: buildNumericFilters(priceRange),
-        facetFilters: buildFacetFilters(categories),
+        facetFilters: buildFacetFilters(filters),
         attributesToRetrieve: ['*'],
     })
 
@@ -117,7 +137,7 @@ export async function getFiltrosDisponibles(
     const response = await searchSingleIndex(INDEX_MAIN, {
         query,
         hitsPerPage: 0,
-        facets: ['category'],
+        facets: FACET_ATTRIBUTES,
         numericFilters: buildNumericFilters(priceRange),
     })
 
