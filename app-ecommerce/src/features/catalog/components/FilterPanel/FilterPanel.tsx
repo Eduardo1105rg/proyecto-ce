@@ -18,19 +18,23 @@ type FilterPanelProps = {
   sortOptions?: SortOption[]
   onSortChange?: (value: string) => void
   onClearAll?: () => void
-  maxPrice?: number  // viene de CatalogPage calculado de los hits
+  maxPrice?: number
 }
 
 function FilterSection({
   title,
   children,
   defaultOpen = true,
+  isEmpty = false,
 }: {
   title: string
   children: React.ReactNode
   defaultOpen?: boolean
+  isEmpty?: boolean
 }) {
   const [open, setOpen] = useState(defaultOpen)
+
+  if (isEmpty) return null
 
   return (
     <div className={styles.section}>
@@ -50,21 +54,79 @@ function FilterSection({
   )
 }
 
+const LABEL_MAP: Record<string, string> = {
+  'true': 'Exento de impuesto',
+  'false': 'Con impuesto',
+  'sinpe': 'Sinpe Móvil',
+  'tarjeta': 'Tarjeta',
+  'transferencia': 'Transferencia bancaria',
+}
+
+function formatLabel(raw: string): string {
+  if (LABEL_MAP[raw]) return LABEL_MAP[raw]
+  return raw.charAt(0).toUpperCase() + raw.slice(1)
+}
+
+function CheckList({
+  items,
+  onToggle,
+}: {
+  items: FacetItem[]
+  onToggle: (value: string) => void
+}) {
+  return (
+    <div className={styles.checkList}>
+      {items.map(item => (
+        <label key={item.value} className={styles.checkItem}>
+          <input
+            type="checkbox"
+            className={styles.checkbox}
+            checked={item.isRefined}
+            onChange={() => onToggle(item.value)}
+          />
+          <span className={styles.checkLabel}>
+            {formatLabel(item.label)}{' '}
+            <span className={styles.checkCount}>({item.count})</span>
+          </span>
+        </label>
+      ))}
+    </div>
+  )
+}
+
 export function FilterPanel({
   facetSections = [],
   onFacetToggle,
   onPriceChange,
+  maxPrice,
+
   sortBy,
   sortOptions,
   onSortChange,
   onClearAll,
-  maxPrice,
 }: FilterPanelProps) {
 
   const [minValue, setMinValue] = useState('')
   const [maxValue, setMaxValue] = useState('')
   const [priceError, setPriceError] = useState<string | null>(null)
   const [collapsed, setCollapsed] = useState(false)
+
+  const [panelOpen, setPanelOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth >= 768
+    }
+    return true
+  })
+
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth >= 768) {
+        setPanelOpen(true)
+      }
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const defaultSortValue = sortOptions?.[0]?.value ?? ''
   const placeholderMax = maxPrice ? maxPrice.toLocaleString('es-CR') : '500,000'
@@ -88,9 +150,17 @@ export function FilterPanel({
     onPriceChange?.([min, max])
   }
 
+  function handleClearAll() {
+    if (minRef.current) minRef.current.value = ''
+    if (maxRef.current) maxRef.current.value = ''
+    setPriceError(null)
+    onClearAll?.()
+  }
+
   return (
     <aside className={styles.panel}>
 
+      {/* Header principal - colapsable en móvil */}
       <div className={styles.panelHeader}>
         <div className={styles.panelHeaderLeft}>
           <button
@@ -174,12 +244,17 @@ export function FilterPanel({
               onChange={(e) => setMaxValue(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') applyPriceFilter() }}
             />
-          </div>
-        </div>
+          </FilterSection>
 
-        {priceError && (
-          <p className={styles.priceError}>{priceError}</p>
-        )}
+          <FilterSection title="Marca" isEmpty={brands.length === 0}>
+            <CheckList
+              items={brands}
+              onToggle={(val) => {
+                const item = brands.find(b => b.value === val)
+                if (item) onBrandsChange?.([item.value])
+              }}
+            />
+          </FilterSection>
 
         <Button
           label="Aplicar Rango"

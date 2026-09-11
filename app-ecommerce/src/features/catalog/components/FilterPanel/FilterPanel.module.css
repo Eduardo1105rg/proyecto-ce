@@ -6,7 +6,6 @@
     background: var(--bg-white);
     border: 1px solid var(--border-default);
     border-radius: var(--radius-lg);
-    overflow: hidden;
     box-shadow: var(--shadow-md);
     max-height: calc(100vh - 96px);
 }
@@ -71,6 +70,10 @@
     color: var(--text-primary);
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+.panelChevron {
+    display: none;
 }
 
 .clearAll {
@@ -336,7 +339,7 @@
     border-color: var(--blue-500);
 }
 
-
+/* - TABLET - */
 @media (min-width: 768px) and (max-width: 1024px) {
     .panelHeader {
         padding: 12px 12px;
