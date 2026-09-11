@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styles from './FilterPanel.module.css'
-import { UilAngleDown } from '@iconscout/react-unicons'
+import { UilAngleDown, UilAngleLeft, UilAngleRight } from '@iconscout/react-unicons'
 import { Dropdown } from '../../../../components/Dropdown/Dropdown'
 import { Button } from '../../../../components/Button/Button'
 import type { FacetSection } from '../../../../types/algolia'
@@ -34,7 +34,11 @@ function FilterSection({
 
   return (
     <div className={styles.section}>
-      <button className={styles.sectionHeader} onClick={() => setOpen(prev => !prev)}>
+      <button
+        className={styles.sectionHeader}
+        onClick={() => setOpen(prev => !prev)}
+        aria-expanded={open}
+      >
         <span className={styles.sectionTitle}>{title}</span>
         <UilAngleDown
           size="18"
@@ -60,6 +64,7 @@ export function FilterPanel({
   const [minValue, setMinValue] = useState('')
   const [maxValue, setMaxValue] = useState('')
   const [priceError, setPriceError] = useState<string | null>(null)
+  const [collapsed, setCollapsed] = useState(false)
 
   const defaultSortValue = sortOptions?.[0]?.value ?? ''
   const placeholderMax = maxPrice ? maxPrice.toLocaleString('es-CR') : '500,000'
@@ -87,7 +92,19 @@ export function FilterPanel({
     <aside className={styles.panel}>
 
       <div className={styles.panelHeader}>
-        <span className={styles.panelTitle}>Filtros</span>
+        <div className={styles.panelHeaderLeft}>
+          <button
+            type="button"
+            className={styles.collapseBtn}
+            onClick={() => setCollapsed(prev => !prev)}
+            aria-label={collapsed ? 'Expandir filtros' : 'Contraer filtros'}
+            aria-expanded={!collapsed}
+            title={collapsed ? 'Expandir filtros' : 'Contraer filtros'}
+          >
+            {collapsed ? <UilAngleRight size="16" /> : <UilAngleLeft size="16" />}
+          </button>
+          <span className={styles.panelTitle}>Filtros</span>
+        </div>
         {hasFilters && (
           <button className={styles.clearAll} onClick={() => {
             setMinValue('')
@@ -100,6 +117,9 @@ export function FilterPanel({
         )}
       </div>
 
+      {!collapsed && (
+        <div className={styles.panelBody}>
+
       {sortOptions && (
         <FilterSection title="Ordenar por">
           <Dropdown
@@ -111,7 +131,7 @@ export function FilterPanel({
       )}
 
       {facetSections.map(section => (
-        <FilterSection key={section.attribute} title={section.title}>
+        <FilterSection key={section.attribute} title={section.title} defaultOpen={false}>
           <div className={styles.checkList}>
             {section.items.map(item => (
               <label key={item.value} className={styles.checkItem}>
@@ -169,6 +189,8 @@ export function FilterPanel({
           onClick={applyPriceFilter}
         />
       </FilterSection>
+        </div>
+      )}
 
     </aside>
   )
