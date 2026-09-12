@@ -4,9 +4,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const appId = process.env.ALGOLIA_APP_ID;
+const appId = process.env.VITE_ALGOLIA_APP_ID;
 const adminApiKey = process.env.ALGOLIA_ADMIN_API_KEY;
-const indexName = process.env.ALGOLIA_INDEX_NAME;
+const indexName = process.env.VITE_ALGOLIA_INDEX_MAIN;
 
 if (!appId) {
     throw new Error("ALGOLIA_APP_ID no encontrado en .env");
@@ -25,7 +25,7 @@ const client = algoliasearch(appId, adminApiKey);
 
 // Leer archivo JSON
 const products = JSON.parse(
-    fs.readFileSync(new URL("../../data/products.json", import.meta.url), "utf-8")
+    fs.readFileSync(new URL("../src/data/products.json", import.meta.url), "utf-8")
 );
 
 

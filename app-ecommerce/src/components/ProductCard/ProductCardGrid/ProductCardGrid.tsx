@@ -42,7 +42,7 @@ function build_imageUrl(imagePath: string): string {
     return "https://placehold.co/300x220?text=Sin+imagen";
   }
   // Ajusta según tu estructura real en /public
-  return `proyecto-ce/public${imagePath}`;
+  return `https://eduardo1105rg.github.io/proyecto-ce/${imagePath}`;
   // return `${import.meta.env.BASE_URL}images/${imagePath}`;
 }
 
