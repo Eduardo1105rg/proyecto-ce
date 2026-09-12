@@ -4,6 +4,14 @@ import { ProductDetail } from '../features/catalog/ProductDetail/ProductDetail'
 import { getProductById, getRelatedProducts } from '../services/Algolia'
 import type { Product } from '../types/product'
 
+/**
+ * Estructura del estado interno de la pagina de detalle.
+ *
+ * @prop id              - ID del producto actualmente cargado.
+ * @prop product         - Datos del producto, o null si no fue encontrado o hay error.
+ * @prop relatedProducts - Productos relacionados de la misma categoria.
+ * @prop loaded          - Indica si la carga ya termino (exitosa o con error).
+ */
 type ProductResult = {
   id: string
   product: Product | null
@@ -11,6 +19,7 @@ type ProductResult = {
   loaded: boolean
 }
 
+/** Estado inicial antes de cualquier carga */
 const EMPTY_RESULT: ProductResult = {
   id: '',
   product: null,
@@ -18,6 +27,14 @@ const EMPTY_RESULT: ProductResult = {
   loaded: false,
 }
 
+/**
+ * Pagina de detalle de producto.
+ *
+ * Lee el ID del producto desde los params de la URL (:id) y realiza
+ * dos llamadas secuenciales a Algolia:
+ * 1. getProductById para obtener el producto.
+ * 2. getRelatedProducts para obtener productos de la misma categoria.
+ */
 export function ProductDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -99,7 +116,7 @@ export function ProductDetailPage() {
             fontSize: '14px'
           }}
         >
-          Volver al catálogo
+          Volver al catalogo
         </button>
       </div>
     )
