@@ -1,83 +1,61 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { ProductDetail } from '../features/catalog/ProductDetail/ProductDetail'
-import { useInstantSearch } from 'react-instantsearch'
 import { useState, useEffect } from 'react'
-import { InstantSearch } from 'react-instantsearch'
-import { liteClient as algoliasearch } from 'algoliasearch/lite'
+import { ProductDetail } from '../features/catalog/ProductDetail/ProductDetail'
+import { getProductById, getRelatedProducts } from '../services/Algolia'
 import type { Product } from '../types/product'
 
-const searchClient = algoliasearch(
-  import.meta.env.VITE_ALGOLIA_APP_ID,
-  import.meta.env.VITE_ALGOLIA_SEARCH_KEY
-)
+type ProductResult = {
+  id: string
+  product: Product | null
+  relatedProducts: Product[]
+  loaded: boolean
+}
 
-const INDEX_MAIN = import.meta.env.VITE_ALGOLIA_INDEX_MAIN
+const EMPTY_RESULT: ProductResult = {
+  id: '',
+  product: null,
+  relatedProducts: [],
+  loaded: false,
+}
 
-function ProductDetailContent() {
+export function ProductDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { results } = useInstantSearch()
 
-  const [product, setProduct] = useState<Product | null>(null)
-  const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
+  const [result, setResult] = useState<ProductResult>(EMPTY_RESULT)
 
   useEffect(() => {
-    if (!id) {
-      setLoading(false)
-      return
+    if (!id) return
+
+    let active = true
+
+    getProductById(id)
+      .then((p) => {
+        if (!active) return
+        if (!p) {
+          setResult({ id, product: null, relatedProducts: [], loaded: true })
+          return
+        }
+        return getRelatedProducts(p).then((related) => {
+          if (active) {
+            setResult({ id, product: p, relatedProducts: related, loaded: true })
+          }
+        })
+      })
+      .catch((error) => {
+        if (!active) return
+        console.error('Error buscando producto en Algolia:', error)
+        setResult({ id, product: null, relatedProducts: [], loaded: true })
+      })
+
+    return () => {
+      active = false
     }
+  }, [id])
 
-    const hitFromResults = results?.hits?.find(
-      (hit: any) => hit.objectID === id
-    ) as Product | undefined
-
-    if (hitFromResults) {
-      setProduct(hitFromResults)
-      setLoading(false)
-      fetchRelated(hitFromResults)
-      return
-    }
-
-    searchClient.search({
-      requests: [{
-        indexName: INDEX_MAIN,
-        query: '',
-        filters: `objectID:"${id}"`,
-        hitsPerPage: 1,
-        attributesToRetrieve: ['*'],
-      }]
-    }).then((response) => {
-      const hits = (response.results[0] as { hits: Product[] }).hits
-      if (hits.length > 0) {
-        setProduct(hits[0])
-        fetchRelated(hits[0])
-      } else {
-        setProduct(null)
-      }
-      setLoading(false)
-    }).catch((error) => {
-      console.error('Error buscando producto en Algolia:', error)
-      setProduct(null)
-      setLoading(false)
-    })
-  }, [id, results])
-
-  function fetchRelated(p: Product) {
-    searchClient.search({
-      requests: [{
-        indexName: INDEX_MAIN,
-        query: '',
-        filters: `category:"${p.category}" AND NOT objectID:"${p.objectID}"`,
-        hitsPerPage: 8,
-        attributesToRetrieve: ['*'],
-      }]
-    }).then((res) => {
-      setRelatedProducts((res.results[0] as { hits: Product[] }).hits)
-    }).catch(() => {
-      setRelatedProducts([])
-    })
-  }
+  const loading = !id || result.id !== id || !result.loaded
+  const product = result.product
+  const relatedProducts = result.relatedProducts
 
   if (loading) {
     return (
@@ -128,15 +106,4 @@ function ProductDetailContent() {
   }
 
   return <ProductDetail product={product} relatedProducts={relatedProducts} />
-}
-
-export function ProductDetailPage() {
-  return (
-    <InstantSearch
-      searchClient={searchClient}
-      indexName={INDEX_MAIN}
-    >
-      <ProductDetailContent />
-    </InstantSearch>
-  )
 }

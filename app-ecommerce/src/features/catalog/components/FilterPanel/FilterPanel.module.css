@@ -6,38 +6,63 @@
     background: var(--bg-white);
     border: 1px solid var(--border-default);
     border-radius: var(--radius-lg);
+    overflow: hidden;
     box-shadow: var(--shadow-md);
+    max-height: calc(100vh - 96px);
 }
 
-/* - HEADER - */
+.panelBody {
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: 8px;
+}
+
+.panelBody::-webkit-scrollbar {
+    width: 8px;
+}
+
+.panelBody::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: var(--radius-full);
+}
+
 .panelHeader {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
     padding: 16px 18px;
     border-bottom: 1px solid var(--border-default);
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    background: var(--bg-white);
+    flex-shrink: 0;
 }
 
-.section:last-child {
-    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-    overflow: hidden;
-}
-
-.panel:not(:has(.section)) .panelHeader {
-    border-bottom: none;
-}
-
-.panelTitleButton {
+.panelHeaderLeft {
     display: flex;
     align-items: center;
-    gap: 6px;
-    background: none;
+    gap: 8px;
+    min-width: 0;
+}
+
+.collapseBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
     border: none;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--text-muted);
     cursor: pointer;
-    font-family: inherit;
-    padding: 0;
+    flex-shrink: 0;
+    transition: background 0.15s, color 0.15s;
+}
+
+.collapseBtn:hover {
+    background: var(--bg-light);
+    color: var(--text-primary);
 }
 
 .panelTitle {
@@ -46,10 +71,6 @@
     color: var(--text-primary);
     text-transform: uppercase;
     letter-spacing: 1px;
-}
-
-.panelChevron {
-    display: none;
 }
 
 .clearAll {
@@ -67,7 +88,6 @@
     color: var(--blue-800);
 }
 
-/* - SECCIÓN - */
 .section {
     border-bottom: 1px solid var(--border-default);
 }
@@ -113,12 +133,6 @@
     padding: 4px 18px 16px;
 }
 
-.section:first-of-type .sectionBody {
-    position: relative;
-    z-index: 10;
-}
-
-/* - SORT SELECT - */
 .selectWrapper {
     position: relative;
 }
@@ -187,12 +201,6 @@
     color: var(--text-primary);
 }
 
-.checkCount {
-    color: var(--text-muted);
-    font-size: var(--text-xs);
-}
-
-/* - PRECIO - */
 .priceInputs {
     display: flex;
     align-items: center;
@@ -239,7 +247,6 @@
     flex-shrink: 0;
 }
 
-/* - SLIDER - */
 .sliderWrapper {
     padding: 8px 6px;
 }
@@ -287,7 +294,6 @@
     border-color: var(--red-500);
 }
 
-/* - DARK MODE - */
 :global(.dark) .panel {
     background: var(--black-soft);
     border-color: var(--ink-700);
@@ -295,6 +301,10 @@
 
 :global(.dark) .panelHeader {
     border-bottom-color: var(--ink-700);
+}
+
+:global(.dark) .collapseBtn:hover {
+    background: var(--ink-800);
 }
 
 :global(.dark) .section {
@@ -326,7 +336,7 @@
     border-color: var(--blue-500);
 }
 
-/* - TABLET - */
+
 @media (min-width: 768px) and (max-width: 1024px) {
     .panelHeader {
         padding: 12px 12px;
@@ -350,36 +360,17 @@
     }
 }
 
-/* - MÓVIL - */
-@media (max-width: 767px) {
-
-    .panelChevron {
-        display: block;
-    }
-
-    .panelTitleButton {
-        flex: 1;
+@media (max-width: 768px) {
+    .panel {
+        max-height: calc(100vh - 150px);
     }
 
     .panelHeader {
-        padding: 14px 16px;
-        border-bottom: 1px solid var(--border-default);
+        padding: 12px 14px;
     }
 
-    .sectionHeader {
-        padding: 12px 16px;
-    }
-
-    .sectionBody {
-        padding: 4px 16px 14px;
-    }
-
-    .priceInputs {
-        flex-direction: row;
-        gap: 8px;
-    }
-
-    .priceSep {
-        display: block;
+    .collapseBtn {
+        width: 32px;
+        height: 32px;
     }
 }

@@ -1,10 +1,12 @@
-import { useSearchBox } from 'react-instantsearch'
 import { UilSearch, UilTimes } from '@iconscout/react-unicons'
 import styles from './SearchBar.module.css'
 
-export function SearchBar() {
-  const { query, refine } = useSearchBox()
+type SearchBarProps = {
+  query: string
+  onQueryChange: (query: string) => void
+}
 
+export function SearchBar({ query, onQueryChange }: SearchBarProps) {
   return (
     <div className={styles.wrapper}>
       <span className={styles.icon}>
@@ -16,14 +18,14 @@ export function SearchBar() {
         type="text"
         placeholder="Buscar productos..."
         value={query}
-        onChange={(e) => refine(e.target.value)}
+        onChange={(e) => onQueryChange(e.target.value)}
         autoComplete="off"
       />
 
       {query && (
         <button
           className={styles.clearBtn}
-          onClick={() => refine('')}
+          onClick={() => onQueryChange('')}
           aria-label="Limpiar búsqueda"
         >
           <UilTimes size="16" />
