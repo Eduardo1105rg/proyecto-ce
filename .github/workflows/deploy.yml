@@ -3,7 +3,7 @@ name: Deploy Vite React to GitHub Pages
 on:
   push:
     branches:
-      - Despliegue_Test
+      - Despliegue
 
 permissions:
   contents: read
