@@ -8,7 +8,7 @@ import { CatalogPage } from "./pages/CatalogPage";
 
 function App() {
   const { theme, toggleTheme } = useTheme()
-
+  // Prueba comentarios.
   return (
     <HashRouter>
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
