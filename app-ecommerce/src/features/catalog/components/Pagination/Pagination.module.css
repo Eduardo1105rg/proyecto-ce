@@ -1,0 +1,107 @@
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 24px 0;
+}
+
+.pages {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 6px;
+    border: 1.5px solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--bg-white);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.btn:hover:not(:disabled) {
+    background: var(--bg-subtle);
+    color: var(--primary);
+    border-color: var(--blue-200);
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btnActive {
+    background: var(--blue-700);
+    color: var(--white);
+    border-color: var(--blue-700);
+    font-weight: 700;
+}
+
+.btnActive:hover:not(:disabled) {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+    color: var(--white);
+}
+
+.btnNav {
+    color: var(--text-muted);
+}
+
+.dots {
+    min-width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    user-select: none;
+}
+
+/* - DARK MODE - */
+:global(.dark) .btn {
+    background: var(--black-soft);
+    border-color: var(--ink-700);
+    color: var(--slate-400);
+}
+
+:global(.dark) .btn:hover:not(:disabled) {
+    background: var(--ink-800);
+    color: var(--slate-50);
+    border-color: var(--slate-600);
+}
+
+:global(.dark) .btnActive {
+    background: var(--blue-700);
+    border-color: var(--blue-700);
+    color: var(--white);
+}
+
+:global(.dark) .btnActive:hover:not(:disabled) {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+}
+
+/* - RESPONSIVE - */
+@media (max-width: 640px) {
+    .btn {
+        min-width: 32px;
+        height: 32px;
+        font-size: var(--text-xs);
+    }
+
+    .dots {
+        min-width: 24px;
+    }
+}
