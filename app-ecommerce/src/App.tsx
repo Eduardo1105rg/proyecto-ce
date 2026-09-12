@@ -10,6 +10,7 @@ import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 function App() {
   const { theme, toggleTheme } = useTheme()
 
+  // Prueba para deploy
   return (
     <HashRouter>
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
