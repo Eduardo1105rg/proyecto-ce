@@ -47,8 +47,8 @@ function buildImageUrl(imagePath: string | undefined): string {
     return "https://placehold.co/600x500?text=Sin+imagen"
   }
 
-  const ruta = 'proyecto-ce/public/images/'
-  return `${ruta}${imagePath}`
+  // const ruta = 'https://eduardo1105rg.github.io/proyecto-ce/'
+  return `https://eduardo1105rg.github.io/proyecto-ce/images/${imagePath}`;
 }
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
