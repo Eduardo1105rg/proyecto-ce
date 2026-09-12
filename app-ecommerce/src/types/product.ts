@@ -1,13 +1,23 @@
+/**
+ * Stock disponible en una sucursal concreta.
+ */
 export type StockBranch = {
   branch_id: string
   stock: number
 }
 
+/**
+ * Tramo de precio por cantidad para clientes B2B.
+ */
 export type B2BPriceTier = {
   min_qty: number
   unit_price: number
 }
 
+/**
+ * Entidad principal de producto.
+ * Incluye datos comerciales, logísticos y facetas para filtros.
+ */
 export type Product = {
   object_id: string
   objectID: string 
