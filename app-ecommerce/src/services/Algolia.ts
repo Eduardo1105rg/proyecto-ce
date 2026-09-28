@@ -46,7 +46,6 @@ const RELATED_HITS_PER_PAGE = 8
 export const FACET_ATTRIBUTES = [
     'brand',
     'category',
-    'payment_methods',
     'facets.color',
     'facets.eco_friendly',
     'facets.free_shipping',
@@ -119,6 +118,8 @@ function buildFacetFilters(
  */
 function normalizeHit(hit: AlgoliaHit): Product {
     const { objectID, ...rest } = hit
+    // Los registros antiguos del índice aún pueden incluir este atributo.
+    delete rest.payment_methods
 
     return {
         ...rest,
