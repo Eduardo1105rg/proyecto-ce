@@ -378,33 +378,6 @@
   white-space: nowrap;
 }
 
-/* - MÉTODOS DE PAGO - */
-.paymentMethods {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.paymentMethod {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--bg-light);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-full);
-  padding: 6px 14px 6px 10px;
-}
-
-.paymentIcon {
-  color: var(--blue-600);
-  flex-shrink: 0;
-}
-
-.paymentLabel {
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-}
-
 /* - STOCK POR SUCURSAL - */
 .branchStock {
   display: flex;
@@ -533,15 +506,6 @@
 
 :global(.dark) .backBtn:hover {
     color: var(--blue-400);
-}
-
-:global(.dark) .paymentMethod {
-  background: var(--ink-800);
-  border-color: var(--ink-700);
-}
-
-:global(.dark) .paymentIcon {
-  color: var(--blue-400);
 }
 
 :global(.dark) .branchStockOk {

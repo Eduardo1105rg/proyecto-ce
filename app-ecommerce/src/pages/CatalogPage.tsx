@@ -22,7 +22,6 @@ type Columns = 3 | 4 | 5
 const FACET_SECTIONS: { attribute: string; title: string; labels?: Record<string, string> }[] = [
   { attribute: 'category', title: 'Categoría' },
   { attribute: 'brand', title: 'Marca' },
-  { attribute: 'payment_methods', title: 'Métodos de pago' },
   { attribute: 'facets.color', title: 'Color' },
   { attribute: 'facets.material', title: 'Material' },
   { attribute: 'facets.style', title: 'Estilo' },

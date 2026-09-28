@@ -4,9 +4,6 @@ import styles from './ProductDetail.module.css'
 import type { Product, StockBranch } from '../../../types/product'
 import {
   UilArrowLeft,
-  UilCardAtm,
-  UilMobileAndroid,
-  UilUniversity,
   UilStar
 } from '@iconscout/react-unicons'
 import { UisStar, UisStarHalfAlt } from '@iconscout/react-unicons-solid'
@@ -54,21 +51,6 @@ function buildImageUrl(imagePath: string | undefined): string {
 }
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
-
-const paymentMethodIcons: Record<string, { label: string; icon: React.ReactNode }> = {
-  tarjeta: {
-    label: 'Tarjeta de Crédito/Débito',
-    icon: <UilCardAtm size="18" className={styles.paymentIcon} />
-  },
-  sinpe: {
-    label: 'Sinpe Móvil',
-    icon: <UilMobileAndroid size="18" className={styles.paymentIcon} />
-  },
-  transferencia: {
-    label: 'Transferencia Bancaria',
-    icon: <UilUniversity size="18" className={styles.paymentIcon} />
-  },
-}
 
 function nombreSucursal(branchId: string): string {
   if (branchId === 'lm-guapiles') return 'Limón, Guápiles'
@@ -261,28 +243,7 @@ export function ProductDetail({ product, relatedProducts = [] }: ProductDetailPr
             )}
           </div>
 
-          {/* Burbuja 3 - Métodos de pago */}
-          {product.payment_methods && product.payment_methods.length > 0 && (
-            <div className={styles.card}>
-              <span className={styles.cardTitle}>Métodos de pago</span>
-              <div className={styles.paymentMethods}>
-                {product.payment_methods.map((method) => {
-                  const info = paymentMethodIcons[method] || {
-                    label: capitalize(method),
-                    icon: <UilCardAtm size="18" className={styles.paymentIcon} />
-                  }
-                  return (
-                    <div key={method} className={styles.paymentMethod}>
-                      {info.icon}
-                      <span className={styles.paymentLabel}>{info.label}</span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Burbuja 4 - Stock por sucursal */}
+          {/* Burbuja 3 - Stock por sucursal */}
           {product.stock_by_branch && product.stock_by_branch.length > 0 && (
             <div className={styles.card}>
               <span className={styles.cardTitle}>Disponibilidad por sucursal</span>

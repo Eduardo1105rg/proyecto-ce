@@ -23,7 +23,6 @@ export type Product = {
   image: string
   images: string[]
   tiered_b2b_pricing: B2BPriceTier[]
-  payment_methods: string[]
   warranty_months: number
   return_days: number
   stock_by_branch: StockBranch[]

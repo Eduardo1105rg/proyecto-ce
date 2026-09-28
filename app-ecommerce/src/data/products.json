@@ -21,11 +21,6 @@
         "unit_price": 26600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -83,11 +78,6 @@
         "unit_price": 21200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -144,11 +134,6 @@
         "unit_price": 15600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -204,11 +189,6 @@
         "min_qty": 12,
         "unit_price": 16700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -269,11 +249,6 @@
         "unit_price": 21500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -327,11 +302,6 @@
         "min_qty": 12,
         "unit_price": 19400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -387,11 +357,6 @@
         "min_qty": 12,
         "unit_price": 19600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -452,11 +417,6 @@
         "unit_price": 10900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -515,11 +475,6 @@
         "unit_price": 52900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -577,11 +532,6 @@
         "unit_price": 19100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -636,11 +586,6 @@
         "unit_price": 24100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -694,11 +639,6 @@
         "min_qty": 12,
         "unit_price": 17300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -756,11 +696,6 @@
         "unit_price": 13700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -816,11 +751,6 @@
         "min_qty": 12,
         "unit_price": 23300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -878,11 +808,6 @@
         "unit_price": 26800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -938,11 +863,6 @@
         "min_qty": 12,
         "unit_price": 15200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -1000,11 +920,6 @@
         "unit_price": 16200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -1060,11 +975,6 @@
         "min_qty": 12,
         "unit_price": 29700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -1122,11 +1032,6 @@
         "unit_price": 12200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -1180,11 +1085,6 @@
         "min_qty": 12,
         "unit_price": 27500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -1242,11 +1142,6 @@
         "unit_price": 16700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -1301,11 +1196,6 @@
         "unit_price": 14100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -1359,11 +1249,6 @@
         "min_qty": 12,
         "unit_price": 5600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -1421,11 +1306,6 @@
         "unit_price": 12800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -1481,11 +1361,6 @@
         "unit_price": 22900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -1540,11 +1415,6 @@
         "unit_price": 29800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -1598,11 +1468,6 @@
         "min_qty": 12,
         "unit_price": 25500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -1659,11 +1524,6 @@
         "unit_price": 23700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -1717,11 +1577,6 @@
         "min_qty": 12,
         "unit_price": 14100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -1778,11 +1633,6 @@
         "min_qty": 12,
         "unit_price": 23700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -1844,11 +1694,6 @@
         "unit_price": 27600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -1904,11 +1749,6 @@
         "min_qty": 12,
         "unit_price": 22800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -1967,11 +1807,6 @@
         "unit_price": 11300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -2029,11 +1864,6 @@
         "unit_price": 13500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -2087,11 +1917,6 @@
         "min_qty": 12,
         "unit_price": 18400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -2154,11 +1979,6 @@
         "unit_price": 32900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -2218,11 +2038,6 @@
         "unit_price": 39800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -2281,11 +2096,6 @@
         "unit_price": 11100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -2342,11 +2152,6 @@
         "min_qty": 12,
         "unit_price": 22300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -2408,11 +2213,6 @@
         "unit_price": 27700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -2470,11 +2270,6 @@
         "unit_price": 22100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -2528,11 +2323,6 @@
         "min_qty": 12,
         "unit_price": 22200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -2588,11 +2378,6 @@
         "unit_price": 11100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -2646,11 +2431,6 @@
         "min_qty": 12,
         "unit_price": 16000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -2709,11 +2489,6 @@
         "unit_price": 16600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -2770,11 +2545,6 @@
         "min_qty": 12,
         "unit_price": 20500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -2836,11 +2606,6 @@
         "unit_price": 14200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -2896,11 +2661,6 @@
         "min_qty": 12,
         "unit_price": 20700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -2959,11 +2719,6 @@
         "unit_price": 21900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -3019,11 +2774,6 @@
         "min_qty": 12,
         "unit_price": 29000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -3082,11 +2832,6 @@
         "unit_price": 22400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -3142,11 +2887,6 @@
         "min_qty": 12,
         "unit_price": 16300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -3205,11 +2945,6 @@
         "unit_price": 20900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -3266,11 +3001,6 @@
         "min_qty": 12,
         "unit_price": 9600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -3330,11 +3060,6 @@
         "unit_price": 18500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -3389,11 +3114,6 @@
         "min_qty": 12,
         "unit_price": 20100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -3452,11 +3172,6 @@
         "min_qty": 12,
         "unit_price": 13500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -3518,11 +3233,6 @@
         "unit_price": 6600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -3580,11 +3290,6 @@
         "min_qty": 12,
         "unit_price": 14600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -3644,11 +3349,6 @@
         "unit_price": 10500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -3707,11 +3407,6 @@
         "unit_price": 9100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -3767,11 +3462,6 @@
         "unit_price": 24100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -3826,11 +3516,6 @@
         "unit_price": 29800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -3884,11 +3569,6 @@
         "min_qty": 12,
         "unit_price": 25100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -3946,11 +3626,6 @@
         "unit_price": 20500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -4006,11 +3681,6 @@
         "min_qty": 12,
         "unit_price": 19900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -4072,11 +3742,6 @@
         "unit_price": 17600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -4132,11 +3797,6 @@
         "min_qty": 12,
         "unit_price": 25500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -4195,11 +3855,6 @@
         "unit_price": 23600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -4255,11 +3910,6 @@
         "min_qty": 12,
         "unit_price": 16700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -4322,11 +3972,6 @@
         "unit_price": 26800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -4383,11 +4028,6 @@
         "unit_price": 19200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -4442,11 +4082,6 @@
         "min_qty": 12,
         "unit_price": 28400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -4505,11 +4140,6 @@
         "unit_price": 16800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -4566,11 +4196,6 @@
         "min_qty": 12,
         "unit_price": 26800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -4633,11 +4258,6 @@
         "unit_price": 9100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -4693,11 +4313,6 @@
         "min_qty": 12,
         "unit_price": 16100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -4758,11 +4373,6 @@
         "unit_price": 14700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -4819,11 +4429,6 @@
         "min_qty": 12,
         "unit_price": 19600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -4883,11 +4488,6 @@
         "unit_price": 26400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -4942,11 +4542,6 @@
         "min_qty": 12,
         "unit_price": 13900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -5003,11 +4598,6 @@
         "min_qty": 12,
         "unit_price": 18700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -5067,11 +4657,6 @@
         "unit_price": 17500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -5129,11 +4714,6 @@
         "min_qty": 12,
         "unit_price": 8000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -5193,11 +4773,6 @@
         "unit_price": 17400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -5256,11 +4831,6 @@
         "unit_price": 13500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -5318,11 +4888,6 @@
         "min_qty": 12,
         "unit_price": 19200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -5383,11 +4948,6 @@
         "unit_price": 22700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -5442,11 +5002,6 @@
         "min_qty": 12,
         "unit_price": 8800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -5508,11 +5063,6 @@
         "unit_price": 22800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -5572,11 +5122,6 @@
         "unit_price": 48600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -5634,11 +5179,6 @@
         "min_qty": 12,
         "unit_price": 4100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -5701,11 +5241,6 @@
         "unit_price": 4000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -5760,11 +5295,6 @@
         "min_qty": 12,
         "unit_price": 23700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -5824,11 +5354,6 @@
         "unit_price": 13000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -5885,11 +5410,6 @@
         "min_qty": 12,
         "unit_price": 12800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -5950,11 +5470,6 @@
         "unit_price": 27800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -6013,11 +5528,6 @@
         "min_qty": 12,
         "unit_price": 17000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -6081,11 +5591,6 @@
         "unit_price": 21200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -6143,11 +5648,6 @@
         "min_qty": 12,
         "unit_price": 13800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -6208,11 +5708,6 @@
         "unit_price": 10300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -6271,11 +5766,6 @@
         "min_qty": 12,
         "unit_price": 17800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -6336,11 +5826,6 @@
         "min_qty": 12,
         "unit_price": 18300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -6404,11 +5889,6 @@
         "unit_price": 27100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -6468,11 +5948,6 @@
         "min_qty": 12,
         "unit_price": 34800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -6534,11 +6009,6 @@
         "unit_price": 9700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -6598,11 +6068,6 @@
         "min_qty": 12,
         "unit_price": 32500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -6666,11 +6131,6 @@
         "unit_price": 14200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -6732,11 +6192,6 @@
         "unit_price": 20700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -6795,11 +6250,6 @@
         "min_qty": 12,
         "unit_price": 12900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -6860,11 +6310,6 @@
         "unit_price": 6600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -6924,11 +6369,6 @@
         "unit_price": 29500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -6986,11 +6426,6 @@
         "min_qty": 12,
         "unit_price": 29800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -7051,11 +6486,6 @@
         "min_qty": 12,
         "unit_price": 12700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -7118,11 +6548,6 @@
         "unit_price": 18400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -7180,11 +6605,6 @@
         "min_qty": 12,
         "unit_price": 7600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -7244,11 +6664,6 @@
         "unit_price": 6000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -7307,11 +6722,6 @@
         "unit_price": 12800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -7369,11 +6779,6 @@
         "min_qty": 12,
         "unit_price": 10500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -7434,11 +6839,6 @@
         "unit_price": 26900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -7497,11 +6897,6 @@
         "unit_price": 28000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -7558,11 +6953,6 @@
         "min_qty": 12,
         "unit_price": 6500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -7621,11 +7011,6 @@
         "unit_price": 27100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -7683,11 +7068,6 @@
         "min_qty": 12,
         "unit_price": 21700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -7749,11 +7129,6 @@
         "unit_price": 25800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -7809,11 +7184,6 @@
         "min_qty": 12,
         "unit_price": 8000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -7871,11 +7241,6 @@
         "min_qty": 12,
         "unit_price": 8800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -7941,11 +7306,6 @@
         "unit_price": 24800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -8007,11 +7367,6 @@
         "min_qty": 12,
         "unit_price": 20800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -8077,11 +7432,6 @@
         "unit_price": 37000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -8144,11 +7494,6 @@
         "unit_price": 21100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -8209,11 +7554,6 @@
         "min_qty": 12,
         "unit_price": 29200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -8277,11 +7617,6 @@
         "unit_price": 13700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -8342,11 +7677,6 @@
         "min_qty": 12,
         "unit_price": 28600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -8410,11 +7740,6 @@
         "unit_price": 31100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -8469,11 +7794,6 @@
         "min_qty": 12,
         "unit_price": 49600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -8530,11 +7850,6 @@
         "unit_price": 201300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -8589,11 +7904,6 @@
         "min_qty": 12,
         "unit_price": 254500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -8650,11 +7960,6 @@
         "unit_price": 33600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -8709,11 +8014,6 @@
         "min_qty": 12,
         "unit_price": 43600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -8770,11 +8070,6 @@
         "unit_price": 30400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -8830,11 +8125,6 @@
         "unit_price": 30300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -8889,11 +8179,6 @@
         "min_qty": 12,
         "unit_price": 199300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -8954,11 +8239,6 @@
         "min_qty": 12,
         "unit_price": 14400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -9022,11 +8302,6 @@
         "unit_price": 14100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -9081,11 +8356,6 @@
         "min_qty": 12,
         "unit_price": 15400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -9147,11 +8417,6 @@
         "unit_price": 25600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -9206,11 +8471,6 @@
         "min_qty": 12,
         "unit_price": 128900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -9273,11 +8533,6 @@
         "unit_price": 19200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -9338,11 +8593,6 @@
         "unit_price": 18600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -9398,11 +8648,6 @@
         "unit_price": 42900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -9457,11 +8702,6 @@
         "min_qty": 12,
         "unit_price": 18900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -9524,11 +8764,6 @@
         "unit_price": 26000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -9586,11 +8821,6 @@
         "unit_price": 17800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -9647,11 +8877,6 @@
         "min_qty": 12,
         "unit_price": 19700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -9713,11 +8938,6 @@
         "min_qty": 12,
         "unit_price": 46000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -9782,11 +9002,6 @@
         "unit_price": 20700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -9847,11 +9062,6 @@
         "unit_price": 4300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -9910,11 +9120,6 @@
         "min_qty": 12,
         "unit_price": 18400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -9982,11 +9187,6 @@
         "unit_price": 26500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -10050,11 +9250,6 @@
         "unit_price": 29700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -10117,11 +9312,6 @@
         "min_qty": 12,
         "unit_price": 52400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -10187,11 +9377,6 @@
         "unit_price": 34200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -10253,11 +9438,6 @@
         "unit_price": 29400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -10317,11 +9497,6 @@
         "min_qty": 12,
         "unit_price": 32600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -10384,11 +9559,6 @@
         "unit_price": 21100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -10445,11 +9615,6 @@
         "min_qty": 12,
         "unit_price": 8700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -10508,11 +9673,6 @@
         "min_qty": 12,
         "unit_price": 8500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -10573,11 +9733,6 @@
         "unit_price": 33200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -10637,11 +9792,6 @@
         "min_qty": 12,
         "unit_price": 24100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -10705,11 +9855,6 @@
         "unit_price": 25500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -10764,11 +9909,6 @@
         "min_qty": 12,
         "unit_price": 20800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -10830,11 +9970,6 @@
         "unit_price": 28200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -10893,11 +10028,6 @@
         "min_qty": 12,
         "unit_price": 19600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -10959,11 +10089,6 @@
         "unit_price": 13300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -11018,11 +10143,6 @@
         "min_qty": 12,
         "unit_price": 22400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -11082,11 +10202,6 @@
         "min_qty": 12,
         "unit_price": 10600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -11149,11 +10264,6 @@
         "unit_price": 9400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -11214,11 +10324,6 @@
         "unit_price": 22200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -11276,11 +10381,6 @@
         "min_qty": 12,
         "unit_price": 22400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -11342,11 +10442,6 @@
         "unit_price": 10300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -11403,11 +10498,6 @@
         "min_qty": 12,
         "unit_price": 12200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -11468,11 +10558,6 @@
         "unit_price": 6300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -11530,11 +10615,6 @@
         "unit_price": 13300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -11589,11 +10669,6 @@
         "min_qty": 12,
         "unit_price": 127000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -11650,11 +10725,6 @@
         "unit_price": 243100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -11709,11 +10779,6 @@
         "min_qty": 12,
         "unit_price": 23600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -11770,11 +10835,6 @@
         "unit_price": 29600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -11829,11 +10889,6 @@
         "min_qty": 12,
         "unit_price": 181500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -11890,11 +10945,6 @@
         "unit_price": 33700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -11949,11 +10999,6 @@
         "min_qty": 12,
         "unit_price": 26100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -12010,11 +11055,6 @@
         "unit_price": 210000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -12069,11 +11109,6 @@
         "min_qty": 12,
         "unit_price": 297900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -12130,11 +11165,6 @@
         "unit_price": 50300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -12190,11 +11220,6 @@
         "unit_price": 28800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -12249,11 +11274,6 @@
         "min_qty": 12,
         "unit_price": 43200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -12314,11 +11334,6 @@
         "min_qty": 12,
         "unit_price": 23400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -12382,11 +11397,6 @@
         "unit_price": 32100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -12446,11 +11456,6 @@
         "min_qty": 12,
         "unit_price": 23500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -12516,11 +11521,6 @@
         "unit_price": 24600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -12581,11 +11581,6 @@
         "unit_price": 10600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -12644,11 +11639,6 @@
         "unit_price": 14700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -12704,11 +11694,6 @@
         "unit_price": 22400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -12763,11 +11748,6 @@
         "min_qty": 12,
         "unit_price": 39100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -12832,11 +11812,6 @@
         "unit_price": 14100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -12900,11 +11875,6 @@
         "unit_price": 29500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -12965,11 +11935,6 @@
         "min_qty": 12,
         "unit_price": 58700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -13034,11 +11999,6 @@
         "unit_price": 30900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -13099,11 +12059,6 @@
         "min_qty": 12,
         "unit_price": 14300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -13166,11 +12121,6 @@
         "unit_price": 8500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -13228,11 +12178,6 @@
         "min_qty": 12,
         "unit_price": 10600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -13294,11 +12239,6 @@
         "unit_price": 9500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -13357,11 +12297,6 @@
         "min_qty": 12,
         "unit_price": 15300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -13424,11 +12359,6 @@
         "unit_price": 9800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -13488,11 +12418,6 @@
         "unit_price": 8100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -13547,11 +12472,6 @@
         "min_qty": 12,
         "unit_price": 11100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -13610,11 +12530,6 @@
         "min_qty": 12,
         "unit_price": 10500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -13676,11 +12591,6 @@
         "unit_price": 31600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -13740,11 +12650,6 @@
         "min_qty": 12,
         "unit_price": 54100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -13806,11 +12711,6 @@
         "unit_price": 35300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -13865,11 +12765,6 @@
         "min_qty": 12,
         "unit_price": 5200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -13930,11 +12825,6 @@
         "unit_price": 5300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -13992,11 +12882,6 @@
         "unit_price": 10200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -14051,11 +12936,6 @@
         "min_qty": 12,
         "unit_price": 20100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -14116,11 +12996,6 @@
         "unit_price": 23200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -14179,11 +13054,6 @@
         "min_qty": 12,
         "unit_price": 8800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -14245,11 +13115,6 @@
         "unit_price": 4700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -14304,11 +13169,6 @@
         "min_qty": 12,
         "unit_price": 10700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -14365,11 +13225,6 @@
         "unit_price": 11800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -14424,11 +13279,6 @@
         "min_qty": 12,
         "unit_price": 28600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -14489,11 +13339,6 @@
         "unit_price": 7300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -14553,11 +13398,6 @@
         "min_qty": 12,
         "unit_price": 19600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -14624,11 +13464,6 @@
         "unit_price": 190800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -14688,11 +13523,6 @@
         "unit_price": 26400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -14750,11 +13580,6 @@
         "min_qty": 12,
         "unit_price": 14600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -14819,11 +13644,6 @@
         "unit_price": 275500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -14880,11 +13700,6 @@
         "min_qty": 12,
         "unit_price": 16200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -14944,11 +13759,6 @@
         "min_qty": 12,
         "unit_price": 6900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -15020,11 +13830,6 @@
         "unit_price": 5700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -15090,11 +13895,6 @@
         "unit_price": 9700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -15155,11 +13955,6 @@
         "unit_price": 11300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -15213,11 +14008,6 @@
         "min_qty": 12,
         "unit_price": 44700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -15274,11 +14064,6 @@
         "unit_price": 49300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -15334,11 +14119,6 @@
         "unit_price": 166100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -15393,11 +14173,6 @@
         "min_qty": 12,
         "unit_price": 130900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -15459,11 +14234,6 @@
         "unit_price": 30100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -15517,11 +14287,6 @@
         "min_qty": 12,
         "unit_price": 293200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -15581,11 +14346,6 @@
         "unit_price": 25500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -15644,11 +14404,6 @@
         "unit_price": 17900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -15703,11 +14458,6 @@
         "min_qty": 12,
         "unit_price": 203700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -15764,11 +14514,6 @@
         "unit_price": 146700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -15823,11 +14568,6 @@
         "min_qty": 12,
         "unit_price": 43200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -15884,11 +14624,6 @@
         "unit_price": 207700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -15943,11 +14678,6 @@
         "min_qty": 12,
         "unit_price": 170500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -16009,11 +14739,6 @@
         "min_qty": 12,
         "unit_price": 18000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -16080,11 +14805,6 @@
         "unit_price": 18900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -16149,11 +14869,6 @@
         "unit_price": 247000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -16214,11 +14929,6 @@
         "unit_price": 22900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -16276,11 +14986,6 @@
         "min_qty": 12,
         "unit_price": 12800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -16340,11 +15045,6 @@
         "min_qty": 12,
         "unit_price": 10600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -16408,11 +15108,6 @@
         "unit_price": 28200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -16472,11 +15167,6 @@
         "min_qty": 12,
         "unit_price": 16600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -16538,11 +15228,6 @@
         "unit_price": 7100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -16602,11 +15287,6 @@
         "unit_price": 7800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -16663,11 +15343,6 @@
         "unit_price": 20700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -16723,11 +15398,6 @@
         "min_qty": 12,
         "unit_price": 9300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -16786,11 +15456,6 @@
         "unit_price": 8100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -16847,11 +15512,6 @@
         "unit_price": 26000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -16907,11 +15567,6 @@
         "unit_price": 22900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -16966,11 +15621,6 @@
         "min_qty": 12,
         "unit_price": 18000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -17030,11 +15680,6 @@
         "unit_price": 9600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -17093,11 +15738,6 @@
         "min_qty": 12,
         "unit_price": 5800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -17159,11 +15799,6 @@
         "unit_price": 7800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -17222,11 +15857,6 @@
         "min_qty": 12,
         "unit_price": 5600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -17287,11 +15917,6 @@
         "min_qty": 12,
         "unit_price": 9200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -17354,11 +15979,6 @@
         "unit_price": 46800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -17416,11 +16036,6 @@
         "min_qty": 12,
         "unit_price": 6900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -17483,11 +16098,6 @@
         "unit_price": 61500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -17545,11 +16155,6 @@
         "min_qty": 12,
         "unit_price": 10900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -17610,11 +16215,6 @@
         "unit_price": 39400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -17673,11 +16273,6 @@
         "min_qty": 12,
         "unit_price": 15400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -17739,11 +16334,6 @@
         "unit_price": 79400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -17802,11 +16392,6 @@
         "min_qty": 12,
         "unit_price": 45800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -17868,11 +16453,6 @@
         "unit_price": 44600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -17931,11 +16511,6 @@
         "min_qty": 12,
         "unit_price": 47500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -17997,11 +16572,6 @@
         "unit_price": 22300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -18062,11 +16632,6 @@
         "unit_price": 21200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -18126,11 +16691,6 @@
         "min_qty": 12,
         "unit_price": 35200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -18193,11 +16753,6 @@
         "unit_price": 68200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -18258,11 +16813,6 @@
         "unit_price": 79000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -18322,11 +16872,6 @@
         "unit_price": 59800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -18385,11 +16930,6 @@
         "min_qty": 12,
         "unit_price": 39900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -18452,11 +16992,6 @@
         "unit_price": 50800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -18516,11 +17051,6 @@
         "unit_price": 27700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -18579,11 +17109,6 @@
         "min_qty": 12,
         "unit_price": 56000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -18646,11 +17171,6 @@
         "unit_price": 15200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -18712,11 +17232,6 @@
         "unit_price": 29300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -18776,11 +17291,6 @@
         "min_qty": 12,
         "unit_price": 19200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -18842,11 +17352,6 @@
         "unit_price": 24700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -18907,11 +17412,6 @@
         "unit_price": 86300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -18969,11 +17469,6 @@
         "min_qty": 12,
         "unit_price": 6800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -19033,11 +17528,6 @@
         "min_qty": 12,
         "unit_price": 25200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -19100,11 +17590,6 @@
         "unit_price": 24200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -19163,11 +17648,6 @@
         "min_qty": 12,
         "unit_price": 33400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -19230,11 +17710,6 @@
         "unit_price": 23200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -19295,11 +17770,6 @@
         "min_qty": 12,
         "unit_price": 30300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -19364,11 +17834,6 @@
         "unit_price": 30900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -19429,11 +17894,6 @@
         "unit_price": 10000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -19489,11 +17949,6 @@
         "min_qty": 12,
         "unit_price": 17500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -19553,11 +18008,6 @@
         "unit_price": 8100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -19614,11 +18064,6 @@
         "min_qty": 12,
         "unit_price": 8600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -19679,11 +18124,6 @@
         "unit_price": 12500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -19740,11 +18180,6 @@
         "min_qty": 12,
         "unit_price": 16100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -19806,11 +18241,6 @@
         "unit_price": 18000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -19867,11 +18297,6 @@
         "min_qty": 12,
         "unit_price": 8800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -19933,11 +18358,6 @@
         "unit_price": 6400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -19998,11 +18418,6 @@
         "unit_price": 6600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -20059,11 +18474,6 @@
         "min_qty": 12,
         "unit_price": 8500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -20128,11 +18538,6 @@
         "unit_price": 5300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -20192,11 +18597,6 @@
         "min_qty": 12,
         "unit_price": 17800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -20258,11 +18658,6 @@
         "unit_price": 8100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -20320,11 +18715,6 @@
         "min_qty": 12,
         "unit_price": 7900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -20386,11 +18776,6 @@
         "unit_price": 6100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -20451,11 +18836,6 @@
         "unit_price": 8700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -20515,11 +18895,6 @@
         "min_qty": 12,
         "unit_price": 4800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -20582,11 +18957,6 @@
         "unit_price": 6200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -20644,11 +19014,6 @@
         "min_qty": 12,
         "unit_price": 15400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -20710,11 +19075,6 @@
         "unit_price": 27200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -20774,11 +19134,6 @@
         "min_qty": 12,
         "unit_price": 32100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -20841,11 +19196,6 @@
         "unit_price": 7000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -20907,11 +19257,6 @@
         "unit_price": 7200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -20970,11 +19315,6 @@
         "min_qty": 12,
         "unit_price": 13400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -21037,11 +19377,6 @@
         "unit_price": 15200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -21103,11 +19438,6 @@
         "unit_price": 10300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -21167,11 +19497,6 @@
         "unit_price": 26000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -21230,11 +19555,6 @@
         "min_qty": 12,
         "unit_price": 36600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -21296,11 +19616,6 @@
         "unit_price": 47700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -21358,11 +19673,6 @@
         "unit_price": 26500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -21419,11 +19729,6 @@
         "min_qty": 12,
         "unit_price": 11900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -21486,11 +19791,6 @@
         "unit_price": 17300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -21547,11 +19847,6 @@
         "unit_price": 3200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -21607,11 +19902,6 @@
         "min_qty": 12,
         "unit_price": 5700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -21672,11 +19962,6 @@
         "unit_price": 11900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -21734,11 +20019,6 @@
         "min_qty": 12,
         "unit_price": 16700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -21798,11 +20078,6 @@
         "unit_price": 15000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -21857,11 +20132,6 @@
         "min_qty": 12,
         "unit_price": 7400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -21919,11 +20189,6 @@
         "min_qty": 12,
         "unit_price": 44200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -21986,11 +20251,6 @@
         "unit_price": 4900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -22046,11 +20306,6 @@
         "min_qty": 12,
         "unit_price": 9600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -22109,11 +20364,6 @@
         "unit_price": 6300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -22170,11 +20420,6 @@
         "min_qty": 12,
         "unit_price": 4000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -22234,11 +20479,6 @@
         "min_qty": 12,
         "unit_price": 19000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -22300,11 +20540,6 @@
         "unit_price": 25800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -22365,11 +20600,6 @@
         "unit_price": 14700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -22426,11 +20656,6 @@
         "min_qty": 12,
         "unit_price": 6900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -22489,11 +20714,6 @@
         "min_qty": 12,
         "unit_price": 7400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -22554,11 +20774,6 @@
         "min_qty": 12,
         "unit_price": 27100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -22621,11 +20836,6 @@
         "unit_price": 10800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -22682,11 +20892,6 @@
         "unit_price": 3500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -22742,11 +20947,6 @@
         "min_qty": 12,
         "unit_price": 7500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -22805,11 +21005,6 @@
         "min_qty": 12,
         "unit_price": 27200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -22872,11 +21067,6 @@
         "unit_price": 3700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -22932,11 +21122,6 @@
         "min_qty": 12,
         "unit_price": 5000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -23001,11 +21186,6 @@
         "unit_price": 7100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -23061,11 +21241,6 @@
         "min_qty": 12,
         "unit_price": 9100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -23125,11 +21300,6 @@
         "unit_price": 5300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -23187,11 +21357,6 @@
         "min_qty": 12,
         "unit_price": 8300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -23251,11 +21416,6 @@
         "unit_price": 9900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -23313,11 +21473,6 @@
         "unit_price": 7600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -23374,11 +21529,6 @@
         "min_qty": 12,
         "unit_price": 24300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -23440,11 +21590,6 @@
         "unit_price": 14500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -23503,11 +21648,6 @@
         "unit_price": 14400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -23565,11 +21705,6 @@
         "unit_price": 6000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -23625,11 +21760,6 @@
         "min_qty": 12,
         "unit_price": 30500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -23690,11 +21820,6 @@
         "unit_price": 9200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -23752,11 +21877,6 @@
         "min_qty": 12,
         "unit_price": 10700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -23820,11 +21940,6 @@
         "unit_price": 65300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -23879,11 +21994,6 @@
         "min_qty": 12,
         "unit_price": 13900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -23941,11 +22051,6 @@
         "min_qty": 12,
         "unit_price": 11500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -24009,11 +22114,6 @@
         "unit_price": 101500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -24070,11 +22170,6 @@
         "min_qty": 12,
         "unit_price": 3400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -24134,11 +22229,6 @@
         "unit_price": 7100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -24195,11 +22285,6 @@
         "min_qty": 12,
         "unit_price": 10500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -24259,11 +22344,6 @@
         "unit_price": 28000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -24321,11 +22401,6 @@
         "min_qty": 12,
         "unit_price": 32900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -24386,11 +22461,6 @@
         "unit_price": 9900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -24449,11 +22519,6 @@
         "unit_price": 25600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -24510,11 +22575,6 @@
         "min_qty": 12,
         "unit_price": 8800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -24574,11 +22634,6 @@
         "unit_price": 15600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -24635,11 +22690,6 @@
         "min_qty": 12,
         "unit_price": 31300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -24700,11 +22750,6 @@
         "unit_price": 9600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -24764,11 +22809,6 @@
         "unit_price": 15200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -24826,11 +22866,6 @@
         "min_qty": 12,
         "unit_price": 5500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -24893,11 +22928,6 @@
         "unit_price": 7600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -24954,11 +22984,6 @@
         "min_qty": 12,
         "unit_price": 34500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -25017,11 +23042,6 @@
         "unit_price": 13500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -25078,11 +23098,6 @@
         "min_qty": 12,
         "unit_price": 35100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -25142,11 +23157,6 @@
         "unit_price": 17900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -25202,11 +23212,6 @@
         "min_qty": 12,
         "unit_price": 25100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -25267,11 +23272,6 @@
         "unit_price": 17700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -25331,11 +23331,6 @@
         "unit_price": 8100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -25391,11 +23386,6 @@
         "min_qty": 12,
         "unit_price": 21300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -25456,11 +23446,6 @@
         "min_qty": 12,
         "unit_price": 40100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -25523,11 +23508,6 @@
         "unit_price": 82500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -25586,11 +23566,6 @@
         "min_qty": 12,
         "unit_price": 10500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -25651,11 +23626,6 @@
         "unit_price": 10800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -25712,11 +23682,6 @@
         "unit_price": 3100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -25772,11 +23737,6 @@
         "min_qty": 12,
         "unit_price": 23900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -25835,11 +23795,6 @@
         "min_qty": 12,
         "unit_price": 27500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -25900,11 +23855,6 @@
         "unit_price": 24900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -25962,11 +23912,6 @@
         "unit_price": 11600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -26022,11 +23967,6 @@
         "min_qty": 12,
         "unit_price": 2700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -26085,11 +24025,6 @@
         "unit_price": 15800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -26146,11 +24081,6 @@
         "min_qty": 12,
         "unit_price": 15900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -26210,11 +24140,6 @@
         "unit_price": 28100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -26271,11 +24196,6 @@
         "unit_price": 20400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -26331,11 +24251,6 @@
         "min_qty": 12,
         "unit_price": 8200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -26394,11 +24309,6 @@
         "min_qty": 12,
         "unit_price": 16900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -26459,11 +24369,6 @@
         "unit_price": 3400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -26518,11 +24423,6 @@
         "min_qty": 12,
         "unit_price": 37100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -26585,11 +24485,6 @@
         "unit_price": 45200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -26647,11 +24542,6 @@
         "min_qty": 12,
         "unit_price": 6000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -26712,11 +24602,6 @@
         "unit_price": 8000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -26776,11 +24661,6 @@
         "unit_price": 21800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -26836,11 +24716,6 @@
         "min_qty": 12,
         "unit_price": 4000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -26901,11 +24776,6 @@
         "unit_price": 12400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -26961,11 +24831,6 @@
         "min_qty": 12,
         "unit_price": 31400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -27025,11 +24890,6 @@
         "unit_price": 166800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -27087,11 +24947,6 @@
         "min_qty": 12,
         "unit_price": 8000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -27151,11 +25006,6 @@
         "unit_price": 8000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -27213,11 +25063,6 @@
         "min_qty": 12,
         "unit_price": 5400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -27277,11 +25122,6 @@
         "unit_price": 6100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -27340,11 +25180,6 @@
         "unit_price": 6500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -27402,11 +25237,6 @@
         "min_qty": 12,
         "unit_price": 8600
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -27467,11 +25297,6 @@
         "unit_price": 8000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -27528,11 +25353,6 @@
         "min_qty": 12,
         "unit_price": 9400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -27593,11 +25413,6 @@
         "unit_price": 31500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -27656,11 +25471,6 @@
         "unit_price": 16300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -27718,11 +25528,6 @@
         "min_qty": 12,
         "unit_price": 5700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -27784,11 +25589,6 @@
         "unit_price": 10200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -27847,11 +25647,6 @@
         "min_qty": 12,
         "unit_price": 8200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -27913,11 +25708,6 @@
         "unit_price": 5800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 30,
     "stock_by_branch": [
@@ -27975,11 +25765,6 @@
         "min_qty": 12,
         "unit_price": 31400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -28039,11 +25824,6 @@
         "unit_price": 29300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 15,
     "stock_by_branch": [
@@ -28099,11 +25879,6 @@
         "min_qty": 12,
         "unit_price": 37900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -28162,11 +25937,6 @@
         "unit_price": 30200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -28223,11 +25993,6 @@
         "min_qty": 12,
         "unit_price": 30800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -28287,11 +26052,6 @@
         "min_qty": 12,
         "unit_price": 39200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -28357,11 +26117,6 @@
         "unit_price": 29200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -28417,11 +26172,6 @@
         "unit_price": 25600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -28475,11 +26225,6 @@
         "min_qty": 12,
         "unit_price": 12000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -28540,11 +26285,6 @@
         "min_qty": 12,
         "unit_price": 124800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -28608,11 +26348,6 @@
         "unit_price": 19700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -28675,11 +26410,6 @@
         "unit_price": 29400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -28740,11 +26470,6 @@
         "min_qty": 12,
         "unit_price": 57800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -28807,11 +26532,6 @@
         "unit_price": 89800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -28871,11 +26591,6 @@
         "unit_price": 32800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -28933,11 +26648,6 @@
         "min_qty": 12,
         "unit_price": 32700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -28999,11 +26709,6 @@
         "min_qty": 12,
         "unit_price": 20200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -29067,11 +26772,6 @@
         "unit_price": 33200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -29133,11 +26833,6 @@
         "min_qty": 12,
         "unit_price": 50200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -29201,11 +26896,6 @@
         "unit_price": 31000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -29267,11 +26957,6 @@
         "min_qty": 12,
         "unit_price": 23900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -29335,11 +27020,6 @@
         "unit_price": 38800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -29402,11 +27082,6 @@
         "unit_price": 30500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -29466,11 +27141,6 @@
         "min_qty": 12,
         "unit_price": 47900
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -29534,11 +27204,6 @@
         "unit_price": 22300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -29593,11 +27258,6 @@
         "min_qty": 12,
         "unit_price": 42700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -29660,11 +27320,6 @@
         "unit_price": 48500
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -29726,11 +27381,6 @@
         "unit_price": 42000
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -29787,11 +27437,6 @@
         "min_qty": 12,
         "unit_price": 30700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -29851,11 +27496,6 @@
         "unit_price": 12600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -29913,11 +27553,6 @@
         "min_qty": 12,
         "unit_price": 5800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 60,
@@ -29977,11 +27612,6 @@
         "unit_price": 9400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -30039,11 +27669,6 @@
         "min_qty": 12,
         "unit_price": 8500
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 15,
@@ -30103,11 +27728,6 @@
         "unit_price": 6400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 30,
     "stock_by_branch": [
@@ -30165,11 +27785,6 @@
         "min_qty": 12,
         "unit_price": 8700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -30229,11 +27844,6 @@
         "unit_price": 12800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -30292,11 +27902,6 @@
         "unit_price": 11600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -30354,11 +27959,6 @@
         "min_qty": 12,
         "unit_price": 10000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 60,
@@ -30420,11 +28020,6 @@
         "unit_price": 16200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -30485,11 +28080,6 @@
         "unit_price": 15200
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -30548,11 +28138,6 @@
         "min_qty": 12,
         "unit_price": 8300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -30614,11 +28199,6 @@
         "unit_price": 16400
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -30677,11 +28257,6 @@
         "min_qty": 12,
         "unit_price": 12800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 30,
@@ -30742,11 +28317,6 @@
         "unit_price": 25800
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -30805,11 +28375,6 @@
         "min_qty": 12,
         "unit_price": 13200
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -30870,11 +28435,6 @@
         "unit_price": 7100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -30934,11 +28494,6 @@
         "unit_price": 12600
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 60,
     "stock_by_branch": [
@@ -30997,11 +28552,6 @@
         "min_qty": 12,
         "unit_price": 8800
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 6,
     "return_days": 30,
@@ -31063,11 +28613,6 @@
         "unit_price": 18900
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 60,
     "stock_by_branch": [
@@ -31127,11 +28672,6 @@
         "unit_price": 8100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 6,
     "return_days": 15,
     "stock_by_branch": [
@@ -31190,11 +28730,6 @@
         "min_qty": 12,
         "unit_price": 16000
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 15,
@@ -31256,11 +28791,6 @@
         "unit_price": 11100
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 24,
     "return_days": 30,
     "stock_by_branch": [
@@ -31319,11 +28849,6 @@
         "min_qty": 12,
         "unit_price": 5100
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
@@ -31384,11 +28909,6 @@
         "unit_price": 12700
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 60,
     "stock_by_branch": [
@@ -31447,11 +28967,6 @@
         "min_qty": 12,
         "unit_price": 7400
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 60,
@@ -31512,11 +29027,6 @@
         "unit_price": 21300
       }
     ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
-    ],
     "warranty_months": 12,
     "return_days": 15,
     "stock_by_branch": [
@@ -31571,11 +29081,6 @@
         "min_qty": 12,
         "unit_price": 20700
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 24,
     "return_days": 30,
@@ -31635,11 +29140,6 @@
         "min_qty": 12,
         "unit_price": 13300
       }
-    ],
-    "payment_methods": [
-      "tarjeta",
-      "sinpe",
-      "transferencia"
     ],
     "warranty_months": 12,
     "return_days": 15,
