@@ -4,9 +4,6 @@ import styles from './ProductDetail.module.css'
 import type { Product, StockBranch } from '../../../types/product'
 import {
   UilArrowLeft,
-  UilCardAtm,
-  UilMobileAndroid,
-  UilUniversity,
   UilStar
 } from '@iconscout/react-unicons'
 import { UisStar, UisStarHalfAlt } from '@iconscout/react-unicons-solid'
@@ -87,25 +84,6 @@ function buildImageUrl(imagePath: string | undefined): string {
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
 /**
- * Mapa de metodos de pago a sus etiquetas e iconos visuales.
- * Si un metodo no esta en el mapa, se usa un icono generico y se capitaliza el string.
- */
-const paymentMethodIcons: Record<string, { label: string; icon: React.ReactNode }> = {
-  tarjeta: {
-    label: 'Tarjeta de Credito/Debito',
-    icon: <UilCardAtm size="18" className={styles.paymentIcon} />
-  },
-  sinpe: {
-    label: 'Sinpe Movil',
-    icon: <UilMobileAndroid size="18" className={styles.paymentIcon} />
-  },
-  transferencia: {
-    label: 'Transferencia Bancaria',
-    icon: <UilUniversity size="18" className={styles.paymentIcon} />
-  },
-}
-
-/**
  * Convierte un branch_id interno al nombre legible de la sucursal.
  * Si el ID no esta en la lista conocida, lo formatea separando por guion y capitalizando.
  *
@@ -128,8 +106,7 @@ function nombreSucursal(branchId: string): string {
  * - Derecha: informacion apilada en tarjetas (cards):
  *   1. Info principal - nombre, precio, rating, stock y botones de accion.
  *   2. Info del producto - atributos del facet, SKU, garantia, tags.
- *   3. Metodos de pago - iconos y etiquetas por metodo disponible.
- *   4. Stock por sucursal - disponibilidad desglosada por branch.
+ *   3. Stock por sucursal - disponibilidad desglosada por branch.
  *
  * Incluye un switch de modo B2B que cambia el precio activo al primer
  * precio del arreglo tiered_b2b_pricing cuando esta activado.
@@ -331,29 +308,7 @@ export function ProductDetail({ product, relatedProducts = [] }: ProductDetailPr
             )}
           </div>
 
-          {/* Card 3 - metodos de pago con iconos */}
-          {product.payment_methods && product.payment_methods.length > 0 && (
-            <div className={styles.card}>
-              <span className={styles.cardTitle}>Metodos de pago</span>
-              <div className={styles.paymentMethods}>
-                {product.payment_methods.map((method) => {
-                  /* Si el metodo no esta en el mapa, usa icono generico y capitaliza */
-                  const info = paymentMethodIcons[method] || {
-                    label: capitalize(method),
-                    icon: <UilCardAtm size="18" className={styles.paymentIcon} />
-                  }
-                  return (
-                    <div key={method} className={styles.paymentMethod}>
-                      {info.icon}
-                      <span className={styles.paymentLabel}>{info.label}</span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Card 4 - stock desglosado por sucursal */}
+          {/* Card 3 - stock desglosado por sucursal */}
           {product.stock_by_branch && product.stock_by_branch.length > 0 && (
             <div className={styles.card}>
               <span className={styles.cardTitle}>Disponibilidad por sucursal</span>
