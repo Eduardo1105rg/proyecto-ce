@@ -3,6 +3,7 @@ import { useHits } from 'react-instantsearch'
 import styles from './ProductDetail.module.css'
 import { ProductGrid } from '../components/ProductGrid/ProductGrid'
 import type { Product } from '../../../types/product'
+import { useCarrito } from '../../../context/carritoContext'
 
 /**
  * Props del componente RelatedProducts.
@@ -27,6 +28,7 @@ type RelatedProductsProps = {
  */
 export function RelatedProducts({ category }: RelatedProductsProps) {
   const navigate = useNavigate()
+  const { agregar } = useCarrito()
   const { items } = useHits<Product>()
 
   if (items.length === 0) return null
@@ -42,7 +44,7 @@ export function RelatedProducts({ category }: RelatedProductsProps) {
         viewMode="grid"
         columns={4}
         onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
-        onAddToCart={(p) => console.log('Agregar al carrito:', p.title ?? p.name)}
+        onAddToCart={(p) => agregar(p.objectID, 1)}
       />
     </section>
   )

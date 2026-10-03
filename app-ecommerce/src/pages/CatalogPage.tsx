@@ -13,6 +13,7 @@ import {
   searchClient,
 } from '../services/Algolia'
 import type { Product } from '../types/product'
+import { useCarrito } from '../context/carritoContext'
 
 type ViewMode = 'grid' | 'list'
 type Columns = 3 | 4 | 5
@@ -34,6 +35,7 @@ type Columns = 3 | 4 | 5
  */
 function CatalogContent() {
   const navigate = useNavigate()
+  const { agregar } = useCarrito()
 
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const [columns, setColumns] = useState<Columns>(4)
@@ -78,7 +80,7 @@ function CatalogContent() {
           products={items}
           viewMode={viewMode}
           columns={columns}
-          onAddToCart={(p) => console.log('Agregar al carrito:', p.title ?? p.name)}
+          onAddToCart={(p) => agregar(p.objectID, 1)}
           onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
         />
       )}

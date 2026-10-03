@@ -27,8 +27,7 @@ export type Product = {
   /** Identificador del dataset original. Opcional: no todos los registros lo traen. */
   object_id?: string
   sku: string
-  title: string
-  name?: string
+  name: string
   brand: string
   category: string
   price: number

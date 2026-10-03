@@ -121,7 +121,7 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
   const totalStock = getTotalStock(product)
   const inStock = totalStock > 0
   const lowStock = totalStock > 0 && totalStock <= 5
-  const displayName = product.title ?? product.name ?? 'Sin nombre'
+  const displayName = product.name ?? 'Sin nombre'
 
   /** Controla si el modo mayorista B2B esta activo */
   const [isB2B, setIsB2B] = useState(false)

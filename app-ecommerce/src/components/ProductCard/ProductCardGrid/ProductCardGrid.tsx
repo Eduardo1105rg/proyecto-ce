@@ -104,7 +104,7 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
   const totalStock = getTotalStock(product)
   const inStock = totalStock > 0
   const lowStock = totalStock > 0 && totalStock <= 5
-  const displayName = product.title ?? product.name ?? 'Sin nombre'
+  const displayName = product.name ?? 'Sin nombre'
 
   return (
     <article className={styles.card} onClick={() => onClick?.(product)}>

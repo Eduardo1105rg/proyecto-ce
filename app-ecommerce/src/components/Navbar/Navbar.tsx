@@ -60,8 +60,8 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
         {/* Links de navegación desktop */}
         <nav className={styles.links}>
           <Link
-            to="/"
-            className={`${styles.navLink} ${isActive('/') ? styles.navLinkActive : ''} ${styles.navLinkDisabled}`}
+            to="/catalogo"
+            className={`${styles.navLink} ${isActive('/catalogo') ? styles.navLinkActive : ''} `}//${styles.navLinkDisabled}
             onClick={handleDisabledClick}
             aria-disabled="true"
             tabIndex={-1}
@@ -69,21 +69,21 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
             Home
           </Link>
           {/* Catálogo y Carrito comentados hasta que sus páginas estén listas */}
-          {/* <Link 
-            to="/catalogo" 
+          {/* <Link
+            to="/catalogo"
             className={`${styles.navLink} ${isActive('/catalogo') ? styles.navLinkActive : ''}`}
           >
             Catálogo
           </Link> */}
-          {/* <Link 
-            to="/carrito" 
-            className={`${styles.navLink} ${isActive('/carrito') ? styles.navLinkActive : ''} ${styles.navLinkDisabled}`}
-            onClick={handleDisabledClick}
-            aria-disabled="true"
-            tabIndex={-1}
+          <Link
+            to="/carrito"
+            className={`${styles.navLink} ${isActive('/carrito') ? styles.navLinkActive : ''} `}
+          // onClick={handleDisabledClick}
+          // aria-disabled="true"
+          // tabIndex={-1}
           >
             Carrito
-          </Link> */}
+          </Link>
         </nav>
 
         <button
