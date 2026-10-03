@@ -1,126 +1,137 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { Configure, InstantSearch, useHits, useInstantSearch } from 'react-instantsearch'
 import { ProductDetail } from '../features/catalog/ProductDetail/ProductDetail'
-import { getProductById, getRelatedProducts } from '../services/Algolia'
+import { RelatedProducts } from '../features/catalog/ProductDetail/RelatedProducts'
+import {
+  INDEX_MAIN,
+  RELATED_HITS_PER_PAGE,
+  escapeFilterValue,
+  searchClient,
+} from '../services/Algolia'
 import type { Product } from '../types/product'
 
 /**
- * Estructura del estado interno de la pagina de detalle.
- *
- * @prop id              - ID del producto actualmente cargado.
- * @prop product         - Datos del producto, o null si no fue encontrado o hay error.
- * @prop relatedProducts - Productos relacionados de la misma categoria.
- * @prop loaded          - Indica si la carga ya termino (exitosa o con error).
+ * Estado de carga mostrado mientras Algolia responde.
  */
-type ProductResult = {
-  id: string
-  product: Product | null
-  relatedProducts: Product[]
-  loaded: boolean
+function DetailLoading() {
+  return (
+    <div style={{
+      padding: '48px 24px',
+      textAlign: 'center',
+      minHeight: '400px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}>
+      <p style={{ color: 'var(--text-muted)' }}>Cargando producto...</p>
+    </div>
+  )
 }
 
-/** Estado inicial antes de cualquier carga */
-const EMPTY_RESULT: ProductResult = {
-  id: '',
-  product: null,
-  relatedProducts: [],
-  loaded: false,
+/**
+ * Estado de error mostrado cuando no hay ningun producto con el ID de la URL.
+ */
+function DetailNotFound() {
+  const navigate = useNavigate()
+
+  return (
+    <div style={{
+      padding: '48px 24px',
+      textAlign: 'center',
+      color: 'var(--text-muted)',
+      minHeight: '400px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}>
+      <p style={{ fontSize: '18px', marginBottom: '16px' }}>
+        Producto no encontrado
+      </p>
+      <button
+        onClick={() => navigate(-1)}
+        style={{
+          padding: '10px 24px',
+          backgroundColor: 'var(--primary)',
+          color: 'white',
+          border: 'none',
+          borderRadius: '6px',
+          cursor: 'pointer',
+          fontSize: '14px'
+        }}
+      >
+        Volver al catalogo
+      </button>
+    </div>
+  )
+}
+
+/**
+ * Contenido de la pagina de detalle.
+ *
+ * Lee el producto del contexto de InstantSearch con useHits. El refinamiento por
+ * objectID y el limite de un resultado los aplica el Configure de ProductDetailPage.
+ *
+ * Los productos relacionados viven en una segunda instancia de InstantSearch
+ * porque requieren otra consulta (misma categoria, excluyendo el producto actual)
+ * y no pueden compartir el estado de busqueda del producto principal.
+ */
+function ProductDetailContent() {
+  const { items } = useHits<Product>()
+  const { status } = useInstantSearch()
+
+  if (status === 'loading' || status === 'stalled') {
+    return <DetailLoading />
+  }
+
+  const product = items[0]
+
+  if (!product) {
+    return <DetailNotFound />
+  }
+
+  return (
+    <ProductDetail product={product}>
+      <InstantSearch
+        searchClient={searchClient}
+        indexName={INDEX_MAIN}
+        routing={false}
+      >
+        <Configure
+          filters={`category:"${escapeFilterValue(product.category)}" AND NOT objectID:"${escapeFilterValue(product.objectID)}"`}
+          hitsPerPage={RELATED_HITS_PER_PAGE}
+        />
+        <RelatedProducts category={product.category} />
+      </InstantSearch>
+    </ProductDetail>
+  )
 }
 
 /**
  * Pagina de detalle de producto.
  *
- * Lee el ID del producto desde los params de la URL (:id) y realiza
- * dos llamadas secuenciales a Algolia:
- * 1. getProductById para obtener el producto.
- * 2. getRelatedProducts para obtener productos de la misma categoria.
+ * Lee el ID del producto de los params de la URL (:id) y monta una instancia de
+ * InstantSearch refinada a ese unico registro. El routing se deja desactivado
+ * porque la app usa HashRouter.
  */
 export function ProductDetailPage() {
   const { id } = useParams()
-  const navigate = useNavigate()
 
-  const [result, setResult] = useState<ProductResult>(EMPTY_RESULT)
-
-  useEffect(() => {
-    if (!id) return
-
-    let active = true
-
-    getProductById(id)
-      .then((p) => {
-        if (!active) return
-        if (!p) {
-          setResult({ id, product: null, relatedProducts: [], loaded: true })
-          return
-        }
-        return getRelatedProducts(p).then((related) => {
-          if (active) {
-            setResult({ id, product: p, relatedProducts: related, loaded: true })
-          }
-        })
-      })
-      .catch((error) => {
-        if (!active) return
-        console.error('Error buscando producto en Algolia:', error)
-        setResult({ id, product: null, relatedProducts: [], loaded: true })
-      })
-
-    return () => {
-      active = false
-    }
-  }, [id])
-
-  const loading = !id || result.id !== id || !result.loaded
-  const product = result.product
-  const relatedProducts = result.relatedProducts
-
-  if (loading) {
-    return (
-      <div style={{
-        padding: '48px 24px',
-        textAlign: 'center',
-        minHeight: '400px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <p style={{ color: 'var(--text-muted)' }}>Cargando producto...</p>
-      </div>
-    )
+  if (!id) {
+    return <DetailNotFound />
   }
 
-  if (!product) {
-    return (
-      <div style={{
-        padding: '48px 24px',
-        textAlign: 'center',
-        color: 'var(--text-muted)',
-        minHeight: '400px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <p style={{ fontSize: '18px', marginBottom: '16px' }}>
-          Producto no encontrado
-        </p>
-        <button
-          onClick={() => navigate(-1)}
-          style={{
-            padding: '10px 24px',
-            backgroundColor: 'var(--primary)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '14px'
-          }}
-        >
-          Volver al catalogo
-        </button>
-      </div>
-    )
-  }
-
-  return <ProductDetail product={product} relatedProducts={relatedProducts} />
+  return (
+    <InstantSearch
+      searchClient={searchClient}
+      indexName={INDEX_MAIN}
+      routing={false}
+    >
+      <Configure
+        filters={`objectID:"${escapeFilterValue(id)}"`}
+        hitsPerPage={1}
+      />
+      <ProductDetailContent />
+    </InstantSearch>
+  )
 }

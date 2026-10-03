@@ -1,44 +1,36 @@
-import { useState } from 'react'
-import styles from './FilterPanel.module.css'
+import { useCallback, useState } from 'react'
+import { useClearRefinements, useRange, useRefinementList, useSortBy } from 'react-instantsearch'
 import { UilAngleDown, UilAngleLeft, UilAngleRight } from '@iconscout/react-unicons'
+import styles from './FilterPanel.module.css'
 import { Dropdown } from '../../../../components/Dropdown/Dropdown'
 import { Button } from '../../../../components/Button/Button'
-import type { FacetSection } from '../../../../types/algolia'
+import { FACET_SECTIONS, PRICE_ATTRIBUTE, SORT_OPTIONS } from '../../../../services/Algolia'
+import type { FacetSectionDefinition } from '../../../../types/algolia'
 
 /**
- * Opcion de ordenamiento para el selector de sort.
+ * Maximo de valores mostrados por facet.
  *
- * @prop label - Texto visible en el dropdown.
- * @prop value - Nombre del indice de Algolia al que apunta esta opcion.
+ * useRefinementList solo devuelve 10 valores por defecto, pero el catalogo
+ * necesita mostrar la lista completa (por ejemplo, brand tiene 26 marcas).
  */
-type SortOption = {
-  label: string
-  value: string
-}
+const MAX_FACET_VALUES = 100
 
 /**
- * Props del componente FilterPanel.
- *
- * @prop facetSections  - Lista de secciones de facets generadas desde CatalogPage.
- *                        Cada seccion incluye su titulo, atributo y los items con su estado de refinamiento.
- * @prop onFacetToggle  - Callback que recibe el atributo y el valor del facet clickeado.
- *                        La logica de refinamiento la maneja Algolia desde CatalogPage.
- * @prop onPriceChange  - Callback con el rango [min, max] cuando se aplica el filtro de precio.
- * @prop sortBy         - Valor del indice de ordenamiento actualmente activo.
- * @prop sortOptions    - Opciones disponibles para el selector de sort.
- * @prop onSortChange   - Callback que recibe el value del indice seleccionado.
- * @prop onClearAll     - Callback para limpiar todos los filtros activos.
- * @prop maxPrice       - Precio maximo calculado desde los hits de Algolia, usado como placeholder.
+ * Valor por defecto del input "Max" cuando el indice no declara price como
+ * atributo facet y por lo tanto Algolia no puede calcular el limite superior.
  */
-type FilterPanelProps = {
-  facetSections?: FacetSection[]
-  onFacetToggle?: (attribute: string, value: string) => void
-  onPriceChange?: (range: [number, number]) => void
-  sortBy?: string
-  sortOptions?: SortOption[]
-  onSortChange?: (value: string) => void
-  onClearAll?: () => void
-  maxPrice?: number
+const FALLBACK_MAX_PRICE = 500000
+
+/**
+ * Normaliza un limite del refinamiento a number | undefined.
+ *
+ * useRange usa -Infinity e Infinity para representar "sin limite", y su rango
+ * maximo cae a 0 cuando el atributo no viene declarado como facet en el indice.
+ * Este helper descarta ambos casos para no pintar "Infinity" en los inputs ni
+ * acotar el precio a 0.
+ */
+function toBound(value: number | undefined): number | undefined {
+  return Number.isFinite(value) ? value : undefined
 }
 
 /**
@@ -81,22 +73,84 @@ function FilterSection({
 }
 
 /**
+ * Seccion de refinamiento para un atributo de Algolia.
+ *
+ * Cada instancia monta su propio useRefinementList, por lo que los conteos que
+ * muestra Algolia son disjuntivos: refinar "Cocina" recalcula los conteos de
+ * Marca y Color sin ocultar las opciones que siguen disponibles.
+ *
+ * Se declara como componente hijo (y no un hook dentro de un map) porque los
+ * hooks no pueden invocarse en un bucle de longitud variable. El recorrido
+ * sobre FACET_SECTIONS es de longitud constante, pero aun asi cada seccion
+ * necesita su propio scope de estado.
+ *
+ * @prop attribute - Atributo de Algolia a refinar.
+ * @prop title     - Titulo visible de la seccion.
+ * @prop labels    - Mapa opcional para traducir valores crudos (ej. 'true' -> 'Si').
+ */
+function FacetRefinement({ attribute, title, labels }: FacetSectionDefinition) {
+  const { items, refine } = useRefinementList({
+    attribute,
+    limit: MAX_FACET_VALUES,
+    transformItems: useCallback(
+      (values) =>
+        values.map((item) => ({
+          ...item,
+          label: labels?.[item.value] ?? item.label,
+        })),
+      [labels]
+    ),
+  })
+
+  /** Sin valores disponibles la seccion no se renderiza */
+  if (items.length === 0) return null
+
+  return (
+    <FilterSection title={title} defaultOpen={false}>
+      <div className={styles.checkList}>
+        {items.map((item) => (
+          <label key={item.value} className={styles.checkItem}>
+            <input
+              type="checkbox"
+              className={styles.checkbox}
+              checked={item.isRefined}
+              onChange={() => refine(item.value)}
+            />
+            <span className={styles.checkLabel}>
+              {item.label} <span className={styles.checkCount}>({item.count})</span>
+            </span>
+          </label>
+        ))}
+      </div>
+    </FilterSection>
+  )
+}
+
+/**
  * Panel lateral de filtros del catalogo.
  *
- * Recibe todas las secciones de facets como un arreglo generico (FacetSection[]),
- * lo que permite agregar o quitar facets desde CatalogPage sin modificar este componente.
+ * Se conecta directamente al estado de busqueda de Algolia mediante hooks
+ * (useSortBy, useRange, useClearRefinements) y mediante un FacetRefinement por
+ * cada entrada de FACET_SECTIONS.
  *
+ * El selector de precio mantiene los inputs en estado local y solo llama a
+ * refine al pulsar "Aplicar Rango" o Enter, conservando la validacion de que el
+ * minimo no supere el maximo.
+ *
+ * Nota sobre el indice: price debe estar declarado en attributesForFaceting.
+ * Con filterOnly(price) el filtrado por rango funciona, pero Algolia no devuelve
+ * la distribucion del atributo y por eso useRange no puede calcular el precio
+ * maximo real; en ese caso se usa FALLBACK_MAX_PRICE solo como placeholder.
+ * Declararlo como numeric(price) hace que el placeholder sea exacto.
  */
-export function FilterPanel({
-  facetSections = [],
-  onFacetToggle,
-  onPriceChange,
-  sortBy,
-  sortOptions,
-  onSortChange,
-  onClearAll,
-  maxPrice,
-}: FilterPanelProps) {
+export function FilterPanel() {
+
+  const { options, currentRefinement, refine: refineSort } = useSortBy({ items: SORT_OPTIONS })
+
+  const { range, start, refine: refineRange } = useRange({ attribute: PRICE_ATTRIBUTE })
+
+  /** canRefine es true si hay query, facets o precio refinados */
+  const { canRefine: canClear, refine: clearRefinements } = useClearRefinements()
 
   const [minValue, setMinValue] = useState('')
   const [maxValue, setMaxValue] = useState('')
@@ -105,32 +159,58 @@ export function FilterPanel({
   /** Controla si el panel completo esta colapsado (solo muestra el header) */
   const [collapsed, setCollapsed] = useState(false)
 
-  const defaultSortValue = sortOptions?.[0]?.value ?? ''
-  const placeholderMax = maxPrice ? maxPrice.toLocaleString('es-CR') : '500,000'
+  /** Tope real del catalogo; undefined si el indice no lo expone como facet */
+  const rangeMax = toBound(range.max)
 
-  /** true si hay al menos un filtro activo (facet, precio o sort diferente al default) */
-  const hasFilters =
-    facetSections.some(section => section.items.some(item => item.isRefined)) ||
-    !!minValue ||
-    !!maxValue ||
-    (sortBy !== undefined && sortBy !== defaultSortValue)
+  const placeholderMax = rangeMax
+    ? rangeMax.toLocaleString('es-CR')
+    : FALLBACK_MAX_PRICE.toLocaleString('es-CR')
+
+  /**
+   * Refleja en los inputs el refinamiento de precio proveniente del exterior,
+   * por ejemplo cuando el usuario pulsa "Limpiar todo".
+   *
+   * Se ajusta durante el render en lugar de en un efecto para evitar el segundo
+   * render en cascada que produciria un useEffect con setState.
+   */
+  const startMin = toBound(start[0])
+  const startMax = toBound(start[1])
+
+  const [lastStartMin, setLastStartMin] = useState(startMin)
+  const [lastStartMax, setLastStartMax] = useState(startMax)
+
+  if (startMin !== lastStartMin || startMax !== lastStartMax) {
+    setLastStartMin(startMin)
+    setLastStartMax(startMax)
+    setMinValue(startMin != null ? String(startMin) : '')
+    setMaxValue(startMax != null ? String(startMax) : '')
+  }
+
+  /**
+   * Parsea un input de precio ignorando caracteres no numericos.
+   * Retorna undefined cuando el campo esta vacio, para no acotar el rango.
+   */
+  function parsePrice(value: string): number | undefined {
+    const digits = value.replace(/\D/g, '')
+    return digits ? parseInt(digits, 10) : undefined
+  }
 
   /**
    * Valida y aplica el filtro de precio.
-   * Parsea los strings de los inputs eliminando caracteres no numericos.
    * Si min > max, muestra un mensaje de error sin aplicar el filtro.
+   * Con ambos campos vacios se quita el refinamiento de precio.
    */
   function applyPriceFilter() {
-    const min = parseInt(minValue.replace(/\D/g, '')) || 0
-    const max = parseInt(maxValue.replace(/\D/g, '')) || maxPrice || 500000
+    const min = parsePrice(minValue)
+    const max = parsePrice(maxValue) ?? rangeMax
 
-    if (min > max) {
+    if (min != null && max != null && min > max) {
       setPriceError('El minimo no puede ser mayor que el maximo.')
       return
     }
 
     setPriceError(null)
-    onPriceChange?.([min, max])
+    refineRange([min, max])
   }
 
   return (
@@ -151,12 +231,10 @@ export function FilterPanel({
           </button>
           <span className={styles.panelTitle}>Filtros</span>
         </div>
-        {hasFilters && (
+        {canClear && (
           <button className={styles.clearAll} onClick={() => {
-            setMinValue('')
-            setMaxValue('')
             setPriceError(null)
-            onClearAll?.()
+            clearRefinements()
           }}>
             Limpiar todo
           </button>
@@ -167,35 +245,19 @@ export function FilterPanel({
       {!collapsed && (
         <div className={styles.panelBody}>
 
-          {sortOptions && (
+          {options.length > 0 && (
             <FilterSection title="Ordenar por">
               <Dropdown
-                options={sortOptions}
-                value={sortBy ?? defaultSortValue}
-                onChange={(val) => onSortChange?.(val)}
+                options={options}
+                value={currentRefinement}
+                onChange={(val) => refineSort(val)}
               />
             </FilterSection>
           )}
 
-          {/* Renderiza dinamicamente cada seccion de facet recibida desde CatalogPage */}
-          {facetSections.map(section => (
-            <FilterSection key={section.attribute} title={section.title} defaultOpen={false}>
-              <div className={styles.checkList}>
-                {section.items.map(item => (
-                  <label key={item.value} className={styles.checkItem}>
-                    <input
-                      type="checkbox"
-                      className={styles.checkbox}
-                      checked={item.isRefined}
-                      onChange={() => onFacetToggle?.(section.attribute, item.value)}
-                    />
-                    <span className={styles.checkLabel}>
-                      {item.label} <span className={styles.checkCount}>({item.count})</span>
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </FilterSection>
+          {/* Una seccion por cada entrada de FACET_SECTIONS; las vacias se descartan */}
+          {FACET_SECTIONS.map((section) => (
+            <FacetRefinement key={section.attribute} {...section} />
           ))}
 
           {/* Filtro de precio - siempre al final del panel */}

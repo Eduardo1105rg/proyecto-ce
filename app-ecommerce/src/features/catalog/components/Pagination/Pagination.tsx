@@ -1,40 +1,38 @@
+import { usePagination } from 'react-instantsearch'
 import { UilAngleLeft, UilAngleRight } from '@iconscout/react-unicons'
 import styles from './Pagination.module.css'
 
 /**
- * Props del componente Pagination.
- *
- * @prop currentPage  - Pagina actualmente activa (base 1).
- * @prop totalPages   - Total de paginas disponibles.
- * @prop onPageChange - Callback que recibe el numero de pagina seleccionada.
- */
-type PaginationProps = {
-  currentPage: number
-  totalPages: number
-  onPageChange: (page: number) => void
-}
-
-/**
  * Componente de paginacion para el catalogo.
  *
- * No se renderiza si totalPages es 1 o menos.
+ * Se conecta al estado de paginacion de Algolia mediante usePagination.
+ * InstantSearch trabaja con paginas base 0, pero la interfaz usa base 1,
+ * por lo que se translatedn los indices en los limites de esta funcion.
+ *
+ * No se renderiza si hay una sola pagina o menos.
  *
  * La funcion getPages genera un arreglo inteligente de numeros de pagina:
  * - Si hay 7 paginas o menos, muestra todas.
  * - Si hay mas, muestra siempre la primera y la ultima, las paginas
  *   adyacentes a la actual, y reemplaza los saltos con '...'.
  *
- * Los botones anterior/siguiente se deshabilitan en los extremos. *
- *
- * @example
- * <Pagination
- *   currentPage={currentPage + 1}
- *   totalPages={totalPages}
- *   onPageChange={(page) => { refinePage(page - 1); window.scrollTo({ top: 0 }) }}
- * />
+ * Los botones anterior/siguiente se deshabilitan en los extremos.
  */
-export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
-  if (totalPages <= 1) return null
+export function Pagination() {
+  const { nbPages, currentRefinement, refine } = usePagination()
+
+  if (nbPages <= 1) return null
+
+  const currentPage = currentRefinement + 1
+
+  /**
+   * Cambia de pagina y vuelve al inicio del documento.
+   * InstantSearch espera la pagina en base 0.
+   */
+  function handlePageChange(page: number) {
+    refine(page - 1)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   /**
    * Calcula que numeros de pagina mostrar.
@@ -43,8 +41,8 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
   function getPages(): (number | '...')[] {
     const pages: (number | '...')[] = []
 
-    if (totalPages <= 7) {
-      for (let i = 1; i <= totalPages; i++) pages.push(i)
+    if (nbPages <= 7) {
+      for (let i = 1; i <= nbPages; i++) pages.push(i)
       return pages
     }
 
@@ -53,13 +51,13 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
     if (currentPage > 3) pages.push('...')
 
     const start = Math.max(2, currentPage - 1)
-    const end = Math.min(totalPages - 1, currentPage + 1)
+    const end = Math.min(nbPages - 1, currentPage + 1)
 
     for (let i = start; i <= end; i++) pages.push(i)
 
-    if (currentPage < totalPages - 2) pages.push('...')
+    if (currentPage < nbPages - 2) pages.push('...')
 
-    pages.push(totalPages)
+    pages.push(nbPages)
 
     return pages
   }
@@ -72,7 +70,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       {/* Boton anterior - deshabilitado en la primera pagina */}
       <button
         className={`${styles.btn} ${styles.btnNav}`}
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage === 1}
         aria-label="Pagina anterior"
       >
@@ -88,7 +86,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
             <button
               key={page}
               className={`${styles.btn} ${page === currentPage ? styles.btnActive : ''}`}
-              onClick={() => onPageChange(page)}
+              onClick={() => handlePageChange(page)}
               aria-label={`Pagina ${page}`}
               aria-current={page === currentPage ? 'page' : undefined}
             >
@@ -101,8 +99,8 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       {/* Boton siguiente - deshabilitado en la ultima pagina */}
       <button
         className={`${styles.btn} ${styles.btnNav}`}
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === nbPages}
         aria-label="Pagina siguiente"
       >
         <UilAngleRight size="18" />
