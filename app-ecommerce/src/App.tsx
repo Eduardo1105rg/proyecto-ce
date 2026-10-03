@@ -7,6 +7,7 @@ import { ProductDetailPage } from "./pages/ProductDetailPage";
 import { CatalogPage } from "./pages/CatalogPage";
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
 import { CarritoProvider } from './context/CarritoProvider'
+import { CartPage } from './pages/CartPage/CartPage'
 
 function App() {
   const { theme, toggleTheme } = useTheme()
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<CatalogPage />} />
           <Route path="/catalogo" element={<CatalogPage />} />
           <Route path="/producto/:id" element={<ProductDetailPage />} />
+          <Route path="/carrito" element={<CartPage />} />
         </Routes>
         <Footer />
       </CarritoProvider>
