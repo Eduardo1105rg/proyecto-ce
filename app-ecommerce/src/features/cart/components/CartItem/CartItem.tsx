@@ -16,7 +16,6 @@ type CartItemProps = {
  * Construye la URL completa de la imagen del producto.
  */
 function build_imageUrl(imagePath: string): string {
-    console.log("build_imageUrl called with imagePath:", imagePath); 
     const url = `https://eduardo1105rg.github.io/proyecto-ce/images/${imagePath}`;
     return url
 }
@@ -51,7 +50,7 @@ export function CartItem({ item, loading, failed, onQuantityChange, onRemove }: 
                         className={styles.image}
                         src={build_imageUrl(item.imagen)}
                         alt={title}
-                        onError={(e) => { 
+                        onError={(e) => {
                             (e.target as HTMLImageElement).src = 'https://placehold.co/300x220?text=Sin+imagen'
                         }}
                     />
