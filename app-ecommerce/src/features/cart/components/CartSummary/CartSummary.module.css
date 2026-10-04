@@ -1,0 +1,95 @@
+/* CartSummary.module.css */
+.summary {
+  padding: 20px;
+  background-color: var(--bg-white); /* Usa la variable de superficie blanca */
+  border: 1px solid var(--border-default); /* Usa el borde estándar */
+  border-radius: var(--radius-lg); /* Usa el radio de borde grande */
+  box-shadow: var(--shadow-sm); /* Añade una sombra sutil */
+  position: sticky;
+  top: 24px; /* Ajustado para que no choque con el header */
+}
+
+.heading {
+  font-size: var(--text-lg); /* 18px */
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--text-secondary); /* Texto secundario para las etiquetas */
+  font-size: var(--text-sm);
+}
+
+.row dd {
+  margin: 0;
+  color: var(--text-primary); /* Texto principal para los montos */
+  font-weight: 600;
+}
+
+.total {
+  padding-top: 12px;
+  border-top: 1px solid var(--border-default);
+  font-size: var(--text-lg);
+  color: var(--text-primary);
+}
+
+.total dd {
+  font-weight: 700;
+}
+
+.hint {
+  margin-top: 12px;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  background-color: var(--bg-subtle); /* Fondo azulado suave para el hint */
+  padding: 8px;
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.checkout {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  background-color: var(--blue-700); /* Usa el azul primario */
+  color: var(--text-inverse); /* Texto blanco */
+  font-size: var(--text-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.checkout:hover:not(:disabled) {
+  background-color: var(--blue-800); /* Hover más oscuro */
+}
+
+.checkout:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.checkout:focus-visible {
+  outline: 2px solid var(--blue-500);
+  outline-offset: 2px;
+}
+
+/* En móvil, el sticky se desactiva para que fluya con el scroll */
+@media (max-width: 900px) {
+  .summary {
+    position: static;
+    margin-top: 24px;
+  }
+}
