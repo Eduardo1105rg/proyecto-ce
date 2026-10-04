@@ -8,17 +8,20 @@ import {
 } from '@iconscout/react-unicons'
 import { UisStar, UisStarHalfAlt } from '@iconscout/react-unicons-solid'
 import { Button } from '../../../components/Button/Button'
-import { ProductGrid } from '../components/ProductGrid/ProductGrid'
+import { QuantityStepper } from '../../../components/QuantityStepper/QuantityStepper'
+import { useCarrito } from '../../../context/carritoContext'
 
 /**
  * Props del componente ProductDetail.
  *
- * @prop product         - Producto principal a mostrar en detalle.
- * @prop relatedProducts - Productos de la misma categoria para mostrar al final. Por defecto: [].
+ * @prop product  - Producto principal a mostrar en detalle.
+ * @prop children - Contenido adicional al final de la pagina, dentro del mismo
+ *                  contenedor. Lo usa ProductDetailPage para inyectar la grilla
+ *                  de productos relacionados, que es una busqueda independiente.
  */
 type ProductDetailProps = {
   product: Product
-  relatedProducts?: Product[]
+  children?: React.ReactNode
 }
 
 /**
@@ -112,15 +115,18 @@ function nombreSucursal(branchId: string): string {
  * precio del arreglo tiered_b2b_pricing cuando esta activado.
  * Solo aparece si el producto tiene precios B2B configurados.
  *
- * Al final de la pagina se muestra un grid de productos relacionados
- * de la misma categoria, si se reciben via la prop relatedProducts.
+ * Al final de la pagina renderiza los children recibidos, que se usan para
+ * mostrar un grid de productos relacionados.
  */
-export function ProductDetail({ product, relatedProducts = [] }: ProductDetailProps) {
+export function ProductDetail({ product, children }: ProductDetailProps) {
   const navigate = useNavigate()
   const totalStock = getTotalStock(product)
   const inStock = totalStock > 0
   const lowStock = totalStock > 0 && totalStock <= 5
-  const displayName = product.title ?? product.name ?? 'Sin nombre'
+  const displayName = product.name ?? 'Sin nombre'
+  const { items, agregar, cambiarCantidad } = useCarrito()
+    /** Cantidad de este producto que ya esta en el carrito (0 si no esta) */
+  const quantity = items.find((item) => item.objectID === product.objectID)?.cantidad ?? 0
 
   /** Controla si el modo mayorista B2B esta activo */
   const [isB2B, setIsB2B] = useState(false)
@@ -246,7 +252,27 @@ export function ProductDetail({ product, relatedProducts = [] }: ProductDetailPr
             </div>
 
             <div className={styles.btnGroup}>
-              <Button label="Agregar al carrito" variant="outline" size="lg" fullWidth disabled={!inStock} />
+              {/* Si el producto ya esta en el carrito, el boton se transforma en el control de cantidad */}
+              {quantity > 0 ? (
+                <QuantityStepper
+                  label={displayName}
+                  quantity={quantity}
+                  max={totalStock}
+                  size="lg"
+                  fullWidth
+                  onDecrease={() => cambiarCantidad(product.objectID, quantity - 1)}
+                  onIncrease={() => agregar(product.objectID, 1)}
+                />
+              ) : (
+                <Button
+                  label="Agregar al carrito"
+                  variant="outline"
+                  size="lg"
+                  fullWidth
+                  disabled={!inStock}
+                  onClick={() => agregar(product.objectID, 1)}
+                />
+              )}
               <Button label="Comprar ahora" variant="primary" size="lg" fullWidth disabled={!inStock} />
             </div>
           </div>
@@ -330,22 +356,8 @@ export function ProductDetail({ product, relatedProducts = [] }: ProductDetailPr
         </div>
       </div>
 
-      {/* Seccion de productos relacionados - visible solo si hay productos */}
-      {relatedProducts.length > 0 && (
-        <section className={styles.related}>
-          <div className={styles.relatedHeader}>
-            <h2 className={styles.relatedTitle}>Mas productos en {product.category}</h2>
-            <span className={styles.relatedCount}>{relatedProducts.length} productos</span>
-          </div>
-          <ProductGrid
-            products={relatedProducts}
-            viewMode="grid"
-            columns={4}
-            onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
-            onAddToCart={(p) => console.log('Agregar al carrito:', p.title ?? p.name)}
-          />
-        </section>
-      )}
+      {/* Espacio para contenido adicional, por ejemplo los productos relacionados */}
+      {children}
 
     </div>
   )

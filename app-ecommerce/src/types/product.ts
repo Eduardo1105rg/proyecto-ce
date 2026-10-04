@@ -19,11 +19,15 @@ export type B2BPriceTier = {
  * Incluye datos comerciales, logísticos y facetas para filtros.
  */
 export type Product = {
-  object_id: string
-  objectID: string 
+  /**
+   * Identificador generado por Algolia. Es la clave canonica del producto
+   * y la que se usa para el key de React y para navegar al detalle.
+   */
+  objectID: string
+  /** Identificador del dataset original. Opcional: no todos los registros lo traen. */
+  object_id?: string
   sku: string
-  title: string
-  name?: string
+  name: string
   brand: string
   category: string
   price: number

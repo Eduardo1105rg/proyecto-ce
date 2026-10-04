@@ -3,6 +3,8 @@ import type { Product, StockBranch } from '../../../types/product'
 import { UilShoppingCart, UilStar } from '@iconscout/react-unicons'
 import { UisStar, UisStarHalfAlt } from '@iconscout/react-unicons-solid'
 import { Button } from '../../Button/Button'
+import { QuantityStepper } from '../../QuantityStepper/QuantityStepper'
+import { useCarrito } from '../../../context/carritoContext'
 
 /**
  * Props del componente ProductCardGrid.
@@ -104,7 +106,9 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
   const totalStock = getTotalStock(product)
   const inStock = totalStock > 0
   const lowStock = totalStock > 0 && totalStock <= 5
-  const displayName = product.title ?? product.name ?? 'Sin nombre'
+  const displayName = product.name ?? 'Sin nombre'
+  const { items, agregar, cambiarCantidad } = useCarrito()
+  const quantity = items.find((item) => item.objectID === product.objectID)?.cantidad ?? 0
 
   return (
     <article className={styles.card} onClick={() => onClick?.(product)}>
@@ -156,23 +160,41 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
       <div className={styles.footer}>
         <div className={styles.priceRow}>
           <div className={styles.price}>{formatPrice(product.price)}</div>
-          {/* stopPropagation evita que el clic en carrito también active onClick de la tarjeta */}
-          <button
-            className={styles.cartBtn}
-            disabled={!inStock}
-            title={inStock ? 'Agregar al carrito' : 'Sin stock'}
-            onClick={(e) => { e.stopPropagation(); onAddToCart?.(product) }}
-          >
-            <UilShoppingCart size="16" />
-          </button>
+
+          {/* Si el producto ya esta en el carrito, el boton se transforma en el control de cantidad */}
+          {quantity > 0 ? (
+            <QuantityStepper
+              label={displayName}
+              quantity={quantity}
+              max={totalStock}
+              size="sm"
+              onDecrease={() => cambiarCantidad(product.objectID, quantity - 1)}
+              onIncrease={() => agregar(product.objectID, 1)}
+            />
+          ) : (
+            /* stopPropagation evita que el clic en carrito también active onClick de la tarjeta */
+            <button
+              className={styles.cartBtn}
+              disabled={!inStock}
+              title={inStock ? 'Agregar al carrito' : 'Sin stock'}
+              onClick={(e) => { e.stopPropagation(); onAddToCart?.(product) }}
+            >
+              <UilShoppingCart size="16" />
+            </button>
+          )}
         </div>
-        <Button
-          label="Ver detalle"
-          variant="soft"
-          size="sm"
-          fullWidth
-          onClick={() => onClick?.(product)}
-        />
+
+        {/* Button no entrega el evento, asi que el div corta la propagacion
+            para que onClick no se ejecute dos veces (boton + tarjeta) */}
+        <div onClick={(e) => e.stopPropagation()}>
+          <Button
+            label="Ver detalle"
+            variant="soft"
+            size="sm"
+            fullWidth
+            onClick={() => onClick?.(product)}
+          />
+        </div>
       </div>
     </article>
   )
