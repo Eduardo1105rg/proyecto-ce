@@ -34,6 +34,17 @@
     border-radius: var(--radius-md);
 }
 
+.lg .btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: var(--radius-md);
+}
+
+.lg .value {
+  font-size: var(--text-lg);
+}
+
 .btn:hover:not(:disabled) {
     background: var(--blue-100);
     color: var(--blue-700);

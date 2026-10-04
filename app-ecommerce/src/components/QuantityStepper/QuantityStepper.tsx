@@ -9,7 +9,7 @@ import styles from './QuantityStepper.module.css'
  * @prop onDecrease - Callback al presionar el botón de menos.
  * @prop onIncrease - Callback al presionar el botón de más.
  * @prop max        - Cantidad máxima. Al alcanzarla se deshabilita el botón de más.
- * @prop size       - Tamaño visual: 'sm' (grilla) o 'md' (lista). Por defecto: 'sm'.
+ * @prop size       - Tamaño visual: 'sm' (grilla), 'md' (lista) o 'lg' (detalle). Por defecto: 'sm'.
  * @prop fullWidth  - Si es true, ocupa todo el ancho y la cantidad se centra.
  */
 type QuantityStepperProps = {
@@ -18,7 +18,7 @@ type QuantityStepperProps = {
     onDecrease: () => void
     onIncrease: () => void
     max?: number
-    size?: 'sm' | 'md'
+    size?: 'sm' | 'md' | 'lg'
     fullWidth?: boolean
 }
 
@@ -40,7 +40,7 @@ export function QuantityStepper({
     size = 'sm',
     fullWidth = false,
 }: QuantityStepperProps) {
-    const iconSize = size === 'sm' ? '16' : '20'
+    const iconSize = size === 'sm' ? '16' : size === 'md' ? '20' : '22'
     const reachedMax = max !== undefined && quantity >= max
 
     return (

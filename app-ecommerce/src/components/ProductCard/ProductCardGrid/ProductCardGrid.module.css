@@ -67,7 +67,7 @@
 }
 
 .badgeTax {
-    background: var(--yellow-soft);
+    background: var(--yellow-500);
     color: var(--slate-800);
 }
 

@@ -8,6 +8,8 @@ import {
 } from '@iconscout/react-unicons'
 import { UisStar, UisStarHalfAlt } from '@iconscout/react-unicons-solid'
 import { Button } from '../../../components/Button/Button'
+import { QuantityStepper } from '../../../components/QuantityStepper/QuantityStepper'
+import { useCarrito } from '../../../context/carritoContext'
 
 /**
  * Props del componente ProductDetail.
@@ -122,6 +124,9 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
   const inStock = totalStock > 0
   const lowStock = totalStock > 0 && totalStock <= 5
   const displayName = product.name ?? 'Sin nombre'
+  const { items, agregar, cambiarCantidad } = useCarrito()
+    /** Cantidad de este producto que ya esta en el carrito (0 si no esta) */
+  const quantity = items.find((item) => item.objectID === product.objectID)?.cantidad ?? 0
 
   /** Controla si el modo mayorista B2B esta activo */
   const [isB2B, setIsB2B] = useState(false)
@@ -247,7 +252,27 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
             </div>
 
             <div className={styles.btnGroup}>
-              <Button label="Agregar al carrito" variant="outline" size="lg" fullWidth disabled={!inStock} />
+              {/* Si el producto ya esta en el carrito, el boton se transforma en el control de cantidad */}
+              {quantity > 0 ? (
+                <QuantityStepper
+                  label={displayName}
+                  quantity={quantity}
+                  max={totalStock}
+                  size="lg"
+                  fullWidth
+                  onDecrease={() => cambiarCantidad(product.objectID, quantity - 1)}
+                  onIncrease={() => agregar(product.objectID, 1)}
+                />
+              ) : (
+                <Button
+                  label="Agregar al carrito"
+                  variant="outline"
+                  size="lg"
+                  fullWidth
+                  disabled={!inStock}
+                  onClick={() => agregar(product.objectID, 1)}
+                />
+              )}
               <Button label="Comprar ahora" variant="primary" size="lg" fullWidth disabled={!inStock} />
             </div>
           </div>
