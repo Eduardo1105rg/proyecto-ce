@@ -22,24 +22,7 @@ function sanearCantidad(cantidad: number): number {
   return Math.max(Math.floor(cantidad), 1)
 }
 
-/**
- * Reducer del carrito.
- *
- * Función pura: no toca localStorage, no consulta Algolia y no usa React.
- * Recibe el estado y una acción, y devuelve el estado siguiente.
- *
- * Dos decisiones que conviene tener presentes al leerlo:
- *
- * - Las acciones sobre un objectID que no está en el carrito devuelven el mismo
- *   estado en vez de lanzar. Un doble clic rápido o un dispatch desfasado no
- *   debe romper la aplicación, y devolver la misma referencia además deja que
- *   React omita el re-render.
- *
- * - La única identidad de una línea es su objectID. El reducer solo lleva
- *   cuentas de identificadores y cantidades: no sabe qué nombre ni qué precio
- *   tiene un producto, y por eso nunca puede quedar desincronizado con el
- *   catálogo.
- */
+
 export function carritoReducer(estado: EstadoCarrito, accion: AccionCarrito): EstadoCarrito {
   switch (accion.type) {
     case 'HIDRATAR': {
@@ -98,12 +81,7 @@ export function carritoReducer(estado: EstadoCarrito, accion: AccionCarrito): Es
   }
 }
 
-/**
- * Constructores de acciones del carrito.
- *
- * Evitan que las cadenas de type queden repetidas por toda la aplicación, que
- * es la forma más fácil de que un typo se convierta en un bug silencioso.
- */
+
 export const accionesCarrito = {
   hidratar: (items: ItemCarrito[]): AccionCarrito => ({ type: 'HIDRATAR', items }),
 
