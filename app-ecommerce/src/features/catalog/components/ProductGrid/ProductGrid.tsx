@@ -62,7 +62,7 @@ export function ProductGrid({
       {products.map(product =>
         viewMode === 'list' ? (
           <ProductCardList
-            key={product.object_id}
+            key={product.objectID}
             product={product}
             imageUrl={`/images/${product.image}`}
             onAddToCart={onAddToCart}
@@ -70,7 +70,7 @@ export function ProductGrid({
           />
         ) : (
           <ProductCardGrid
-            key={product.object_id}
+            key={product.objectID}
             product={product}
             imageUrl={`/images/${product.image}`}
             onAddToCart={onAddToCart}

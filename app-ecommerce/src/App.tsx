@@ -6,20 +6,26 @@ import { Route } from "react-router-dom";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
 import { CatalogPage } from "./pages/CatalogPage";
 import { ScrollToTop } from './components/ScrollToTop/ScrollToTop'
+import { CarritoProvider } from './context/CarritoProvider'
+import { CartPage } from './pages/CartPage/CartPage'
 
 function App() {
   const { theme, toggleTheme } = useTheme()
 
   return (
     <HashRouter>
-      <Navbar theme={theme} onToggleTheme={toggleTheme} />
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<CatalogPage />} />
-        <Route path="/catalogo" element={<CatalogPage />} />
-        <Route path="/producto/:id" element={<ProductDetailPage />} />
-      </Routes>
-      <Footer />
+      {/* Se agrega lo del Provider por encima de todo para que este disponibles al recargar las paginas. */}
+      <CarritoProvider>
+        <Navbar theme={theme} onToggleTheme={toggleTheme} />
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<CatalogPage />} />
+          <Route path="/catalogo" element={<CatalogPage />} />
+          <Route path="/producto/:id" element={<ProductDetailPage />} />
+          <Route path="/carrito" element={<CartPage />} />
+        </Routes>
+        <Footer />
+      </CarritoProvider>
     </HashRouter>
   )
 }

@@ -149,9 +149,10 @@
     justify-content: center;
     gap: 10px;
     padding: 16px 20px;
-    border-left: 1px solid var(--border-default);
     border-right: 1px solid var(--border-default);
-    min-width: 180px;
+    width: 220px;
+    min-width: 220px;
+    flex-shrink: 0;
 }
 
 .price {
