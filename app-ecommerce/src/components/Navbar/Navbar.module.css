@@ -74,6 +74,60 @@
   background: var(--border-default);
 }
 
+/* - ACCIONES DEL HEADER (carrito + tema) - */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cartBtn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-default);
+  background: var(--bg-white);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.cartBtn:hover {
+  background: var(--border-default);
+  color: var(--text-primary);
+}
+
+.cartBtnActive {
+  background: var(--bg-subtle);
+  color: var(--blue-800);
+}
+
+/* - CONTADOR DEL CARRITO - */
+.iconWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.badge {
+  position: absolute;
+  top: -7px;
+  right: -9px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--radius-full);
+  background: var(--orange-500);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  box-shadow: 0 0 0 2px var(--bg-white);
+}
+
 /* - BOTTOM NAV - solo móvil - */
 .bottomNav {
   display: none;
@@ -149,6 +203,24 @@
 
 :global(.dark) .navLinkDisabled {
   opacity: 0.4;
+}
+
+:global(.dark) .cartBtn {
+  background: var(--ink-900);
+  border-color: var(--ink-700);
+}
+
+:global(.dark) .cartBtn:hover {
+  background: var(--ink-600);
+}
+
+:global(.dark) .cartBtnActive {
+  background: var(--ink-800);
+  color: var(--slate-50);
+}
+
+:global(.dark) .badge {
+  box-shadow: 0 0 0 2px var(--ink-900);
 }
 
 /* - RESPONSIVE - */
@@ -227,5 +299,9 @@
 
   .bottomThemeBtn:hover {
     color: var(--blue-800);
+  }
+
+  .actions {
+    display: none;
   }
 }
