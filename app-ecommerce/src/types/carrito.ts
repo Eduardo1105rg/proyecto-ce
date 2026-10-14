@@ -16,6 +16,9 @@ export type ItemCarritoEnriquecido = ItemCarrito & {
   imagen: string
 
   noDisponible: boolean
+
+  /** true si el producto ofrece envío gratis (facets.free_shipping) */
+  envioGratis: boolean
 }
 
 
@@ -31,6 +34,9 @@ export type TotalesCarrito = {
   envio: number
 
   envioGratis: boolean
+
+  /** Base usada para calcular el envío: subtotal de líneas SIN envío gratis */
+  baseEnvio: number
 
   total: number
 }
