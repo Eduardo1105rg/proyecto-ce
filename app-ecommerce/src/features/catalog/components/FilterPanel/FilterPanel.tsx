@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useClearRefinements, useConfigure, useRefinementList, useSortBy } from 'react-instantsearch'
-import { UilAngleDown, UilAngleLeft, UilAngleRight } from '@iconscout/react-unicons'
+import { UilAngleDown } from '@iconscout/react-unicons'
 import styles from './FilterPanel.module.css'
 import { Dropdown } from '../../../../components/Dropdown/Dropdown'
 import { Button } from '../../../../components/Button/Button'
@@ -20,6 +20,9 @@ const MAX_FACET_VALUES = 100
  * atributo facet y por lo tanto Algolia no puede calcular el limite superior.
  */
 const FALLBACK_MAX_PRICE = 500000
+
+/** Debe coincidir con el breakpoint móvil de FilterPanel.module.css */
+const MOBILE_QUERY = '(max-width: 768px)'
 
 /**
  * Seccion colapsable dentro del FilterPanel.
@@ -157,8 +160,20 @@ export function FilterPanel() {
 	const [maxValue, setMaxValue] = useState('')
 	const [priceError, setPriceError] = useState<string | null>(null)
 
-	/** Controla si el panel completo esta colapsado (solo muestra el header) */
-	const [collapsed, setCollapsed] = useState(false)
+	/**
+	 * Controla si el panel completo esta colapsado (solo muestra el header).
+	 * Arranca colapsado en movil para que los productos queden a la vista, y
+	 * se ajusta si el ancho cruza el breakpoint (por ejemplo, al rotar el telefono).
+	 */
+	const [collapsed, setCollapsed] = useState(() => window.matchMedia(MOBILE_QUERY).matches)
+
+	useEffect(() => {
+		const query = window.matchMedia(MOBILE_QUERY)
+		const handleChange = (e: MediaQueryListEvent) => setCollapsed(e.matches)
+
+		query.addEventListener('change', handleChange)
+		return () => query.removeEventListener('change', handleChange)
+	}, [])
 
 	const placeholderMax = FALLBACK_MAX_PRICE.toLocaleString('es-CR')
 
@@ -213,9 +228,20 @@ export function FilterPanel() {
 	return (
 		<aside className={styles.panel}>
 
-			{/* Header del panel - siempre visible, incluye boton de colapso y limpiar todo */}
+			{/* Header del panel - siempre visible, incluye limpiar todo y boton de colapso */}
 			<div className={styles.panelHeader}>
-				<div className={styles.panelHeaderLeft}>
+				<span className={styles.panelTitle}>Filtros</span>
+
+				<div className={styles.headerActions}>
+					{canClear && (
+						<button className={styles.clearAll} onClick={() => {
+							setPriceError(null)
+							setPriceRange([undefined, undefined])
+							clearRefinements()
+						}}>
+							Limpiar todo
+						</button>
+					)}
 					<button
 						type="button"
 						className={styles.collapseBtn}
@@ -224,19 +250,12 @@ export function FilterPanel() {
 						aria-expanded={!collapsed}
 						title={collapsed ? 'Expandir filtros' : 'Contraer filtros'}
 					>
-						{collapsed ? <UilAngleRight size="16" /> : <UilAngleLeft size="16" />}
+						<UilAngleDown
+							size="18"
+							className={`${styles.chevron} ${collapsed ? '' : styles.chevronOpen}`}
+						/>
 					</button>
-					<span className={styles.panelTitle}>Filtros</span>
 				</div>
-				{canClear && (
-					<button className={styles.clearAll} onClick={() => {
-						setPriceError(null)
-						setPriceRange([undefined, undefined])
-						clearRefinements()
-					}}>
-						Limpiar todo
-					</button>
-				)}
 			</div>
 
 			{/* Cuerpo del panel - se oculta cuando collapsed es true */}
