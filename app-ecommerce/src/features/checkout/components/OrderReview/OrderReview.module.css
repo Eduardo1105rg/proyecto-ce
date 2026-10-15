@@ -1,0 +1,168 @@
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 24px;
+    align-items: start;
+}
+
+.main,
+.side {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.side {
+    position: sticky;
+    top: 24px;
+}
+
+.card {
+    padding: 24px;
+    background-color: var(--bg-white);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.cardTitle {
+    margin: 0 0 20px;
+    padding: 0;
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.cardHeader .cardTitle {
+    margin: 0;
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.infoTitle {
+    margin: 0 0 8px;
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.infoText {
+    margin: 0 0 4px;
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    overflow-wrap: anywhere;
+}
+
+.scenarios {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    min-width: 0;
+}
+
+.note {
+    margin: -8px 0 6px;
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+}
+
+.option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.option:hover {
+    border-color: var(--border-strong);
+}
+
+.optionActive {
+    border-color: var(--blue-700);
+    background-color: var(--bg-subtle);
+}
+
+.option input {
+    margin-top: 3px;
+    accent-color: var(--blue-700);
+}
+
+.option:has(input:focus-visible) {
+    outline: 2px solid var(--blue-500);
+    outline-offset: 2px;
+}
+
+.optionLabel {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.optionHint {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+}
+
+.confirm {
+    margin-top: 20px;
+}
+
+.processing {
+    margin: 12px 0 0;
+    font-size: var(--text-xs);
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.error {
+    margin: 16px 0 0;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    background-color: var(--red-soft);
+    color: var(--red-600);
+    font-size: var(--text-sm);
+}
+
+@media (max-width: 900px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .side {
+        position: static;
+    }
+}
+
+@media (max-width: 640px) {
+    .card {
+        padding: 18px;
+    }
+
+    .infoGrid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
