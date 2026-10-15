@@ -94,8 +94,7 @@ export function CartPage() {
 					</ul>
 
 					<div className={styles.summaryWrapper}>
-						{/* Sin onCheckout hasta que exista la pagina de checkout */}
-						<CartSummary totals={totales} loading={cargando || error !== null} />
+						<CartSummary totals={totales} loading={cargando || error !== null} onCheckout={() => navigate('/checkout')} />
 					</div>
 				</div>
 			)}
