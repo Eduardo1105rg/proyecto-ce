@@ -10,6 +10,7 @@ type HitProducto = {
   name?: string
   price?: number
   image?: string
+  facets?: { free_shipping?: boolean }
 }
 
 
@@ -43,7 +44,7 @@ export async function obtenerProductosPorIds(
         filters: construirFiltroIds(consultables),
 
         hitsPerPage: consultables.length,
-        attributesToRetrieve: ['objectID', 'name', 'price', 'image'],
+        attributesToRetrieve: ['objectID', 'name', 'price', 'image', 'facets.free_shipping'],
       },
     ],
   })
@@ -66,15 +67,16 @@ export async function obtenerProductosPorIds(
     const hit = porId.get(item.objectID)
 
     if (!hit) {
-      return {
-        objectID: item.objectID,
-        cantidad: item.cantidad,
-        titulo: '',
-        precio: 0,
-        imagen: '',
-        noDisponible: true,
-      }
+    return {
+      objectID: item.objectID,
+      cantidad: item.cantidad,
+      titulo: '',
+      precio: 0,
+      imagen: '',
+      noDisponible: true,
+      envioGratis: false,
     }
+  }
 
     const precio = typeof hit.price === 'number' && Number.isFinite(hit.price) ? hit.price : 0
 
@@ -87,6 +89,7 @@ export async function obtenerProductosPorIds(
       // El hit existe, así que el producto está disponible aunque su precio
       // sea 0. Un producto gratuito no es un producto desaparecido.
       noDisponible: false,
+      envioGratis: hit.facets?.free_shipping === true,
     }
   })
 }
@@ -106,8 +109,9 @@ export function combinarLineas(
       cantidad: item.cantidad,
       titulo: resuelta?.titulo ?? '',
       precio: resuelta?.precio ?? 0,
-      imagen: resuelta?.imagen ?? '',
-      noDisponible: resuelta?.noDisponible ?? true,
-    }
+    imagen: resuelta?.imagen ?? '',
+    noDisponible: resuelta?.noDisponible ?? true,
+    envioGratis: resuelta?.envioGratis ?? false,
+  }
   })
 }
