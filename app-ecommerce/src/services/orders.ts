@@ -4,11 +4,6 @@ import type { PaymentResult } from '../types/payment'
 /*
  * Servicio de ordenes (destino definitivo de `crearOrden` y `aplicarResultado`).
  *
- * E2: servicio completo con repositorio minimo en `localStorage` (clave
- * versionada `ordenes:v1`). Los nombres se conservan en camelCase, identicos a
- * los que ya consume `CheckoutPage`, de modo que el swap de E3a sea un cambio
- * de origen de import, sin tocar componentes.
- *
  * Reglas de negocio:
  *  - Los montos llegan calculados por el carrito y NO se recalculan aqui.
  *  - Los items no disponibles no se incluyen (la pagina los filtra antes).
@@ -19,7 +14,7 @@ import type { PaymentResult } from '../types/payment'
  *    sin cambios; en cualquier otro caso se mantiene `PENDING`.
  */
 
-/** Clave versionada del repositorio de ordenes en `localStorage`. */
+/** Clave del rubro de Ordenes en localStorage. */
 export const CLAVE_ORDENES = 'ordenes:v1'
 
 /** Version del formato guardado; permite descartar datos de versiones previas. */
@@ -120,6 +115,8 @@ function sanearOrdenes(valor: unknown, contexto: string): Order[] {
             `[ordenes] ${contexto}: se descartaron ${valor.length - validas.length} orden(es) con datos invalidos.`,
         )
     }
+
+    console.log('[ordenes] ordenes validas', validas)
 
     return validas
 }
@@ -234,6 +231,7 @@ export async function crearOrden(input: CrearOrdenInput): Promise<Order> {
         paymentStatus: 'PENDING',
     }
 
+    console.log('[ordenes] creando orden', order);
     persistirOrden(order)
 
     return order
