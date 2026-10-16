@@ -1,0 +1,125 @@
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.card {
+	padding: 24px;
+	background-color: var(--bg-white);
+	border: 1px solid var(--border-default);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-sm);
+}
+
+.cardTitle {
+	margin: 0 0 20px;
+	font-size: var(--text-lg);
+	font-weight: 700;
+	color: var(--text-primary);
+}
+
+.fields {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 20px 24px;
+}
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.full {
+	grid-column: 1 / -1;
+}
+
+.label {
+	font-size: var(--text-sm);
+	font-weight: 600;
+	color: var(--text-primary);
+}
+
+.optional {
+	font-weight: 400;
+	color: var(--text-muted);
+}
+
+.input {
+	width: 100%;
+	padding: 11px 14px;
+	background-color: var(--bg-white);
+	color: var(--text-primary);
+	border: 1px solid var(--border-strong);
+	border-radius: var(--radius-md);
+	font: inherit;
+	font-size: var(--text-base);
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+textarea.input {
+	resize: vertical;
+	min-height: 88px;
+}
+
+.input::placeholder {
+	color: var(--text-muted);
+}
+
+.input:focus {
+	outline: none;
+	border-color: var(--border-focus);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue-500) 30%, transparent);
+}
+
+.inputError,
+.inputError:focus {
+	border-color: var(--red-500);
+}
+
+.inputError:focus {
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--red-500) 25%, transparent);
+}
+
+.error {
+	margin: 0;
+	font-size: var(--text-xs);
+	color: var(--red-600);
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+}
+
+.backLink {
+	font-size: var(--text-sm);
+	font-weight: 600;
+	color: var(--text-link);
+	text-decoration: none;
+}
+
+.backLink:hover {
+	color: var(--text-link-hover);
+	text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+	.card {
+		padding: 18px;
+	}
+
+	.fields {
+		grid-template-columns: 1fr;
+		gap: 16px;
+	}
+
+	.actions {
+		flex-direction: column-reverse;
+		align-items: stretch;
+		text-align: center;
+	}
+}

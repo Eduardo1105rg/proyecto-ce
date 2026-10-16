@@ -38,11 +38,10 @@
     flex-shrink: 0;
 }
 
-.panelHeaderLeft {
+.headerActions {
     display: flex;
     align-items: center;
     gap: 8px;
-    min-width: 0;
 }
 
 .collapseBtn {

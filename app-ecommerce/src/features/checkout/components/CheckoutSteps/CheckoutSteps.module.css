@@ -1,0 +1,79 @@
+.steps {
+    display: flex;
+    align-items: center;
+    margin: 0 0 32px;
+    padding: 0;
+    list-style: none;
+}
+
+.step {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    font-weight: 600;
+}
+
+.step:last-child {
+    flex: 0 0 auto;
+}
+
+/* Línea que une una etapa con la siguiente */
+.step:not(:last-child)::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    margin: 0 12px;
+    background-color: var(--border-default);
+}
+
+.marker {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 2px solid var(--border-strong);
+    border-radius: var(--radius-full);
+    background-color: var(--bg-white);
+    font-size: var(--text-sm);
+}
+
+.current {
+    color: var(--text-primary);
+}
+
+.current .marker {
+    border-color: var(--blue-700);
+    background-color: var(--blue-700);
+    color: var(--white);
+}
+
+.done {
+    color: var(--text-secondary);
+}
+
+.done .marker {
+    border-color: var(--green-600);
+    background-color: var(--green-600);
+    color: var(--white);
+}
+
+.done:not(:last-child)::after {
+    background-color: var(--green-600);
+}
+
+@media (max-width: 640px) {
+
+    /* En móvil solo se rotula la etapa actual */
+    .step:not(.current) .label {
+        display: none;
+    }
+
+    .step:not(:last-child)::after {
+        margin: 0 8px;
+    }
+}
