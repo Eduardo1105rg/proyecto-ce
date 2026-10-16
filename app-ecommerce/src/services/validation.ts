@@ -1,4 +1,4 @@
-import type { BuyerInfo, DeliveryInfo } from '../../types/order'
+import type { BuyerInfo, DeliveryInfo } from '../types/order'
 
 export type CheckoutValues = {
     fullName: string
