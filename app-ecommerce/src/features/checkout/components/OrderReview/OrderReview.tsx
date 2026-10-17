@@ -1,6 +1,6 @@
 import type { ItemCarritoEnriquecido, TotalesCarrito } from '../../../../types/carrito'
 import { Button } from '../../../../components/Button/Button'
-import type { SandboxScenario } from '../../checkoutApi.mock'
+import type { SandboxScenario } from '../../../../services/paymentSandbox'
 import type { CheckoutValues } from '../../../../services/validation'
 import { OrderItemsList } from '../OrderItemsList/OrderItemsList'
 import { OrderTotals } from '../OrderTotals/OrderTotals'

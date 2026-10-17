@@ -13,11 +13,9 @@ import type { Order } from '../../types/order'
 import type { PaymentResult } from '../../types/payment'
 import styles from './CheckoutPage.module.css'
 
-// TO DO E3b: mover `procesarPago` del stub C (`checkoutApi.mock.ts`) al Sandbox
-// real (`services/paymentSandbox.ts`). Las órdenes ya usan su servicio real.
 import { aplicarResultado, crearOrden, obtenerOrden } from '../../services/orders'
-import { procesarPago } from '../../features/checkout/checkoutApi.mock'
-import type { SandboxScenario } from '../../features/checkout/checkoutApi.mock'
+import { procesarPago } from '../../services/paymentSandbox'
+import type { SandboxScenario } from '../../services/paymentSandbox'
 
 /**
  * Reconstruye el resultado de pago de una orden persistida para poder mostrar
