@@ -14,7 +14,7 @@ import type { PaymentResult } from '../../types/payment'
 import styles from './CheckoutPage.module.css'
 
 import { aplicarResultado, crearOrden, obtenerOrden } from '../../services/orders'
-import { procesarPago } from '../../services/paymentSandbox'
+import { ErrorServicioPago, procesarPago } from '../../services/paymentSandbox'
 import type { SandboxScenario } from '../../services/paymentSandbox'
 
 /**
@@ -133,12 +133,13 @@ export function CheckoutPage() {
                     { orderId: current.orderNumber, amount: current.total, currency: 'CRC' },
                     scenario,
                 )
-            } catch {
-                // Si el servicio falla o no responde, se trata como un resultado más.
+            } catch (error) {
                 payment = {
                     code: 'PAYMENT_ERROR',
                     orderId: current.orderNumber,
-                    message: 'El servicio de pago no está disponible en este momento. Intente de nuevo.',
+                    message: error instanceof ErrorServicioPago
+                        ? error.message
+                        : 'El servicio de pago no está disponible en este momento. Intente de nuevo.',
                 }
             }
 
