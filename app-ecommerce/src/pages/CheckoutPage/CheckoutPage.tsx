@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useCarrito } from '../../context/carritoContext'
 import { CartEmpty } from '../../features/cart/components/CartEmpty/CartEmpty'
 import { CheckoutForm } from '../../features/checkout/components/CheckoutForm/CheckoutForm'
@@ -13,24 +13,63 @@ import type { Order } from '../../types/order'
 import type { PaymentResult } from '../../types/payment'
 import styles from './CheckoutPage.module.css'
 
-// TO DO conectar: reemplazar este import por los módulos reales
-//   crearOrden y aplicarResultado -> módulo de órdenes 
-//   procesarPago                  -> servicio Sandbox 
-import {
-    aplicarResultado,
-    crearOrden,
-    procesarPago,
-} from '../../features/checkout/checkoutApi.mock'
+// TO DO E3b: mover `procesarPago` del stub C (`checkoutApi.mock.ts`) al Sandbox
+// real (`services/paymentSandbox.ts`). Las órdenes ya usan su servicio real.
+import { aplicarResultado, crearOrden, obtenerOrden } from '../../services/orders'
+import { procesarPago } from '../../features/checkout/checkoutApi.mock'
 import type { SandboxScenario } from '../../features/checkout/checkoutApi.mock'
+
+/**
+ * Reconstruye el resultado de pago de una orden persistida para poder mostrar
+ * la pantalla de resultado tras una recarga. La orden no guarda el
+ * `transactionId`, así que no se recupera. Devuelve `null` si el pago aún no
+ * quedó resuelto.
+ */
+function resultadoDesdeOrden(order: Order): PaymentResult | null {
+    if (order.paymentStatus === 'APPROVED') {
+        return { code: 'PAYMENT_APPROVED', orderId: order.orderNumber, message: 'Su pago fue aprobado.' }
+    }
+
+    if (order.paymentStatus === 'DECLINED') {
+        return {
+            code: 'PAYMENT_DECLINED',
+            orderId: order.orderNumber,
+            message: 'El pago fue rechazado. Verifique su método de pago o intente con otro.',
+        }
+    }
+
+    if (order.paymentStatus === 'ERROR') {
+        return {
+            code: 'PAYMENT_ERROR',
+            orderId: order.orderNumber,
+            message: 'El servicio de pago no está disponible en este momento. Intente de nuevo.',
+        }
+    }
+
+    return null
+}
 
 export function CheckoutPage() {
     const { items, totales, cargando, error, vaciar, activarConsulta } = useCarrito()
 
-    const [step, setStep] = useState<CheckoutStep>('data')
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    // Persistencia básica (E3a): el número de orden viaja en la URL y la orden ya
+    // quedó guardada por el servicio de órdenes. Al montar se lee una sola vez
+    // para reconstruir la pantalla de resultado cuando se recarga el paso; el
+    // resto del flujo controla el estado por su cuenta.
+    const [recovery] = useState(() => {
+        const numero = searchParams.get('orden')
+        const recuperada = numero ? obtenerOrden(numero) : null
+        const pago = recuperada ? resultadoDesdeOrden(recuperada) : null
+        return pago ? { order: recuperada, result: pago } : null
+    })
+
+    const [step, setStep] = useState<CheckoutStep>(recovery ? 'outcome' : 'data')
     const [values, setValues] = useState<CheckoutValues>(EMPTY_VALUES)
     const [scenario, setScenario] = useState<SandboxScenario>('PAYMENT_APPROVED')
-    const [order, setOrder] = useState<Order | null>(null)
-    const [result, setResult] = useState<PaymentResult | null>(null)
+    const [order, setOrder] = useState<Order | null>(recovery?.order ?? null)
+    const [result, setResult] = useState<PaymentResult | null>(recovery?.result ?? null)
     const [processing, setProcessing] = useState(false)
     const [submitError, setSubmitError] = useState<string | null>(null)
     const submittingRef = useRef(false)
@@ -48,11 +87,13 @@ export function CheckoutPage() {
         // Si cambian los datos, la orden ya creada dejaría de ser válida.
         setOrder(null)
         setSubmitError(null)
+        setSearchParams({}, { replace: true })
         goTo('data')
     }
 
     const handleRetry = () => {
         setResult(null)
+        setSearchParams({}, { replace: true })
         goTo('review')
     }
 
@@ -103,11 +144,17 @@ export function CheckoutPage() {
                 }
             }
 
-            setOrder(aplicarResultado(current, payment))
+            const actualizada = aplicarResultado(current, payment)
+
+            setOrder(actualizada)
             setResult(payment)
 
             // El carrito solo se vacía cuando el pago fue aprobado.
             if (payment.code === 'PAYMENT_APPROVED') vaciar()
+
+            // El número de orden en la URL permite recuperar el resultado tras
+            // una recarga, sin agregar una entrada al historial.
+            setSearchParams({ orden: actualizada.orderNumber }, { replace: true })
 
             goTo('outcome')
         } catch {
