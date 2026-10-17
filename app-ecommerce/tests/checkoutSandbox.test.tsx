@@ -45,7 +45,7 @@ async function openReview() {
     expect(screen.getByRole('button', { name: 'Confirmar y pagar' })).toBeTruthy()
 }
 
-function confirm(label = 'Pago aprobado') {
+function confirm(label = 'Tarjeta Visa') {
     fireEvent.click(screen.getByRole('radio', { name: new RegExp(label) }))
     fireEvent.click(screen.getByRole('button', { name: 'Confirmar y pagar' }))
 }
@@ -87,9 +87,9 @@ afterEach(() => {
 
 describe('Checkout y Sandbox con componentes reales', () => {
     for (const scenario of [
-        { id: 'SBX-01', label: 'Pago aprobado', code: 'PAYMENT_APPROVED', title: '¡Gracias por su compra!', status: 'CONFIRMED', payment: 'APPROVED' },
-        { id: 'SBX-02', label: 'Pago rechazado', code: 'PAYMENT_DECLINED', title: 'Su pago fue rechazado', status: 'PENDING', payment: 'DECLINED' },
-        { id: 'SBX-03', label: 'Error del servicio', code: 'PAYMENT_ERROR', title: 'No pudimos procesar su pago', status: 'PENDING', payment: 'ERROR' },
+        { id: 'SBX-01', label: 'Tarjeta Visa', code: 'PAYMENT_APPROVED', title: '¡Gracias por su compra!', status: 'CONFIRMED', payment: 'APPROVED' },
+        { id: 'SBX-02', label: 'Tarjeta American Express', code: 'PAYMENT_DECLINED', title: 'Su pago fue rechazado', status: 'PENDING', payment: 'DECLINED' },
+        { id: 'SBX-03', label: 'Tarjeta Mastercard', code: 'PAYMENT_ERROR', title: 'No pudimos procesar su pago', status: 'PENDING', payment: 'ERROR' },
     ]) {
         it(`${scenario.id}: ${scenario.label}, montos y persistencia coherentes`, async () => {
             const payment = vi.spyOn(sandbox, 'procesarPago')
@@ -123,7 +123,7 @@ describe('Checkout y Sandbox con componentes reales', () => {
     })
 
     for (const [id, label, status] of [
-        ['SBX-05', 'Pago rechazado', 'DECLINED'], ['SBX-06', 'Error del servicio', 'ERROR'],
+        ['SBX-05', 'Tarjeta American Express', 'DECLINED'], ['SBX-06', 'Tarjeta Mastercard', 'ERROR'],
     ]) {
         it(`${id}: permite aprobar la misma orden después de ${label}`, async () => {
             await openReview()
@@ -192,7 +192,7 @@ describe('Checkout y Sandbox con componentes reales', () => {
 
     it.fails('SBX-10: recupera los datos del comprador al reintentar después de recargar un pago rechazado', async () => {
         await openReview()
-        confirm('Pago rechazado')
+        confirm('Tarjeta American Express')
         await advance(2000)
         const order = expectOrder('PENDING', 'DECLINED')
         cleanup()

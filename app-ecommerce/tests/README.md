@@ -40,14 +40,16 @@ El carrito calcula subtotal ₡2 500, IVA del 13% ₡325, envío ₡3 000 y tota
 
 Salvo que se indique otra cosa, cada caso comienza con un carrito nuevo, se abre `/checkout`, se completan los datos válidos y se pulsa Continuar.
 
+El selector «Seleccione una tarjeta» utiliza marcas de tarjeta para elegir el resultado simulado del Sandbox: Tarjeta Visa aprueba, Tarjeta American Express rechaza y Tarjeta Mastercard simula un error del servicio. No se solicitan datos de tarjeta ni se realizan cobros reales.
+
 | Caso | Acción | Resultado esperado | Evidencia y estado |
 | --- | --- | --- | --- |
-| SBX-01 | Seleccionar Pago aprobado y confirmar. | Carga durante 2 segundos, solicitud con ID/total/CRC correctos, orden CONFIRMED / APPROVED, confirmación visible y carrito vacío. | Automatizado aprobado; [Chromium](evidence/approved.png). |
-| SBX-02 | Seleccionar Pago rechazado y confirmar. | Orden PENDING / DECLINED, mensaje de rechazo, carrito intacto y reintento habilitado. | Automatizado aprobado; [Chromium](evidence/declined.png). |
-| SBX-03 | Seleccionar Error del servicio y confirmar. | Orden PENDING / ERROR, mensaje comprensible, carga finalizada y carrito intacto. | Automatizado aprobado; [Chromium](evidence/error.png). |
+| SBX-01 | Seleccionar Tarjeta Visa y confirmar. | Carga durante 2 segundos, solicitud con ID/total/CRC correctos, orden CONFIRMED / APPROVED, confirmación visible y carrito vacío. | Automatizado aprobado; [Chromium](evidence/approved.png). |
+| SBX-02 | Seleccionar Tarjeta American Express y confirmar. | Orden PENDING / DECLINED, mensaje de rechazo, carrito intacto y reintento habilitado. | Automatizado aprobado; [Chromium](evidence/declined.png). |
+| SBX-03 | Seleccionar Tarjeta Mastercard y confirmar. | Orden PENDING / ERROR, mensaje comprensible, carga finalizada y carrito intacto. | Automatizado aprobado; [Chromium](evidence/error.png). |
 | SBX-04 | Pulsar dos veces Confirmar y pagar antes del resultado. | Una sola solicitud al Sandbox y una sola orden. | Automatizado aprobado. |
-| SBX-05 | Tras un rechazo, pulsar Intentar de nuevo y elegir Pago aprobado. | Mismo número de orden, datos visibles, estado CONFIRMED / APPROVED y carrito vacío. | Automatizado y Chromium aprobados. |
-| SBX-06 | Tras un error, pulsar Intentar de nuevo y elegir Pago aprobado. | Mismo número de orden, carga reiniciada correctamente y confirmación sin duplicar órdenes. | Automatizado y Chromium aprobados. |
+| SBX-05 | Tras un rechazo, pulsar Intentar de nuevo y elegir Tarjeta Visa. | Mismo número de orden, datos visibles, estado CONFIRMED / APPROVED y carrito vacío. | Automatizado y Chromium aprobados. |
+| SBX-06 | Tras un error, pulsar Intentar de nuevo y elegir Tarjeta Visa. | Mismo número de orden, carga reiniciada correctamente y confirmación sin duplicar órdenes. | Automatizado y Chromium aprobados. |
 | SBX-07 | Inyectar un proveedor sin respuesta y confirmar. | Sigue cargando a los 4 999 ms; a los 5 000 ms muestra timeout, orden PENDING / ERROR, carrito intacto y reintento habilitado. | Automatizado aprobado. |
 | SBX-08 | Resolver una aprobación después del timeout; luego reintentar explícitamente. | La respuesta tardía no confirma ni vacía el carrito. El reintento explícito puede aprobar la misma orden. | Automatizado aprobado. |
 | SBX-09 | Aprobar, desmontar la página y volver con `?orden=<número>`. | Recupera la confirmación persistida aunque el carrito esté vacío. | Automatizado aprobado; simula recarga de componentes. |
@@ -72,12 +74,14 @@ Validación realizada el 17 de octubre de 2026 sobre `feature/sandbox-service`, 
 
 Las capturas corresponden al servidor local de esta rama, no a GitHub Pages. La ejecución de Chromium fue una comprobación adicional, no un comando de CI incluido en el proyecto. Una suite DOM no verifica por sí sola diseño responsive, accesibilidad completa ni todos los navegadores.
 
+Las capturas se tomaron antes del cambio de etiquetas a marcas de tarjeta; muestran los nombres anteriores de los mismos escenarios del Sandbox.
+
 ## Repetición desde un navegador
 
 1. Ejecutar `pnpm run dev` y abrir la URL local mostrada por Vite.
 2. Agregar un producto desde el catálogo y abrir el carrito; continuar a checkout.
 3. Completar los datos ficticios anteriores y revisar productos, cantidades y totales.
 4. Ejecutar SBX-01, SBX-02 y SBX-03 con carritos nuevos. Revisar carga, mensaje final y almacenamiento de carrito/órdenes en las herramientas del navegador.
-5. Ejecutar SBX-05 y SBX-06 sin recargar: cambiar al escenario aprobado después de pulsar Intentar de nuevo. Verificar que el número de orden se conserve.
+5. Ejecutar SBX-05 y SBX-06 sin recargar: seleccionar Tarjeta Visa después de pulsar Intentar de nuevo. Verificar que el número de orden se conserve.
 6. Para SBX-10, recargar el resultado rechazado antes de reintentar y revisar si aparecen los datos del comprador.
-7. Ejecutar SBX-07 y SBX-08 con `pnpm run test:sandbox:integration`: la interfaz mantiene los tres escenarios originales y no agrega un selector especial de timeout.
+7. Ejecutar SBX-07 y SBX-08 con `pnpm run test:sandbox:integration`: las tres marcas de tarjeta seleccionan los escenarios originales y no se agrega un selector especial de timeout.

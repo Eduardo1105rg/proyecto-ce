@@ -47,13 +47,13 @@ Una solicitud, escenario o tiempo límite inválido también rechaza la promesa,
 
 ## Selección y reproducción de escenarios
 
-El usuario completa sus datos, avanza al resumen y utiliza el selector **Simulación de pago (Sandbox)**. El valor seleccionado se envía como segundo argumento de `procesarPago`; no depende de tarjetas ni números especiales.
+El usuario completa sus datos, avanza al resumen y utiliza el selector **Seleccione una tarjeta**. Cada marca representa un escenario fijo del Sandbox; su código se envía como segundo argumento de `procesarPago`. No se solicitan datos reales de tarjeta ni números especiales.
 
 | Selector | Argumento `scenario` | Comportamiento del servicio |
 | --- | --- | --- |
-| Pago aprobado | `PAYMENT_APPROVED` | Resuelve con aprobación, mensaje y `transactionId`. |
-| Pago rechazado | `PAYMENT_DECLINED` | Resuelve con rechazo y mensaje, sin `transactionId`. |
-| Error del servicio | `PAYMENT_ERROR` | El simulador lanza una excepción que el servicio convierte en un error apto para el usuario. |
+| Tarjeta Visa | `PAYMENT_APPROVED` | Resuelve con aprobación, mensaje y `transactionId`. |
+| Tarjeta American Express | `PAYMENT_DECLINED` | Resuelve con rechazo y mensaje, sin `transactionId`. |
+| Tarjeta Mastercard | `PAYMENT_ERROR` | El simulador lanza una excepción que el servicio convierte en un error apto para el usuario. |
 
 Los tres escenarios predeterminados esperan **2 segundos**. El resultado es determinista según la selección; no se elige aleatoriamente. Un escenario desconocido se rechaza y no se interpreta como aprobación.
 
