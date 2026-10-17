@@ -13,11 +13,9 @@ import type { Order } from '../../types/order'
 import type { PaymentResult } from '../../types/payment'
 import styles from './CheckoutPage.module.css'
 
-// TO DO E3b: mover `procesarPago` del stub C (`checkoutApi.mock.ts`) al Sandbox
-// real (`services/paymentSandbox.ts`). Las órdenes ya usan su servicio real.
 import { aplicarResultado, crearOrden, obtenerOrden } from '../../services/orders'
-import { procesarPago } from '../../features/checkout/checkoutApi.mock'
-import type { SandboxScenario } from '../../features/checkout/checkoutApi.mock'
+import { ErrorServicioPago, procesarPago } from '../../services/paymentSandbox'
+import type { SandboxScenario } from '../../services/paymentSandbox'
 
 /**
  * Reconstruye el resultado de pago de una orden persistida para poder mostrar
@@ -135,12 +133,13 @@ export function CheckoutPage() {
                     { orderId: current.orderNumber, amount: current.total, currency: 'CRC' },
                     scenario,
                 )
-            } catch {
-                // Si el servicio falla o no responde, se trata como un resultado más.
+            } catch (error) {
                 payment = {
                     code: 'PAYMENT_ERROR',
                     orderId: current.orderNumber,
-                    message: 'El servicio de pago no está disponible en este momento. Intente de nuevo.',
+                    message: error instanceof ErrorServicioPago
+                        ? error.message
+                        : 'El servicio de pago no está disponible en este momento. Intente de nuevo.',
                 }
             }
 

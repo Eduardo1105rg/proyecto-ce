@@ -125,7 +125,7 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
   const lowStock = totalStock > 0 && totalStock <= 5
   const displayName = product.name ?? 'Sin nombre'
   const { items, agregar, cambiarCantidad } = useCarrito()
-    /** Cantidad de este producto que ya esta en el carrito (0 si no esta) */
+  /** Cantidad de este producto que ya esta en el carrito (0 si no esta) */
   const quantity = items.find((item) => item.objectID === product.objectID)?.cantidad ?? 0
 
   /** Controla si el modo mayorista B2B esta activo */
@@ -273,7 +273,7 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
                   onClick={() => agregar(product.objectID, 1)}
                 />
               )}
-              <Button label="Comprar ahora" variant="primary" size="lg" fullWidth disabled={!inStock} />
+              {/* <Button label="Comprar ahora" variant="primary" size="lg" fullWidth disabled={!inStock} /> */}
             </div>
           </div>
 
