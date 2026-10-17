@@ -19,9 +19,9 @@ type OrderReviewProps = {
 }
 
 const SCENARIOS: { value: SandboxScenario; label: string; hint: string }[] = [
-    { value: 'PAYMENT_APPROVED', label: 'Pago aprobado', hint: 'El pago se completa con éxito.' },
-    { value: 'PAYMENT_DECLINED', label: 'Pago rechazado', hint: 'El proveedor rechaza el pago.' },
-    { value: 'PAYMENT_ERROR', label: 'Error del servicio', hint: 'El servicio de pago no responde.' },
+    { value: 'PAYMENT_APPROVED', label: 'Tarjeta Visa', hint: 'El pago se completa con éxito.' },
+    { value: 'PAYMENT_DECLINED', label: 'Tarjeta American Express', hint: 'El proveedor rechaza el pago.' },
+    { value: 'PAYMENT_ERROR', label: 'Tarjeta Mastercard', hint: 'El servicio de pago no responde.' },
 ]
 
 /** Resumen previo al pago: productos, datos, montos y selector del escenario Sandbox. */
@@ -83,9 +83,9 @@ export function OrderReview({
 
                 <section className={styles.card}>
                     <fieldset className={styles.scenarios} disabled={processing}>
-                        <legend className={styles.cardTitle}>Simulación de pago (Sandbox)</legend>
+                        <legend className={styles.cardTitle}>Seleccione una tarjeta</legend>
                         <p className={styles.note}>
-                            Elija el resultado que desea simular. No se realiza ningún cobro real.
+                            Elija la tarjeta a utiliza. No se realiza ningún cobro real.
                         </p>
 
                         {SCENARIOS.map((option) => (

@@ -52,7 +52,7 @@ export const FACET_SECTIONS: FacetSectionDefinition[] = [
     { attribute: 'facets.subcategory', title: 'Subcategoria' },
     { attribute: 'facets.eco_friendly', title: 'Eco friendly', labels: { true: 'Si', false: 'No' } },
     { attribute: 'facets.free_shipping', title: 'Envio gratis', labels: { true: 'Si', false: 'No' } },
-    { attribute: 'facets.tax_exempt', title: 'Exento de impuestos', labels: { true: 'Si', false: 'No' } },
+    // { attribute: 'facets.tax_exempt', title: 'Exento de impuestos', labels: { true: 'Si', false: 'No' } },
 ]
 
 /** Atributo numerico usado por el filtro de precio del FilterPanel */
