@@ -3,6 +3,11 @@
 ## Explicacion general del proyecto
 El proyecto MarketByte es una aplicación Web que simula el funcionamiento de un E-Commerce. Cuenta con un catalogo de 500 productos para el hogar. Por otro lado cuenta con diversas opciones de busqueda para que los usuarios puedan encontrar los productos que deseen con gran facilidad.
 
+## Documentación del Sandbox
+
+- [Servicio de pago Sandbox](app-ecommerce/docs/payment-sandbox.md): contrato, escenarios, tiempos de espera e integración con órdenes.
+- [Casos de prueba y evidencias](app-ecommerce/tests/README.md): ejecución, resultados verificados e incidencia conocida.
+
 ## Desiciones de diseño
 No se utilizadon tanto los componentes de Algolia, si no que se utilizaron los hooks que ofrece Algolia, esto ya que es mas facil crear nuestros propios componentes que modificar los que da por defecto algolia. 
 

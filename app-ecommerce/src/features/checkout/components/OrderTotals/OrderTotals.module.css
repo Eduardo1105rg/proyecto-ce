@@ -1,0 +1,31 @@
+.totals {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.row dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.final {
+  padding-top: 12px;
+  border-top: 1px solid var(--border-default);
+  font-size: var(--text-lg);
+  color: var(--text-primary);
+}
+
+.final dd {
+  font-weight: 700;
+}

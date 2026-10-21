@@ -3,6 +3,7 @@ import styles from './Navbar.module.css'
 import logo from '../../assets/LogoNaranga.png'
 import { UilSun, UilMoon, UilEstate, UilStore, UilShoppingCart } from '@iconscout/react-unicons'
 import { useCarrito } from '../../context/carritoContext'
+import { MiniCart } from '../../features/cart/components/MiniCart/MiniCart'
 
 /**
  * Props del componente Navbar.
@@ -79,19 +80,20 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
         </nav>
 
         <div className={styles.actions}>
-          <Link
-            to="/carrito"
-            className={`${styles.cartBtn} ${isActive('/carrito') ? styles.cartBtnActive : ''}`}
-            aria-label={cartLabel}
-          >
-            <UilShoppingCart size="20" />
-            {count > 0 && (
-              <span className={styles.badge} aria-hidden="true">
-                {badgeText}
-              </span>
-            )}
-          </Link>
-
+          <MiniCart>
+            <Link
+              to="/carrito"
+              className={`${styles.cartBtn} ${isActive('/carrito') ? styles.cartBtnActive : ''}`}
+              aria-label={cartLabel}
+            >
+              <UilShoppingCart size="20" />
+              {count > 0 && (
+                <span className={styles.badge} aria-hidden="true">
+                  {badgeText}
+                </span>
+              )}
+            </Link>
+          </MiniCart>
           <button
             className={styles.themeBtn}
             onClick={onToggleTheme}

@@ -77,7 +77,7 @@ export function CartItem({ item, loading, failed, onQuantityChange, onRemove }: 
                 </p>
 
                 {unavailable ? (
-                    <p className={styles.warning}>Este producto ya no esta disponible y no se cobrara.</p>
+                    <p className={styles.warning}>Este producto ya no está disponible y no se cobrará.</p>
                 ) : (
                     <p className={styles.unitPrice}>
                         {unresolved ? '...' : `${formatPrice(item.precio)} c/u`}
