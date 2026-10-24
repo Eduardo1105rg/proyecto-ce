@@ -24,7 +24,7 @@ export function Footer() {
           <Link to="/" className={styles.link}>Catálogo</Link>
           <a href="#" className={styles.link}>Sobre nosotros</a>
           <a href="#" className={styles.link}>Contacto</a>
-          <a href="#" className={styles.link}>Términos y condiciones</a>
+          <a href="#/politicas" className={styles.link}>Términos y condiciones</a>
         </div>
 
       </div>
