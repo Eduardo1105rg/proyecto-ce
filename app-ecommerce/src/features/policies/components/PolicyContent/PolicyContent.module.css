@@ -1,0 +1,139 @@
+.article {
+	min-width: 0;
+	padding: 32px 36px;
+	background-color: var(--bg-white);
+	border: 1px solid var(--border-default);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-sm);
+	scroll-margin-top: 100px;
+}
+
+.title {
+	margin: 0 0 28px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid var(--border-default);
+	font-size: var(--text-2xl);
+	font-weight: 700;
+	color: var(--text-primary);
+}
+
+.empty {
+	margin: 0;
+	color: var(--text-secondary);
+}
+
+.section {
+	margin-bottom: 32px;
+}
+
+.section:last-child {
+	margin-bottom: 0;
+}
+
+.sectionTitle {
+	margin: 0 0 12px;
+	font-size: var(--text-xl);
+	font-weight: 700;
+	color: var(--text-primary);
+}
+
+.letter {
+	color: var(--blue-700);
+}
+
+.paragraph {
+	margin: 0 0 12px;
+	max-width: 72ch;
+	font-size: var(--text-base);
+	line-height: 1.7;
+	color: var(--text-secondary);
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin: 0 0 12px;
+	padding-left: 22px;
+	max-width: 72ch;
+	font-size: var(--text-base);
+	line-height: 1.6;
+	color: var(--text-secondary);
+}
+
+.list li::marker {
+	color: var(--blue-700);
+}
+
+.groups {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 12px;
+}
+
+.groupTitle {
+	margin: 8px 0;
+	font-size: var(--text-base);
+	font-weight: 700;
+	color: var(--text-primary);
+}
+
+.faq {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.question {
+	border: 1px solid var(--border-default);
+	border-radius: var(--radius-md);
+	background-color: var(--bg-white);
+	transition: border-color 0.15s ease;
+}
+
+.question[open] {
+	border-color: var(--blue-700);
+	background-color: var(--bg-subtle);
+}
+
+.summary {
+	padding: 14px 16px;
+	font-size: var(--text-base);
+	font-weight: 600;
+	color: var(--text-primary);
+	cursor: pointer;
+}
+
+.summary:focus-visible {
+	outline: 2px solid var(--blue-500);
+	outline-offset: 2px;
+	border-radius: var(--radius-md);
+}
+
+.answer {
+	margin: 0;
+	padding: 0 16px 16px;
+	line-height: 1.7;
+	color: var(--text-secondary);
+}
+
+@media (max-width: 900px) {
+	.article {
+		scroll-margin-top: 140px;
+	}
+}
+
+@media (max-width: 640px) {
+	.article {
+		padding: 22px 18px;
+	}
+
+	.title {
+		font-size: var(--text-xl);
+	}
+
+	.sectionTitle {
+		font-size: var(--text-lg);
+	}
+}
