@@ -24,6 +24,7 @@
 
 .section {
 	margin-bottom: 32px;
+	scroll-margin-top: 100px;
 }
 
 .section:last-child {
@@ -62,6 +63,30 @@
 }
 
 .list li::marker {
+	color: var(--blue-700);
+}
+
+.numbered {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin: 0 0 12px;
+	padding: 0;
+	max-width: 72ch;
+	list-style: none;
+	font-size: var(--text-base);
+	line-height: 1.6;
+	color: var(--text-secondary);
+}
+
+.numberedItem {
+	display: grid;
+	grid-template-columns: 2.75rem minmax(0, 1fr);
+	gap: 8px;
+}
+
+.numberedMarker {
+	font-weight: 700;
 	color: var(--blue-700);
 }
 
@@ -116,12 +141,6 @@
 	padding: 0 16px 16px;
 	line-height: 1.7;
 	color: var(--text-secondary);
-}
-
-@media (max-width: 900px) {
-	.article {
-		scroll-margin-top: 140px;
-	}
 }
 
 @media (max-width: 640px) {
