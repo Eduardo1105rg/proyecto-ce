@@ -1,6 +1,17 @@
-import { UMBRAL_ENVIO_GRATIS } from '../../services/carritoCalculos'
+import {
+	ENVIO_MINIMO,
+	ENVIO_PORCENTAJE,
+	IVA_TASA,
+	UMBRAL_ENVIO_GRATIS,
+} from '../../services/carritoCalculos'
 import { formatPrice } from '../../utils/formatPrice'
 import type { Policy } from '../../types/policy'
+
+const UMBRAL = formatPrice(UMBRAL_ENVIO_GRATIS)
+const IVA_PORCENTAJE = Math.round(IVA_TASA * 100)
+
+// Misma regla que calcularEnvio en services/carritoCalculos.
+const REGLA_ENVIO = `El costo de envío es el ${Math.round(ENVIO_PORCENTAJE * 100)} % del importe de los productos que pagan envío, con un mínimo de ${formatPrice(ENVIO_MINIMO)}. Si el subtotal de la compra es igual o superior a ${UMBRAL}, el envío es gratuito. Los productos que incluyen envío gratuito no se suman a ese cálculo.`
 
 /**
  * Textos de la sección de información comercial.
@@ -20,12 +31,337 @@ export const POLICIES: Policy[] = [
 	{
 		slug: 'terminos',
 		title: 'Términos y condiciones',
-		sections: [],
+		sections: [
+			{
+				title: 'Alcance de la plataforma',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Estos términos y condiciones regulan el uso de la tienda en línea MarketByte y las compras realizadas a través de la plataforma. En ellos se establecen las condiciones de compra y las responsabilidades del cliente y de la tienda.',
+					},
+					{
+						type: 'paragraph',
+						text: 'La oficina de la tienda simulada se ubica en Costa Rica, provincia de Limón, cantón de Limón, distrito de Limón, barrio Roosevelt, frente al TEC de Limón. Puede contactar al equipo de atención al cliente mediante soporte@marketbyte.com o por teléfono y WhatsApp al +506 8888-8888.',
+					},
+				],
+			},
+			{
+				title: 'Compra como invitado',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Puede realizar sus compras como invitado, sin crear una cuenta ni registrarse en la plataforma.',
+					},
+				],
+			},
+			{
+				title: 'Uso del sitio y responsabilidades del cliente',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Utilice la plataforma para consultar el catálogo, realizar compras y gestionar consultas relacionadas con sus pedidos. No debe interferir con su funcionamiento ni intentar acceder a información de otros usuarios.',
+					},
+					{ type: 'paragraph', text: 'Al realizar una compra, le corresponde:' },
+					{
+						type: 'list',
+						items: [
+							'Proporcionar información de contacto y entrega clara, completa y correcta.',
+							'Revisar los productos, cantidades, datos del pedido y total antes de confirmar la compra.',
+							'Consultar las condiciones de compra, envío y devolución aplicables.',
+							'Cumplir las condiciones de conservación y retorno del producto cuando solicite una devolución voluntaria.',
+						],
+					},
+				],
+			},
+			{
+				title: 'Responsabilidades de MarketByte',
+				blocks: [
+					{ type: 'paragraph', text: 'MarketByte se compromete a:' },
+					{
+						type: 'list',
+						items: [
+							'Presentar información clara sobre los productos, precios y costos de envío.',
+							'Gestionar las órdenes confirmadas conforme a las condiciones informadas y a la Política de Envíos.',
+							'Atender consultas y solicitudes de devolución por sus canales oficiales, dentro de los plazos establecidos para cada gestión.',
+							'Tratar la información personal conforme a la Política de Privacidad.',
+						],
+					},
+					{
+						type: 'paragraph',
+						text: 'Las condiciones de entrega y el tratamiento de datos se desarrollan en sus respectivas políticas, que complementan estos términos.',
+					},
+				],
+			},
+			{
+				title: 'Precios e impuestos',
+				blocks: [
+					{
+						// Ajustado al sistema: el catálogo muestra precios sin IVA y el resumen lo suma aparte.
+						type: 'paragraph',
+						text: `Los precios mostrados en el catálogo no incluyen impuestos. En el resumen de su compra se suman el IVA (${IVA_PORCENTAJE} %) y el costo de envío que corresponda.`,
+					},
+					{
+						type: 'paragraph',
+						text: 'Desde el carrito de compras puede consultar el desglose de los importes y el total de la operación.',
+					},
+					{
+						type: 'paragraph',
+						text: `${REGLA_ENVIO} El costo de envío no se incluye al determinar si se alcanza el subtotal para envío gratuito. La tarifa no cambia según la ubicación de entrega.`,
+					},
+				],
+			},
+			{
+				title: 'Revisión de la compra',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Antes de proceder al pago, puede revisar los productos seleccionados, modificar sus cantidades o retirarlos del carrito. Verifique su selección y el total de la compra antes de continuar.',
+					},
+				],
+			},
+			{
+				title: 'Aceptación de los términos',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Para finalizar la compra deberá aceptar expresamente estos términos mediante la casilla correspondiente, que estará desmarcada inicialmente. Si no los acepta, no podrá completar la compra y la plataforma mostrará un mensaje de validación. La aceptación quedará registrada como parte de la información de la orden.',
+					},
+					{
+						type: 'paragraph',
+						text: 'Puede consultar los términos antes de aceptarlos y conservar una copia. La visita al sitio o la consulta del catálogo no equivalen a aceptar una compra.',
+					},
+				],
+			},
+			{
+				title: 'Métodos de pago',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'La plataforma representa pagos con tarjetas Visa, American Express y Mastercard mediante un sistema completamente simulado. No solicita, procesa ni almacena información financiera real, como números de tarjetas, cuentas bancarias o credenciales de pago. Ninguna operación genera cargos económicos ni movimientos bancarios.',
+					},
+				],
+			},
+			{
+				title: 'Confirmación de la orden',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'La orden queda confirmada inmediatamente cuando se aprueba el pago simulado. La plataforma muestra el número de orden, la fecha y hora de la compra, el identificador de la transacción y un resumen de los importes. Además, enviaremos la confirmación de la compra al correo electrónico que haya proporcionado.',
+					},
+					{
+						type: 'paragraph',
+						text: 'Conserve el número de orden para consultar el estado de su pedido o realizar gestiones relacionadas con la compra.',
+					},
+				],
+			},
+			{
+				title: 'Falta de disponibilidad de un producto',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Si un producto de una orden confirmada no pudiera entregarse por falta de existencias, atención al cliente se comunicará con usted para ofrecerle una alternativa disponible o un reembolso del importe pagado por ese producto. La elección le corresponde al cliente; MarketByte no sustituirá el artículo sin su consentimiento.',
+					},
+					{
+						type: 'paragraph',
+						text: 'El reembolso conserva el carácter simulado de los pagos e incluye los impuestos y el envío original pagado, conforme a las reglas de reembolso de esta política. No se exige devolver un producto que no haya sido entregado.',
+					},
+					{
+						type: 'paragraph',
+						text: 'Si elige el reembolso, este se completará de forma simulada en un plazo máximo de 8 días naturales desde que comunique su elección a atención al cliente.',
+					},
+				],
+			},
+			{
+				title: 'Modificaciones después de la confirmación',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Una vez confirmada la orden, no se admiten modificaciones directas de los productos, las cantidades ni los datos de entrega asociados al pedido. Revise esta información antes de finalizar la compra.',
+					},
+					{
+						type: 'paragraph',
+						text: 'Esta limitación no impide solicitar la corrección de información personal incorrecta o la actualización de datos de contacto conforme a la Política de Privacidad. Tampoco excluye los cambios o reembolsos previstos en la Política de Devoluciones o por falta de existencias. Estas gestiones se atienden por los canales oficiales de atención al cliente y se distinguen de las modificaciones directas del pedido.',
+					},
+				],
+			},
+			{
+				title: 'Propiedad intelectual',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Las imágenes y descripciones de productos publicadas en el catálogo proceden de terceros. Los derechos sobre estos contenidos corresponden a sus respectivos titulares; su publicación en MarketByte no implica que la tienda sea su autora o propietaria.',
+					},
+				],
+			},
+			{
+				title: 'Interrupciones técnicas',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'La plataforma puede presentar interrupciones por mantenimiento o fallos técnicos. Si una incidencia afecta su compra, comuníquese con atención al cliente e indique el número de orden, si dispone de él, y lo ocurrido. Una interrupción no anula por sí sola una orden confirmada ni elimina las responsabilidades que correspondan a la tienda.',
+					},
+				],
+			},
+		],
 	},
 	{
 		slug: 'devoluciones',
 		title: 'Política de devoluciones',
-		sections: [],
+		sections: [
+			{
+				title: 'Plazo para solicitar una devolución',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Puede solicitar la devolución de un producto del catálogo dentro de los 30 días naturales siguientes a la recepción del artículo que desea devolver. En entregas fraccionadas, el plazo se cuenta por separado para cada artículo desde su recepción.',
+					},
+					{
+						type: 'paragraph',
+						text: 'Puede devolver uno o varios productos de una misma orden y conservar los demás. La solicitud debe identificar cuáles artículos desea devolver, y las condiciones de esta política se evaluarán para cada uno.',
+					},
+				],
+			},
+			{
+				title: 'Condiciones de las devoluciones voluntarias',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Para aprobar una devolución voluntaria, el producto no debe haber sido utilizado por el cliente después de recibirlo. Debe conservar el estado en que fue entregado y mantener su empaque original, junto con todos sus accesorios y componentes. Estas condiciones también se aplican a los productos renovados, tomando como referencia su estado de entrega.',
+					},
+				],
+			},
+			{
+				title: 'Casos en que no se aceptan devoluciones voluntarias',
+				blocks: [
+					{ type: 'paragraph', text: 'No se aprobarán devoluciones voluntarias en los siguientes casos:' },
+					{
+						type: 'list',
+						items: [
+							'La solicitud se presenta después de los 30 días naturales siguientes a la recepción del artículo.',
+							'El producto fue utilizado por el cliente después de recibirlo o presenta deterioro causado después de su entrega.',
+							'No se conserva el empaque original o faltan accesorios o componentes entregados con el producto.',
+						],
+					},
+					{
+						type: 'paragraph',
+						text: 'Estas condiciones corresponden a devoluciones voluntarias y no eliminan la atención de reclamos por daños o defectos ni los derechos de retracto y garantía que correspondan.',
+					},
+				],
+			},
+			{
+				title: 'Costo del transporte de regreso',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Si solicita la devolución de un producto en buen estado porque cambió de opinión, deberá asumir el costo del transporte de regreso a la tienda.',
+					},
+					{
+						type: 'paragraph',
+						text: 'Si el producto llega dañado o defectuoso, MarketByte asumirá el costo del transporte de regreso.',
+					},
+					{
+						type: 'paragraph',
+						text: 'Si corresponde un reemplazo por daños o defectos, MarketByte también cubrirá el envío del producto de reemplazo al cliente.',
+					},
+				],
+			},
+			{
+				title: 'Productos dañados o defectuosos',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Si recibe un producto dañado o defectuoso, comuníquese con nuestro equipo de atención al cliente lo antes posible. Según el caso, podrá solicitar un reemplazo o gestionar un reembolso.',
+					},
+					{
+						type: 'paragraph',
+						text: 'Las solicitudes por daños o defectos se evalúan por separado de las devoluciones voluntarias. La condición de que el producto no haya sido utilizado por el cliente después de recibirlo no se utilizará por sí sola para rechazar una solicitud relacionada con un defecto.',
+					},
+				],
+			},
+			{
+				title: 'Cómo solicitar una devolución',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Comuníquese con nuestro equipo de atención al cliente por alguno de los siguientes medios:',
+					},
+					{
+						type: 'list',
+						items: [
+							'Correo electrónico: soporte@marketbyte.com.',
+							'Teléfono y WhatsApp: +506 8888-8888.',
+						],
+					},
+					{
+						type: 'paragraph',
+						text: 'Indique el número de orden, el producto que desea devolver y el motivo de la solicitud. Si el producto presenta un daño o defecto, adjunte fotografías cuando sea posible para facilitar su evaluación.',
+					},
+					{
+						type: 'paragraph',
+						text: 'Nuestro equipo dará una primera respuesta en un plazo máximo de 3 días hábiles a partir de la recepción de la solicitud. Este plazo corresponde a la atención inicial, no a la resolución definitiva de la devolución.',
+					},
+					{
+						type: 'paragraph',
+						text: 'Atención al cliente le indicará la dirección a la que debe enviar el producto. El transporte de regreso se realizará a esa dirección, y su costo será asumido por el cliente o por MarketByte según el motivo de la devolución indicado en esta política.',
+					},
+				],
+			},
+			{
+				title: 'Opciones de resolución',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'Una vez aprobada una devolución voluntaria, podrá elegir entre un cambio por otro producto del catálogo o un reembolso. Nuestro equipo de atención al cliente le indicará cómo continuar con la opción seleccionada.',
+					},
+					{
+						type: 'paragraph',
+						text: 'Si el producto elegido para el cambio tiene un precio mayor, deberá cubrir la diferencia. Si tiene un precio menor, se gestionará el reembolso de la diferencia. Estos ajustes se representan dentro del sistema de pagos simulado.',
+					},
+					{
+						type: 'paragraph',
+						text: `En los cambios voluntarios, el cliente cubrirá el costo del nuevo envío cuando corresponda, con las mismas reglas del envío inicial. ${REGLA_ENVIO}`,
+					},
+					{
+						type: 'paragraph',
+						text: 'Si elige el reembolso, este incluirá el importe del producto con sus impuestos y el costo del envío original que haya pagado. Los reembolsos tienen carácter simulado, al igual que los pagos de la plataforma, y no generan devoluciones de dinero real ni movimientos bancarios.',
+					},
+					{
+						type: 'paragraph',
+						text: 'Si devuelve solo parte de una orden, el reembolso incluirá el importe de los artículos devueltos con sus impuestos y la totalidad del envío original pagado. El envío original se reembolsará una sola vez por orden, aunque presente más de una solicitud de devolución.',
+					},
+				],
+			},
+			{
+				title: 'Plazo de revisión y resolución',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'MarketByte contará con un máximo de 8 días naturales desde la recepción del producto devuelto para revisarlo, comunicar el resultado y, si corresponde su aprobación, tramitar el cambio o reembolso.',
+					},
+					{
+						type: 'paragraph',
+						text: 'Este plazo corresponde a la revisión y tramitación de la solicitud. El tiempo de entrega del producto de reemplazo se rige por los plazos de la Política de Envíos.',
+					},
+				],
+			},
+			{
+				title: 'Diferencia entre devolución voluntaria y retracto',
+				blocks: [
+					{
+						type: 'paragraph',
+						text: 'El plazo comercial de 30 días desde la recepción de cada artículo no sustituye el derecho de retracto. Como referencia para este proyecto, la normativa costarricense permite ejercer el retracto dentro de los 8 días hábiles siguientes al perfeccionamiento de la venta, cuando la naturaleza del bien lo permita. Puede comunicarlo por escrito al correo oficial de la tienda y conservar constancia de su envío.',
+					},
+					{
+						type: 'paragraph',
+						text: 'En un retracto, el reintegro se representa por el mismo medio de pago utilizado y dentro de los 8 días naturales siguientes al aviso; si el cliente ya recibió el producto, ese plazo se cuenta desde su devolución. Esta gestión conserva el carácter simulado de los pagos del proyecto.',
+					},
+					{
+						type: 'paragraph',
+						text: 'La primera respuesta de atención al cliente y la revisión de una devolución voluntaria no suspenden ni amplían los plazos aplicables al retracto. Los reclamos de garantía por defectos se atienden por separado y no se limitan al plazo comercial de 30 días.',
+					},
+				],
+			},
+		],
 	},
 	{
 		slug: 'envios',
@@ -82,10 +418,10 @@ export const POLICIES: Policy[] = [
 						text: 'Los costos de envío se calculan automáticamente durante el proceso de compra según las condiciones vigentes de la tienda.',
 					},
 					{
-						// El monto sale de la misma constante que usa el carrito, para que
+						// Las cifras salen de las mismas constantes que usa el carrito, para que
 						// la política nunca contradiga el cálculo real.
 						type: 'paragraph',
-						text: `Las compras con un subtotal igual o superior a ${formatPrice(UMBRAL_ENVIO_GRATIS)} califican para envío gratuito. En los pedidos que no califican para envío gratuito, se aplicará el costo de envío correspondiente según las reglas de cálculo del sistema.`,
+						text: REGLA_ENVIO,
 					},
 					{
 						type: 'paragraph',
@@ -189,6 +525,7 @@ export const POLICIES: Policy[] = [
 									'Fechas de compra.',
 									'Estado del pedido.',
 									'Historial de órdenes realizadas.',
+									'Aceptación de los términos y condiciones, con su fecha y hora.',
 								],
 							},
 							{
@@ -440,7 +777,7 @@ export const POLICIES: Policy[] = [
 							{
 								question: '¿Existen productos que no pueden devolverse?',
 								answer:
-									'Sí. Los productos personalizados, fabricados bajo pedido o que hayan sido armados específicamente para el cliente no son elegibles para devolución.',
+									'Sí. No se aprueban devoluciones voluntarias cuando la solicitud se presenta después de los 30 días naturales, cuando el producto fue utilizado después de recibirlo o cuando no conserva su empaque original o le faltan accesorios o componentes. Los reclamos por daños o defectos se atienden por separado.',
 							},
 							{
 								question: '¿Qué debo hacer si recibo un producto dañado o defectuoso?',
