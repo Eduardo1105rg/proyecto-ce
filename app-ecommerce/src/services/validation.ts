@@ -8,6 +8,7 @@ export type CheckoutValues = {
     canton: string
     address: string
     notes: string
+    acceptTerms: boolean
 }
 
 export type CheckoutErrors = Partial<Record<keyof CheckoutValues, string>>
@@ -30,6 +31,7 @@ export const EMPTY_VALUES: CheckoutValues = {
     canton: '',
     address: '',
     notes: '',
+    acceptTerms: false,
 }
 
 const NAME_REGEX = /^[\p{L}][\p{L}' -]*$/u
@@ -44,7 +46,9 @@ export function normalizePhone(value: string): string {
 export function validateCheckout(values: CheckoutValues): CheckoutErrors {
     const errors: CheckoutErrors = {}
     const name = values.fullName.trim()
-
+    if (!values.acceptTerms) {
+        errors.acceptTerms = 'Debe aceptar los términos y condiciones para continuar.'
+    }
     if (!name) {
         errors.fullName = 'Ingrese su nombre completo.'
     } else if (!NAME_REGEX.test(name) || name.split(/\s+/).length < 2) {
