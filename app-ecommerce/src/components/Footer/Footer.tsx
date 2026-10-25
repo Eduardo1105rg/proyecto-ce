@@ -1,6 +1,7 @@
 import styles from './Footer.module.css'
 import logo from '../../assets/LogoNaranga.png'
 import { Link } from 'react-router-dom'
+import { POLICIES } from '../../features/policies/policiesContent'
 
 export function Footer() {
   const year = new Date().getFullYear()
@@ -15,7 +16,7 @@ export function Footer() {
             <img src={logo} alt="MarketByte" className={styles.logo} />
             <span className={styles.brandName}>MarketByte</span>
           </Link>
-          <p className={styles.tagline}>Su tienda de confiancia en línea para todo lo que necesite.</p>
+          <p className={styles.tagline}>Su tienda de confianza en línea para todo lo que necesite.</p>
         </div>
 
         {/* Links */}
@@ -24,8 +25,17 @@ export function Footer() {
           <Link to="/" className={styles.link}>Catálogo</Link>
           <a href="#" className={styles.link}>Sobre nosotros</a>
           <a href="#" className={styles.link}>Contacto</a>
-          <a href="#" className={styles.link}>Términos y condiciones</a>
         </div>
+
+        {/* Información comercial */}
+        <nav className={styles.links} aria-label="Políticas">
+          <span className={styles.linksTitle}>Políticas</span>
+          {POLICIES.map((policy) => (
+            <Link key={policy.slug} to={`/politicas/${policy.slug}`} className={styles.link}>
+              {policy.title}
+            </Link>
+          ))}
+        </nav>
 
       </div>
 

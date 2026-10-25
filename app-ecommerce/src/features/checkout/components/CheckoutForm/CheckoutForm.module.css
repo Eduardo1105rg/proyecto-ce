@@ -95,6 +95,44 @@ textarea.input {
 	gap: 16px;
 }
 
+.terms {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.termsLabel {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	font-size: var(--text-sm);
+	color: var(--text-primary);
+	cursor: pointer;
+}
+
+.checkbox {
+	flex-shrink: 0;
+	width: 18px;
+	height: 18px;
+	margin-top: 2px;
+	accent-color: var(--blue-700);
+	cursor: pointer;
+}
+
+.checkboxError {
+	outline: 2px solid var(--red-500);
+	outline-offset: 2px;
+}
+
+.checkbox:focus-visible {
+	outline: 2px solid var(--blue-500);
+	outline-offset: 2px;
+}
+
+.termsLink {
+	font-weight: 600;
+}
+
 .backLink {
 	font-size: var(--text-sm);
 	font-weight: 600;

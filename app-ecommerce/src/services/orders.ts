@@ -33,6 +33,7 @@ export type CrearOrdenInput = {
     tax: number
     shipping: number
     total: number
+    termsAccepted: boolean
 }
 
 function esBuyerValido(valor: unknown): valor is BuyerInfo {
@@ -97,6 +98,8 @@ export function esOrdenValida(valor: unknown): valor is Order {
         typeof orden.tax === 'number' &&
         typeof orden.shipping === 'number' &&
         typeof orden.total === 'number' &&
+        typeof orden.termsAccepted === 'boolean' &&
+        typeof orden.termsAcceptedAt === 'string' &&
         (orden.status === 'PENDING' || orden.status === 'CONFIRMED' || orden.status === 'FAILED') &&
         (orden.paymentStatus === 'PENDING' ||
             orden.paymentStatus === 'APPROVED' ||
@@ -217,9 +220,11 @@ function buildOrderNumber(ordenes: Order[]): string {
  * @returns La orden creada con su numero unico.
  */
 export async function crearOrden(input: CrearOrdenInput): Promise<Order> {
+    const ahora = new Date().toISOString()
+
     const order: Order = {
         orderNumber: buildOrderNumber(listarOrdenes()),
-        createdAt: new Date().toISOString(),
+        createdAt: ahora,
         buyer: input.buyer,
         delivery: input.delivery,
         items: input.items,
@@ -229,6 +234,8 @@ export async function crearOrden(input: CrearOrdenInput): Promise<Order> {
         total: input.total,
         status: 'PENDING',
         paymentStatus: 'PENDING',
+        termsAccepted: input.termsAccepted,
+        termsAcceptedAt: ahora,
     }
 
     console.log('[ordenes] creando orden', order);
