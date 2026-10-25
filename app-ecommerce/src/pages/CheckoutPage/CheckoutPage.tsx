@@ -123,6 +123,7 @@ export function CheckoutPage() {
                     tax: totales.iva,
                     shipping: totales.envio,
                     total: totales.total,
+                    termsAccepted: values.acceptTerms,
                 })
             }
 

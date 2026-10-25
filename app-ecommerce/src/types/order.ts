@@ -40,4 +40,8 @@ export type Order = {
     total: number
     status: OrderStatus
     paymentStatus: PaymentStatus
+    /** El cliente aceptó los términos y condiciones al comprar. */
+    termsAccepted: boolean
+    /** Fecha y hora (ISO) en que se registró la aceptación. */
+    termsAcceptedAt: string
 }

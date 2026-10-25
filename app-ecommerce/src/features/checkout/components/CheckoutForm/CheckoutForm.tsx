@@ -13,6 +13,9 @@ type CheckoutFormProps = {
 	onContinue: () => void
 }
 
+/** Campos de texto del formulario (todos menos la casilla de términos). */
+type TextField = Exclude<keyof CheckoutValues, 'acceptTerms'>
+
 type FieldProps = {
 	name: keyof CheckoutValues
 	label: string
@@ -47,6 +50,7 @@ const FIELD_ORDER: (keyof CheckoutValues)[] = [
 	'canton',
 	'address',
 	'notes',
+	'acceptTerms',
 ]
 
 /** Formulario de comprador y entrega, con validación al salir del campo y al continuar. */
@@ -60,7 +64,7 @@ export function CheckoutForm({ values, onChange, onContinue }: CheckoutFormProps
 		touched[name] || submitted ? errors[name] : undefined
 
 	const handleChange =
-		(name: keyof CheckoutValues) =>
+		(name: TextField) =>
 			(e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
 				onChange({ ...values, [name]: e.target.value })
 			}
@@ -69,7 +73,12 @@ export function CheckoutForm({ values, onChange, onContinue }: CheckoutFormProps
 		setTouched((prev) => ({ ...prev, [name]: true }))
 	}
 
-	const inputProps = (name: keyof CheckoutValues) => {
+	const handleTermsChange = (e: ChangeEvent<HTMLInputElement>) => {
+		onChange({ ...values, acceptTerms: e.target.checked })
+		setTouched((prev) => ({ ...prev, acceptTerms: true }))
+	}
+
+	const inputProps = (name: TextField) => {
 		const error = visibleError(name)
 
 		return {
@@ -96,6 +105,8 @@ export function CheckoutForm({ values, onChange, onContinue }: CheckoutFormProps
 
 		onContinue()
 	}
+
+	const termsError = visibleError('acceptTerms')
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit} noValidate>
@@ -170,6 +181,37 @@ export function CheckoutForm({ values, onChange, onContinue }: CheckoutFormProps
 						/>
 					</Field>
 				</div>
+			</section>
+
+			<section className={`${styles.card} ${styles.terms}`} aria-label="Términos y condiciones">
+				<label className={styles.termsLabel} htmlFor="checkout-acceptTerms">
+					<input
+						id="checkout-acceptTerms"
+						type="checkbox"
+						className={`${styles.checkbox} ${termsError ? styles.checkboxError : ''}`}
+						checked={values.acceptTerms}
+						onChange={handleTermsChange}
+						aria-invalid={termsError ? true : undefined}
+						aria-describedby={termsError ? 'checkout-acceptTerms-error' : undefined}
+					/>
+					<span>
+						Acepto los{' '}
+						<Link
+							className={styles.termsLink}
+							to="/politicas/terminos"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							términos y condiciones
+						</Link>{' '}
+						de MarketByte.
+					</span>
+				</label>
+				{termsError && (
+					<p className={styles.error} id="checkout-acceptTerms-error" role="alert">
+						{termsError}
+					</p>
+				)}
 			</section>
 
 			<div className={styles.actions}>
