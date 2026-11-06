@@ -2,21 +2,17 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/Button/Button'
 import { useAuth } from '../../features/auth/useAuth'
-import { listarUsuarios } from '../../features/auth/authApi.mock'
+import { listarUsuarios } from '../../features/auth/authApi'
 import { ETIQUETA_ROL } from '../../features/auth/rolLabels'
 import type { Usuario } from '../../types/usuario'
 import styles from './LoginPage.module.css'
 
-const FORMATO_CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 type ErroresForm = { correo?: string; contrasena?: string }
 
-function validarFormulario(correo: string, contrasena: string): ErroresForm {
+function validarFormulario(identificador: string, contrasena: string): ErroresForm {
 	const errores: ErroresForm = {}
-	if (!correo.trim()) {
-		errores.correo = 'Ingrese su correo electrónico.'
-	} else if (!FORMATO_CORREO.test(correo.trim())) {
-		errores.correo = 'Ingrese un correo válido, por ejemplo usuario@correo.com.'
+	if (!identificador.trim()) {
+		errores.correo = 'Ingrese su usuario o correo electrónico.'
 	}
 	if (!contrasena) {
 		errores.contrasena = 'Ingrese su contraseña.'
@@ -36,9 +32,15 @@ export function LoginPage() {
 
 	useEffect(() => {
 		let activo = true
-		listarUsuarios().then((lista) => {
-			if (activo) setUsuarios(lista)
-		})
+		listarUsuarios()
+			.then((lista) => {
+				if (activo) setUsuarios(lista)
+			})
+			.catch(() => {
+				if (activo) {
+					setError('No se pudieron cargar los usuarios disponibles. Intente recargar la página.')
+				}
+			})
 		return () => {
 			activo = false
 		}
@@ -76,7 +78,7 @@ export function LoginPage() {
 			<header className={styles.header}>
 				<h1 className={styles.title}>{usuario ? 'Su cuenta' : 'Iniciar sesión'}</h1>
 				<p className={styles.subtitle}>
-					Ingrese con su correo y contraseña. La tienda se adapta al rol del usuario.
+					Ingrese con su usuario o correo y contraseña. La tienda se adapta al rol del usuario.
 				</p>
 			</header>
 
@@ -112,16 +114,16 @@ export function LoginPage() {
 					<form className={styles.form} onSubmit={(e) => e.preventDefault()} noValidate>
 						<div className={styles.field}>
 							<label htmlFor="login-correo" className={styles.label}>
-								Correo electrónico
+								Usuario o correo
 							</label>
 							<input
 								id="login-correo"
-								type="email"
+								type="text"
 								className={`${styles.input} ${errores.correo ? styles.inputInvalid : ''}`}
 								value={correo}
 								onChange={(e) => setCorreo(e.target.value)}
 								autoComplete="username"
-								placeholder="usuario@correo.com"
+								placeholder="usuario o usuario@correo.com"
 								aria-invalid={errores.correo ? true : undefined}
 								aria-describedby={errores.correo ? 'login-correo-error' : undefined}
 							/>
