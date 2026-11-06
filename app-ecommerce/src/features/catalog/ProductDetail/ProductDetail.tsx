@@ -261,7 +261,7 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
                   size="lg"
                   fullWidth
                   onDecrease={() => cambiarCantidad(product.objectID, quantity - 1)}
-                  onIncrease={() => agregar(product.objectID, 1)}
+                  onIncrease={() => agregar(product.objectID, 1, product.name)}
                 />
               ) : (
                 <Button
@@ -270,7 +270,7 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
                   size="lg"
                   fullWidth
                   disabled={!inStock}
-                  onClick={() => agregar(product.objectID, 1)}
+                  onClick={() => agregar(product.objectID, 1, product.name)}
                 />
               )}
               {/* <Button label="Comprar ahora" variant="primary" size="lg" fullWidth disabled={!inStock} /> */}

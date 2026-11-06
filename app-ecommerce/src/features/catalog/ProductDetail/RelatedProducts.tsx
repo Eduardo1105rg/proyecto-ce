@@ -44,7 +44,7 @@ export function RelatedProducts({ category }: RelatedProductsProps) {
         viewMode="grid"
         columns={4}
         onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
-        onAddToCart={(p) => agregar(p.objectID, 1)}
+        onAddToCart={(p) => agregar(p.objectID, 1, p.name)}
       />
     </section>
   )

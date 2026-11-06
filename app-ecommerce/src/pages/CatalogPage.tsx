@@ -16,7 +16,7 @@ import type { Product } from '../types/product'
 import { useCarrito } from '../context/carritoContext'
 import { useAnalytics } from '../features/analytics/useAnalytics'
 import { BloqueProductos } from '../features/analytics/components/BloqueProductos/BloqueProductos'
-import { useRecomendados, useVistosRecientes } from '../features/analytics/usePersonalizacion.mock'
+import { useRecomendados, useVistosRecientes } from '../features/analytics/usePersonalizacion'
 import { useAuth } from '../features/auth/useAuth'
 
 type ViewMode = 'grid' | 'list'
@@ -103,7 +103,7 @@ function CatalogContent() {
 					products={items}
 					viewMode={viewMode}
 					columns={columns}
-					onAddToCart={(p) => agregar(p.objectID, 1)}
+					onAddToCart={(p) => agregar(p.objectID, 1, p.name)}
 					onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
 				/>
 			)}
@@ -116,14 +116,14 @@ function CatalogContent() {
 						productos={vistos.productos}
 						maximo={4}
 						verTodosHref={usuario ? '/analytics' : undefined}
-						onAddToCart={(p) => agregar(p.objectID, 1)}
+						onAddToCart={(p) => agregar(p.objectID, 1, p.name)}
 						onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
 					/>
 					<BloqueProductos
 						titulo="Recomendados para usted"
 						productos={recomendados.productos}
 						maximo={4}
-						onAddToCart={(p) => agregar(p.objectID, 1)}
+						onAddToCart={(p) => agregar(p.objectID, 1, p.name)}
 						onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
 					/>
 				</div>

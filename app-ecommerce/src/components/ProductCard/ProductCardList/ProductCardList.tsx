@@ -165,7 +165,7 @@ export function ProductCardList({ product, imageUrl, onAddToCart, onClick }: Pro
               size="md"
               fullWidth
               onDecrease={() => cambiarCantidad(product.objectID, quantity - 1)}
-              onIncrease={() => agregar(product.objectID, 1)}
+              onIncrease={() => agregar(product.objectID, 1, product.name)}
             />
           ) : (
             <Button

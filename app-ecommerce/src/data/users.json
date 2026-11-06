@@ -8,6 +8,14 @@
     "correo": "ana@correo.com"
   },
   {
+    "objectID": "u2-b2c",
+    "username": "ricardo@correo.com",
+    "password": "ricardo12345",
+    "rol": "B2C",
+    "nombre": "Ricardo",
+    "correo": "ricardo@correo.com"
+  },
+  {
     "objectID": "u-b2b",
     "username": "carlos@empresa.com",
     "password": "b2b12345",

@@ -1,5 +1,7 @@
 import type { BuyerInfo, DeliveryInfo, Order, OrderItem } from '../types/order'
 import type { PaymentResult } from '../types/payment'
+import { esRolValido } from '../types/usuario'
+import type { Rol } from '../types/usuario'
 
 /*
  * Servicio de ordenes (destino definitivo de `crearOrden` y `aplicarResultado`).
@@ -26,6 +28,9 @@ type OrdenesGuardadas = {
 }
 
 export type CrearOrdenInput = {
+    usuarioId?: string
+    rol?: Rol
+    sucursal?: string
     buyer: BuyerInfo
     delivery: DeliveryInfo
     items: OrderItem[]
@@ -90,6 +95,9 @@ export function esOrdenValida(valor: unknown): valor is Order {
         typeof orden.orderNumber === 'string' &&
         orden.orderNumber.trim() !== '' &&
         typeof orden.createdAt === 'string' &&
+        (orden.usuarioId === undefined || typeof orden.usuarioId === 'string') &&
+        (orden.rol === undefined || esRolValido(orden.rol)) &&
+        (orden.sucursal === undefined || typeof orden.sucursal === 'string') &&
         esBuyerValido(orden.buyer) &&
         esDeliveryValida(orden.delivery) &&
         Array.isArray(orden.items) &&
@@ -225,6 +233,9 @@ export async function crearOrden(input: CrearOrdenInput): Promise<Order> {
     const order: Order = {
         orderNumber: buildOrderNumber(listarOrdenes()),
         createdAt: ahora,
+        ...(input.usuarioId ? { usuarioId: input.usuarioId } : {}),
+        ...(input.rol ? { rol: input.rol } : {}),
+        ...(input.sucursal ? { sucursal: input.sucursal } : {}),
         buyer: input.buyer,
         delivery: input.delivery,
         items: input.items,

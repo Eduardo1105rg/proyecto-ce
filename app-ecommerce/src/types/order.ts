@@ -1,3 +1,5 @@
+import type { Rol } from './usuario'
+
 /** Estado de la orden. Se maneja aparte del estado del pago a propósito. */
 export type OrderStatus = 'PENDING' | 'CONFIRMED' | 'FAILED'
 
@@ -30,6 +32,12 @@ export type Order = {
     /** Ejemplo: MB-20261015-0001 - MB-YYYYMMDD-NNNN */
     orderNumber: string
     createdAt: string
+    /** Usuario autenticado que realizó la compra (o `anonimo`). */
+    usuarioId?: string
+    /** Rol del usuario al momento de la compra. */
+    rol?: Rol
+    /** Sucursal asociada a la compra, cuando el checkout la conozca. */
+    sucursal?: string
     buyer: BuyerInfo
     delivery: DeliveryInfo
     items: OrderItem[]

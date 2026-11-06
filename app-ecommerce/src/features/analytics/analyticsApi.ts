@@ -46,6 +46,19 @@ export function obtenerMetricas(usuarioId: string): MetricasUsuario {
   return calcularMetricas(obtenerEventos(usuarioId))
 }
 
+/**
+ * Indica si la compra de una orden ya quedó registrada para el usuario.
+ *
+ * Sirve para que la confirmación sea idempotente: un reintento que termina en
+ * pago aprobado no debe duplicar el evento si la orden ya se había registrado.
+ */
+export function existeCompra(usuarioId: string, ordenId: string): boolean {
+  return obtenerEventos(usuarioId).some(
+    (evento) =>
+      evento.tipo === 'compra' && String(evento.detalle.ordenId) === ordenId,
+  )
+}
+
 export function obtenerVistosRecientes(usuarioId: string): string[] {
   return recientes(obtenerEventos(usuarioId), 'vista_producto', 'productoId')
 }
