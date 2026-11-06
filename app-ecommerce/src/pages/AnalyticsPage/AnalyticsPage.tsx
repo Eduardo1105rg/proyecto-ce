@@ -3,7 +3,7 @@ import { useAuth } from '../../features/auth/useAuth'
 import {
     obtenerBusquedasRecientes,
     obtenerMetricas,
-} from '../../features/analytics/analyticsApi.mock'
+} from '../../features/analytics/analyticsApi'
 import { useVistosRecientes } from '../../features/analytics/usePersonalizacion.mock'
 import { ListaVistos } from '../../features/analytics/components/ListaVistos/ListaVistos'
 import styles from './AnalyticsPage.module.css'

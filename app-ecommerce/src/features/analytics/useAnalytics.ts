@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import type { EventoAnalytics, TipoEvento } from '../../types/analytics'
 import { useAuth } from '../auth/useAuth'
-import { registrarEvento } from './analyticsApi.mock'
+import { registrarEvento } from './analyticsStorage'
 
 export const USUARIO_ANONIMO = 'anonimo'
 
@@ -11,9 +11,12 @@ export function useAnalytics() {
 
 	const registrar = useCallback(
 		(tipo: TipoEvento, detalle: EventoAnalytics['detalle']) => {
-			registrarEvento(usuarioId, tipo, detalle)
+			registrarEvento(usuarioId, tipo, detalle, {
+				usuarioNombre: usuario?.nombre,
+				rol: usuario?.rol,
+			})
 		},
-		[usuarioId],
+		[usuarioId, usuario],
 	)
 
 	return { registrar, usuarioId }

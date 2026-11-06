@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import { esRolValido } from '../../types/usuario';
 import type { Usuario } from '../../types/usuario';
-import { registrarEvento } from '../analytics/analyticsApi.mock';
+import { registrarEvento } from '../analytics/analyticsStorage';
 import { AuthContext } from './authContext';
 import { obtenerUsuario, validarCredenciales } from './authApi';
 
@@ -37,7 +37,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
         localStorage.setItem(CLAVE_SESION, JSON.stringify(encontrado));
         setUsuario(encontrado);
-        registrarEvento(encontrado.id, 'login', { rol: encontrado.rol });
+        registrarEvento(
+            encontrado.id,
+            'login',
+            { rol: encontrado.rol },
+            { usuarioNombre: encontrado.nombre, rol: encontrado.rol },
+        );
         return null;
     }, []);
 
