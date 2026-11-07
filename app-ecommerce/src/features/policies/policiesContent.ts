@@ -41,7 +41,7 @@ export const POLICIES: Policy[] = [
 					},
 					{
 						type: 'paragraph',
-						text: 'La oficina de la tienda simulada se ubica en Costa Rica, provincia de Limón, cantón de Limón, distrito de Limón, barrio Roosevelt, frente al TEC de Limón. Puede contactar al equipo de atención al cliente mediante soporte@marketbyte.com o por teléfono y WhatsApp al +506 8888-8888.',
+						text: 'La oficina de la tienda se ubica en Costa Rica, provincia de Limón, cantón de Limón, distrito de Limón, barrio Roosevelt, frente al TEC de Limón. Puede contactar al equipo de atención al cliente mediante soporte@marketbyte.com o por teléfono y WhatsApp al +506 8888-8888.',
 					},
 				],
 			},
@@ -349,7 +349,7 @@ export const POLICIES: Policy[] = [
 				blocks: [
 					{
 						type: 'paragraph',
-						text: 'El plazo comercial de 30 días desde la recepción de cada artículo no sustituye el derecho de retracto. Como referencia para este proyecto, la normativa costarricense permite ejercer el retracto dentro de los 8 días hábiles siguientes al perfeccionamiento de la venta, cuando la naturaleza del bien lo permita. Puede comunicarlo por escrito al correo oficial de la tienda y conservar constancia de su envío.',
+						text: 'El plazo comercial de 30 días desde la recepción de cada artículo no sustituye el derecho de retracto. Puede comunicarlo por escrito al correo oficial de la tienda y conservar constancia de su envío.',
 					},
 					{
 						type: 'paragraph',
