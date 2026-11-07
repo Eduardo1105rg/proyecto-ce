@@ -1,0 +1,100 @@
+.chip {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 36px;
+    padding: 0 4px 0 10px;
+    border: 1.5px solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--bg-white);
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+    font-weight: 500;
+}
+
+.info:hover {
+    color: var(--blue-800);
+}
+
+.name {
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.role {
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    color: var(--text-primary);
+    font-size: var(--text-xs);
+    font-weight: 700;
+}
+
+.roleB2C {
+    background: var(--bg-subtle);
+}
+
+.roleB2B {
+    background: var(--green-soft);
+}
+
+.roleADMIN {
+    background: var(--orange-soft);
+}
+
+.logout {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.logout:hover {
+    background: var(--border-default);
+    color: var(--text-primary);
+}
+
+.login {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 12px;
+    border: 1.5px solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--bg-white);
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+    font-weight: 500;
+}
+
+.login:hover {
+    background: var(--border-default);
+    color: var(--text-primary);
+}
+
+.info:focus-visible,
+.logout:focus-visible,
+.login:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+}
+
+:global(.dark) .chip,
+:global(.dark) .login {
+    background: var(--ink-900);
+    border-color: var(--ink-700);
+}
