@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Configure, InstantSearch, useHits, useInstantSearch, useStats } from 'react-instantsearch'
+import { Configure, InstantSearch, useHits, useInstantSearch, useSearchBox, useStats } from 'react-instantsearch'
 import { CatalogLayout } from '../features/catalog/components/CatalogLayout/CatalogLayout'
 import { ProductGrid } from '../features/catalog/components/ProductGrid/ProductGrid'
 import { ViewToggle } from '../features/catalog/components/ViewToggle/ViewToggle'
@@ -8,12 +8,16 @@ import { FilterPanel } from '../features/catalog/components/FilterPanel/FilterPa
 import { Pagination } from '../features/catalog/components/Pagination/Pagination'
 import { SearchBar } from '../features/catalog/components/SearchBar/SearchBar'
 import {
-  HITS_PER_PAGE,
-  INDEX_MAIN,
-  searchClient,
+	HITS_PER_PAGE,
+	INDEX_MAIN,
+	searchClient,
 } from '../services/Algolia'
 import type { Product } from '../types/product'
 import { useCarrito } from '../context/carritoContext'
+import { useAnalytics } from '../features/analytics/useAnalytics'
+import { BloqueProductos } from '../features/analytics/components/BloqueProductos/BloqueProductos'
+import { useRecomendados, useVistosRecientes } from '../features/analytics/usePersonalizacion'
+import { useAuth } from '../features/auth/useAuth'
 
 type ViewMode = 'grid' | 'list'
 type Columns = 3 | 4 | 5
@@ -34,60 +38,98 @@ type Columns = 3 | 4 | 5
  * y el numero de columnas, que no pertenece al estado de busqueda.
  */
 function CatalogContent() {
-  const navigate = useNavigate()
-  const { agregar } = useCarrito()
+	const navigate = useNavigate()
+	const { agregar } = useCarrito()
+	const { registrar } = useAnalytics()
+	const { query } = useSearchBox()
+	const ultimaBusqueda = useRef('')
+	const vistos = useVistosRecientes()
+	const recomendados = useRecomendados()
+	const { usuario } = useAuth()
 
-  const [viewMode, setViewMode] = useState<ViewMode>('grid')
-  const [columns, setColumns] = useState<Columns>(4)
+	const [viewMode, setViewMode] = useState<ViewMode>('grid')
+	const [columns, setColumns] = useState<Columns>(4)
 
-  const { items } = useHits<Product>()
-  const { nbHits } = useStats()
-  const { status } = useInstantSearch()
+	const { items } = useHits<Product>()
+	const { nbHits } = useStats()
+	const { status } = useInstantSearch()
 
-  /**
-   * Muestra el estado de carga solo durante la primera busqueda.
-   * En refinamientos posteriores los hits anteriores siguen en pantalla mientras
-   * llega la respuesta, de modo que no parpadea el mensaje de "Cargando".
-   */
-  const showLoading = items.length === 0 && status === 'loading'
+	// Se registra la busqueda cuando el usuario deja de escribir, no en cada letra.
+	useEffect(() => {
+		const termino = query.trim()
+		if (termino.length < 2 || termino === ultimaBusqueda.current) return
 
-  return (
-    <CatalogLayout
-      searchBar={<SearchBar />}
-      sidebar={<FilterPanel />}
-    >
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '16px',
-      }}>
-        <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>
-          {nbHits} productos encontrados
-        </p>
-        <ViewToggle
-          viewMode={viewMode}
-          columns={columns}
-          onViewChange={setViewMode}
-          onColumnsChange={setColumns}
-        />
-      </div>
+		const espera = setTimeout(() => {
+			ultimaBusqueda.current = termino
+			registrar('busqueda', { termino })
+		}, 800)
 
-      {showLoading ? (
-        <p style={{ color: 'var(--text-muted)' }}>Cargando productos...</p>
-      ) : (
-        <ProductGrid
-          products={items}
-          viewMode={viewMode}
-          columns={columns}
-          onAddToCart={(p) => agregar(p.objectID, 1)}
-          onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
-        />
-      )}
+		return () => clearTimeout(espera)
+	}, [query, registrar])
 
-      <Pagination />
-    </CatalogLayout>
-  )
+	/**
+	 * Muestra el estado de carga solo durante la primera busqueda.
+	 * En refinamientos posteriores los hits anteriores siguen en pantalla mientras
+	 * llega la respuesta, de modo que no parpadea el mensaje de "Cargando".
+	 */
+	const showLoading = items.length === 0 && status === 'loading'
+
+	return (
+		<CatalogLayout
+			searchBar={<SearchBar />}
+			sidebar={<FilterPanel />}
+		>
+			<div style={{
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'space-between',
+				marginBottom: '16px',
+			}}>
+				<p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>
+					{nbHits} productos encontrados
+				</p>
+				<ViewToggle
+					viewMode={viewMode}
+					columns={columns}
+					onViewChange={setViewMode}
+					onColumnsChange={setColumns}
+				/>
+			</div>
+
+			{showLoading ? (
+				<p style={{ color: 'var(--text-muted)' }}>Cargando productos...</p>
+			) : (
+				<ProductGrid
+					products={items}
+					viewMode={viewMode}
+					columns={columns}
+					onAddToCart={(p) => agregar(p.objectID, 1, p.name)}
+					onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
+				/>
+			)}
+
+			<Pagination />
+			{query.trim() === '' && (
+				<div style={{ marginTop: '40px' }}>
+					<BloqueProductos
+						titulo="Vistos recientemente"
+						productos={vistos.productos}
+						maximo={4}
+						verTodosHref={usuario ? '/analytics' : undefined}
+						onAddToCart={(p) => agregar(p.objectID, 1, p.name)}
+						onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
+					/>
+					<BloqueProductos
+						titulo="Recomendados para usted"
+						productos={recomendados.productos}
+						maximo={4}
+						onAddToCart={(p) => agregar(p.objectID, 1, p.name)}
+						onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
+					/>
+				</div>
+			)}
+		</CatalogLayout>
+	)
 }
 
 /**
@@ -99,14 +141,14 @@ function CatalogContent() {
  * lo que es incompatible con el enrutado por hash.
  */
 export function CatalogPage() {
-  return (
-    <InstantSearch
-      searchClient={searchClient}
-      indexName={INDEX_MAIN}
-      routing={false}
-    >
-      <Configure hitsPerPage={HITS_PER_PAGE} />
-      <CatalogContent />
-    </InstantSearch>
-  )
+	return (
+		<InstantSearch
+			searchClient={searchClient}
+			indexName={INDEX_MAIN}
+			routing={false}
+		>
+			<Configure hitsPerPage={HITS_PER_PAGE} />
+			<CatalogContent />
+		</InstantSearch>
+	)
 }

@@ -169,7 +169,7 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
               max={totalStock}
               size="sm"
               onDecrease={() => cambiarCantidad(product.objectID, quantity - 1)}
-              onIncrease={() => agregar(product.objectID, 1)}
+              onIncrease={() => agregar(product.objectID, 1, product.name)}
             />
           ) : (
             /* stopPropagation evita que el clic en carrito también active onClick de la tarjeta */

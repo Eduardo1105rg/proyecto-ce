@@ -23,6 +23,8 @@ if (!searchKey) {
 export const INDEX_MAIN = import.meta.env.VITE_ALGOLIA_INDEX_MAIN
 export const INDEX_PRICE_ASC = import.meta.env.VITE_ALGOLIA_INDEX_PRICE_ASC
 export const INDEX_PRICE_DESC = import.meta.env.VITE_ALGOLIA_INDEX_PRICE_DESC
+export const INDEX_USERS = import.meta.env.VITE_ALGOLIA_INDEX_USERS
+export const INDEX_ORDERS = import.meta.env.VITE_ALGOLIA_INDEX_ORDERS
 
 /** Opciones de ordenamiento disponibles en el FilterPanel */
 export const SORT_OPTIONS: DropdownOption[] = [

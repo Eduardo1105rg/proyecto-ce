@@ -16,6 +16,9 @@ import styles from './CheckoutPage.module.css'
 import { aplicarResultado, crearOrden, obtenerOrden } from '../../services/orders'
 import { ErrorServicioPago, procesarPago } from '../../services/paymentSandbox'
 import type { SandboxScenario } from '../../services/paymentSandbox'
+import { useAnalytics } from '../../features/analytics/useAnalytics'
+import { existeCompra } from '../../features/analytics/analyticsApi'
+import { useAuth } from '../../features/auth/useAuth'
 
 /**
  * Reconstruye el resultado de pago de una orden persistida para poder mostrar
@@ -24,197 +27,240 @@ import type { SandboxScenario } from '../../services/paymentSandbox'
  * quedó resuelto.
  */
 function resultadoDesdeOrden(order: Order): PaymentResult | null {
-    if (order.paymentStatus === 'APPROVED') {
-        return { code: 'PAYMENT_APPROVED', orderId: order.orderNumber, message: 'Su pago fue aprobado.' }
-    }
+	if (order.paymentStatus === 'APPROVED') {
+		return { code: 'PAYMENT_APPROVED', orderId: order.orderNumber, message: 'Su pago fue aprobado.' }
+	}
 
-    if (order.paymentStatus === 'DECLINED') {
-        return {
-            code: 'PAYMENT_DECLINED',
-            orderId: order.orderNumber,
-            message: 'El pago fue rechazado. Verifique su método de pago o intente con otro.',
-        }
-    }
+	if (order.paymentStatus === 'DECLINED') {
+		return {
+			code: 'PAYMENT_DECLINED',
+			orderId: order.orderNumber,
+			message: 'El pago fue rechazado. Verifique su método de pago o intente con otro.',
+		}
+	}
 
-    if (order.paymentStatus === 'ERROR') {
-        return {
-            code: 'PAYMENT_ERROR',
-            orderId: order.orderNumber,
-            message: 'El servicio de pago no está disponible en este momento. Intente de nuevo.',
-        }
-    }
+	if (order.paymentStatus === 'ERROR') {
+		return {
+			code: 'PAYMENT_ERROR',
+			orderId: order.orderNumber,
+			message: 'El servicio de pago no está disponible en este momento. Intente de nuevo.',
+		}
+	}
 
-    return null
+	return null
 }
 
 export function CheckoutPage() {
-    const { items, totales, cargando, error, vaciar, activarConsulta } = useCarrito()
+	const { items, totales, cargando, error, vaciar, activarConsulta } = useCarrito()
+	const { registrar, usuarioId } = useAnalytics()
+	const { usuario } = useAuth()
 
-    const [searchParams, setSearchParams] = useSearchParams()
+	const [searchParams, setSearchParams] = useSearchParams()
 
-    // Persistencia básica (E3a): el número de orden viaja en la URL y la orden ya
-    // quedó guardada por el servicio de órdenes. Al montar se lee una sola vez
-    // para reconstruir la pantalla de resultado cuando se recarga el paso; el
-    // resto del flujo controla el estado por su cuenta.
-    const [recovery] = useState(() => {
-        const numero = searchParams.get('orden')
-        const recuperada = numero ? obtenerOrden(numero) : null
-        const pago = recuperada ? resultadoDesdeOrden(recuperada) : null
-        return pago ? { order: recuperada, result: pago } : null
-    })
+	// Persistencia básica (E3a): el número de orden viaja en la URL y la orden ya
+	// quedó guardada por el servicio de órdenes. Al montar se lee una sola vez
+	// para reconstruir la pantalla de resultado cuando se recarga el paso; el
+	// resto del flujo controla el estado por su cuenta.
+	const [recovery] = useState(() => {
+		const numero = searchParams.get('orden')
+		const recuperada = numero ? obtenerOrden(numero) : null
+		const pago = recuperada ? resultadoDesdeOrden(recuperada) : null
+		return pago ? { order: recuperada, result: pago } : null
+	})
 
-    const [step, setStep] = useState<CheckoutStep>(recovery ? 'outcome' : 'data')
-    const [values, setValues] = useState<CheckoutValues>(EMPTY_VALUES)
-    const [scenario, setScenario] = useState<SandboxScenario>('PAYMENT_APPROVED')
-    const [order, setOrder] = useState<Order | null>(recovery?.order ?? null)
-    const [result, setResult] = useState<PaymentResult | null>(recovery?.result ?? null)
-    const [processing, setProcessing] = useState(false)
-    const [submitError, setSubmitError] = useState<string | null>(null)
-    const submittingRef = useRef(false)
+	const [step, setStep] = useState<CheckoutStep>(recovery ? 'outcome' : 'data')
+	const [values, setValues] = useState<CheckoutValues>(EMPTY_VALUES)
+	const [scenario, setScenario] = useState<SandboxScenario>('PAYMENT_APPROVED')
+	const [order, setOrder] = useState<Order | null>(recovery?.order ?? null)
+	const [result, setResult] = useState<PaymentResult | null>(recovery?.result ?? null)
+	const [processing, setProcessing] = useState(false)
+	const [submitError, setSubmitError] = useState<string | null>(null)
+	const submittingRef = useRef(false)
+	const inicioRegistrado = useRef(false)
 
-    useEffect(() => {
-        activarConsulta()
-    }, [activarConsulta])
+	useEffect(() => {
+		activarConsulta()
+	}, [activarConsulta])
 
-    const goTo = (next: CheckoutStep) => {
-        setStep(next)
-        window.scrollTo({ top: 0 })
-    }
+	// El inicio del checkout se registra una sola vez, cuando el paso de datos
+	// ya está visible y los precios del carrito terminaron de resolverse.
+	useEffect(() => {
+		if (
+			step !== 'data' ||
+			inicioRegistrado.current ||
+			recovery ||
+			cargando ||
+			error ||
+			items.length === 0
+		) {
+			return
+		}
 
-    const handleEdit = () => {
-        // Si cambian los datos, la orden ya creada dejaría de ser válida.
-        setOrder(null)
-        setSubmitError(null)
-        setSearchParams({}, { replace: true })
-        goTo('data')
-    }
+		inicioRegistrado.current = true
+		registrar('inicio_checkout', { articulos: totales.articulos, total: totales.total })
+	}, [
+		cargando,
+		error,
+		items.length,
+		recovery,
+		registrar,
+		step,
+		totales.articulos,
+		totales.total,
+	])
 
-    const handleRetry = () => {
-        setResult(null)
-        setSearchParams({}, { replace: true })
-        goTo('review')
-    }
+	const goTo = (next: CheckoutStep) => {
+		setStep(next)
+		window.scrollTo({ top: 0 })
+	}
 
-    const handleConfirm = async () => {
-        if (submittingRef.current) return
-        submittingRef.current = true
-        setProcessing(true)
-        setSubmitError(null)
+	const handleEdit = () => {
+		// Si cambian los datos, la orden ya creada dejaría de ser válida.
+		setOrder(null)
+		setSubmitError(null)
+		setSearchParams({}, { replace: true })
+		goTo('data')
+	}
 
-        try {
-            // En un reintento la orden ya existe y se reutiliza.
-            let current = order
+	const handleRetry = () => {
+		setResult(null)
+		setSearchParams({}, { replace: true })
+		goTo('review')
+	}
 
-            if (!current) {
-                current = await crearOrden({
-                    buyer: toBuyer(values),
-                    delivery: toDelivery(values),
-                    items: items
-                        .filter((item) => !item.noDisponible)
-                        .map((item) => ({
-                            objectID: item.objectID,
-                            name: item.titulo,
-                            unitPrice: item.precio,
-                            quantity: item.cantidad,
-                            subtotal: item.precio * item.cantidad,
-                        })),
-                    // Los montos salen del carrito: no se recalculan aquí.
-                    subtotal: totales.subtotal,
-                    tax: totales.iva,
-                    shipping: totales.envio,
-                    total: totales.total,
-                    termsAccepted: values.acceptTerms,
-                })
-            }
+	const handleConfirm = async () => {
+		if (submittingRef.current) return
+		submittingRef.current = true
+		setProcessing(true)
+		setSubmitError(null)
 
-            let payment: PaymentResult
+		try {
+			// En un reintento la orden ya existe y se reutiliza.
+			let current = order
 
-            try {
-                payment = await procesarPago(
-                    { orderId: current.orderNumber, amount: current.total, currency: 'CRC' },
-                    scenario,
-                )
-            } catch (error) {
-                payment = {
-                    code: 'PAYMENT_ERROR',
-                    orderId: current.orderNumber,
-                    message: error instanceof ErrorServicioPago
-                        ? error.message
-                        : 'El servicio de pago no está disponible en este momento. Intente de nuevo.',
-                }
-            }
+			if (!current) {
+				current = await crearOrden({
+					usuarioId,
+					rol: usuario?.rol,
+					buyer: toBuyer(values),
+					delivery: toDelivery(values),
+					items: items
+						.filter((item) => !item.noDisponible)
+						.map((item) => ({
+							objectID: item.objectID,
+							name: item.titulo,
+							unitPrice: item.precio,
+							quantity: item.cantidad,
+							subtotal: item.precio * item.cantidad,
+						})),
+					// Los montos salen del carrito: no se recalculan aquí.
+					subtotal: totales.subtotal,
+					tax: totales.iva,
+					shipping: totales.envio,
+					total: totales.total,
+					termsAccepted: values.acceptTerms,
+				})
+			}
 
-            const actualizada = aplicarResultado(current, payment)
+			let payment: PaymentResult
 
-            setOrder(actualizada)
-            setResult(payment)
+			try {
+				payment = await procesarPago(
+					{ orderId: current.orderNumber, amount: current.total, currency: 'CRC' },
+					scenario,
+				)
+			} catch (error) {
+				payment = {
+					code: 'PAYMENT_ERROR',
+					orderId: current.orderNumber,
+					message: error instanceof ErrorServicioPago
+						? error.message
+						: 'El servicio de pago no está disponible en este momento. Intente de nuevo.',
+				}
+			}
 
-            // El carrito solo se vacía cuando el pago fue aprobado.
-            if (payment.code === 'PAYMENT_APPROVED') vaciar()
+			const actualizada = aplicarResultado(current, payment)
 
-            // El número de orden en la URL permite recuperar el resultado tras
-            // una recarga, sin agregar una entrada al historial.
-            setSearchParams({ orden: actualizada.orderNumber }, { replace: true })
+			setOrder(actualizada)
+			setResult(payment)
 
-            goTo('outcome')
-        } catch {
-            setSubmitError('No se pudo crear la orden. Intente de nuevo.')
-        } finally {
-            submittingRef.current = false
-            setProcessing(false)
-        }
-    }
+			// El carrito solo se vacía cuando el pago fue aprobado. La compra se
+			// registra una sola vez por orden, aunque la confirmación se repita.
+			if (payment.code === 'PAYMENT_APPROVED') {
+				if (!existeCompra(usuarioId, actualizada.orderNumber)) {
+					registrar('compra', {
+						ordenId: actualizada.orderNumber,
+						total: actualizada.total,
+						articulos: totales.articulos,
+						metodoPago: scenario,
+					})
+				}
+				vaciar()
+			}
 
-    const renderGuard = () => {
-        if (items.length === 0) return <CartEmpty />
+			// El número de orden en la URL permite recuperar el resultado tras
+			// una recarga, sin agregar una entrada al historial.
+			setSearchParams({ orden: actualizada.orderNumber }, { replace: true })
 
-        const message = error
-            ? `No se pudieron cargar los precios: ${error}`
-            : cargando
-                ? 'Cargando los productos de su carrito…'
-                : items.some((item) => item.noDisponible)
-                    ? 'Algunos productos ya no están disponibles. Revise su carrito antes de continuar.'
-                    : null
+			goTo('outcome')
+		} catch {
+			setSubmitError('No se pudo crear la orden. Intente de nuevo.')
+		} finally {
+			submittingRef.current = false
+			setProcessing(false)
+		}
+	}
 
-        if (!message) return null
+	const renderGuard = () => {
+		if (items.length === 0) return <CartEmpty />
 
-        return (
-            <div className={styles.notice} role={error ? 'alert' : 'status'}>
-                <p>{message}</p>
-                <Link className={styles.noticeLink} to="/carrito">
-                    Volver al carrito
-                </Link>
-            </div>
-        )
-    }
+		const message = error
+			? `No se pudieron cargar los precios: ${error}`
+			: cargando
+				? 'Cargando los productos de su carrito…'
+				: items.some((item) => item.noDisponible)
+					? 'Algunos productos ya no están disponibles. Revise su carrito antes de continuar.'
+					: null
 
-    // Tras un pago aprobado el carrito queda vacío; la pantalla de resultado
-    // no debe reemplazarse por el aviso de carrito vacío.
-    const guard = step === 'outcome' ? null : renderGuard()
+		if (!message) return null
 
-    return (
-        <main className={styles.page}>
-            <h1 className={styles.heading}>Finalizar compra</h1>
-            <CheckoutSteps current={step} />
+		return (
+			<div className={styles.notice} role={error ? 'alert' : 'status'}>
+				<p>{message}</p>
+				<Link className={styles.noticeLink} to="/carrito">
+					Volver al carrito
+				</Link>
+			</div>
+		)
+	}
 
-            {guard ??
-                (step === 'data' ? (
-                    <CheckoutForm values={values} onChange={setValues} onContinue={() => goTo('review')} />
-                ) : step === 'review' ? (
-                    <OrderReview
-                        items={items}
-                        totales={totales}
-                        values={values}
-                        scenario={scenario}
-                        processing={processing}
-                        submitError={submitError}
-                        onScenarioChange={setScenario}
-                        onEdit={handleEdit}
-                        onConfirm={handleConfirm}
-                    />
-                ) : (
-                    result && <PaymentOutcome order={order} result={result} onRetry={handleRetry} />
-                ))}
-        </main>
-    )
+	// Tras un pago aprobado el carrito queda vacío; la pantalla de resultado
+	// no debe reemplazarse por el aviso de carrito vacío.
+	const guard = step === 'outcome' ? null : renderGuard()
+
+	return (
+		<main className={styles.page}>
+			<h1 className={styles.heading}>Finalizar compra</h1>
+			<CheckoutSteps current={step} />
+
+			{guard ??
+				(step === 'data' ? (
+					<CheckoutForm values={values} onChange={setValues} onContinue={() => goTo('review')} />
+				) : step === 'review' ? (
+					<OrderReview
+						items={items}
+						totales={totales}
+						values={values}
+						scenario={scenario}
+						processing={processing}
+						submitError={submitError}
+						onScenarioChange={setScenario}
+						onEdit={handleEdit}
+						onConfirm={handleConfirm}
+					/>
+				) : (
+					result && <PaymentOutcome order={order} result={result} onRetry={handleRetry} />
+				))}
+		</main>
+	)
 }

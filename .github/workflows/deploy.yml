@@ -46,6 +46,7 @@ jobs:
           VITE_ALGOLIA_INDEX_MAIN: ${{ vars.VITE_ALGOLIA_INDEX_MAIN }}
           VITE_ALGOLIA_INDEX_PRICE_ASC: ${{ vars.VITE_ALGOLIA_INDEX_PRICE_ASC }}
           VITE_ALGOLIA_INDEX_PRICE_DESC: ${{ vars.VITE_ALGOLIA_INDEX_PRICE_DESC }}
+          VITE_ALGOLIA_INDEX_USERS: ${{ vars.VITE_ALGOLIA_INDEX_USERS }}
         run: pnpm run build
           
       - name: Setup Pages
