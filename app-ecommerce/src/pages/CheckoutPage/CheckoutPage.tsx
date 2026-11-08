@@ -17,6 +17,8 @@ import { aplicarResultado, crearOrden, obtenerOrden } from '../../services/order
 import { ErrorServicioPago, procesarPago } from '../../services/paymentSandbox'
 import type { SandboxScenario } from '../../services/paymentSandbox'
 import { useAnalytics } from '../../features/analytics/useAnalytics'
+import { existeCompra } from '../../features/analytics/analyticsApi'
+import { useAuth } from '../../features/auth/useAuth'
 
 /**
  * Reconstruye el resultado de pago de una orden persistida para poder mostrar
@@ -50,7 +52,8 @@ function resultadoDesdeOrden(order: Order): PaymentResult | null {
 
 export function CheckoutPage() {
 	const { items, totales, cargando, error, vaciar, activarConsulta } = useCarrito()
-	const { registrar } = useAnalytics()
+	const { registrar, usuarioId } = useAnalytics()
+	const { usuario } = useAuth()
 
 	const [searchParams, setSearchParams] = useSearchParams()
 
@@ -79,12 +82,32 @@ export function CheckoutPage() {
 		activarConsulta()
 	}, [activarConsulta])
 
-	// El inicio del checkout se registra una sola vez, cuando ya hay productos en el carrito.
+	// El inicio del checkout se registra una sola vez, cuando el paso de datos
+	// ya está visible y los precios del carrito terminaron de resolverse.
 	useEffect(() => {
-		if (inicioRegistrado.current || recovery || items.length === 0) return
+		if (
+			step !== 'data' ||
+			inicioRegistrado.current ||
+			recovery ||
+			cargando ||
+			error ||
+			items.length === 0
+		) {
+			return
+		}
+
 		inicioRegistrado.current = true
 		registrar('inicio_checkout', { articulos: totales.articulos, total: totales.total })
-	}, [items.length, recovery, registrar, totales.articulos, totales.total])
+	}, [
+		cargando,
+		error,
+		items.length,
+		recovery,
+		registrar,
+		step,
+		totales.articulos,
+		totales.total,
+	])
 
 	const goTo = (next: CheckoutStep) => {
 		setStep(next)
@@ -117,6 +140,8 @@ export function CheckoutPage() {
 
 			if (!current) {
 				current = await crearOrden({
+					usuarioId,
+					rol: usuario?.rol,
 					buyer: toBuyer(values),
 					delivery: toDelivery(values),
 					items: items
@@ -159,13 +184,17 @@ export function CheckoutPage() {
 			setOrder(actualizada)
 			setResult(payment)
 
-			// El carrito solo se vacía cuando el pago fue aprobado.
+			// El carrito solo se vacía cuando el pago fue aprobado. La compra se
+			// registra una sola vez por orden, aunque la confirmación se repita.
 			if (payment.code === 'PAYMENT_APPROVED') {
-				registrar('compra', {
-					ordenId: actualizada.orderNumber,
-					total: actualizada.total,
-					articulos: totales.articulos,
-				})
+				if (!existeCompra(usuarioId, actualizada.orderNumber)) {
+					registrar('compra', {
+						ordenId: actualizada.orderNumber,
+						total: actualizada.total,
+						articulos: totales.articulos,
+						metodoPago: scenario,
+					})
+				}
 				vaciar()
 			}
 

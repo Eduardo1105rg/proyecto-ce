@@ -1,0 +1,38 @@
+[
+  {
+    "objectID": "u-b2c",
+    "username": "ana@correo.com",
+    "password": "b2c12345",
+    "rol": "B2C",
+    "nombre": "Ana Mora",
+    "correo": "ana@correo.com"
+  },
+  {
+    "objectID": "u2-b2c",
+    "username": "ricardo@correo.com",
+    "password": "ricardo12345",
+    "rol": "B2C",
+    "nombre": "Ricardo",
+    "correo": "ricardo@correo.com"
+  },
+  {
+    "objectID": "u-b2b",
+    "username": "carlos@empresa.com",
+    "password": "b2b12345",
+    "rol": "B2B",
+    "nombre": "Carlos Vega",
+    "correo": "carlos@empresa.com",
+    "empresa": {
+      "nombre": "Tecnosur S.A.",
+      "cedulaJuridica": "3-101-123456"
+    }
+  },
+  {
+    "objectID": "u-admin",
+    "username": "admin@marketbyte.com",
+    "password": "admin12345",
+    "rol": "ADMIN",
+    "nombre": "Administrador",
+    "correo": "admin@marketbyte.com"
+  }
+]

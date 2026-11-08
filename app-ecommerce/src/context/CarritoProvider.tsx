@@ -127,9 +127,13 @@ export function CarritoProvider({ children }: PropsWithChildren) {
     const cargando = consultaActiva && pendiente && error === null
 
 	const agregar = useCallback(
-		(objectID: string, cantidad = 1) => {
+		(objectID: string, cantidad = 1, nombre?: string) => {
 			dispatch(accionesCarrito.agregar(objectID, cantidad))
-			registrar('agregar_carrito', { productoId: objectID, cantidad })
+			registrar('agregar_carrito', {
+				productoId: objectID,
+				cantidad,
+				...(nombre ? { nombre } : {}),
+			})
 		},
 		[registrar],
 	)

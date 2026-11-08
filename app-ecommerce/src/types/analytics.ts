@@ -1,3 +1,5 @@
+import type { Rol } from './usuario';
+
 export type TipoEvento =
   | 'login'
   | 'busqueda'
@@ -11,6 +13,8 @@ export interface EventoAnalytics {
   tipo: TipoEvento;
   fecha: string;
   usuarioId: string;
+  usuarioNombre?: string;
+  rol?: Rol;
   detalle: Record<string, string | number>;
 }
 

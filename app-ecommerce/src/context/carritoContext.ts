@@ -30,11 +30,11 @@ export type ValorCarrito = {
   /**
    * Agrega un producto por su identificador.
    *
-   * No recibe el nombre ni el precio porque ninguno de los dos se guarda: se
-   * consultan del índice. Si el producto ya está en el carrito, se le suma la
-   * cantidad en vez de crear una línea repetida.
+   * El nombre es opcional y solo se usa para la actividad registrada: la línea
+   * del carrito no lo guarda, se consulta del índice. Si el producto ya está en
+   * el carrito, se le suma la cantidad en vez de crear una línea repetida.
    */
-  agregar: (objectID: string, cantidad?: number) => void
+  agregar: (objectID: string, cantidad?: number, nombre?: string) => void
   /** Fija la cantidad de una línea. Un valor menor o igual a 0 la elimina. */
   cambiarCantidad: (objectID: string, cantidad: number) => void
   /** Quita una línea del carrito. */
