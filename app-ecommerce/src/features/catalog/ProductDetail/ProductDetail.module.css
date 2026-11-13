@@ -541,6 +541,42 @@
     color: var(--slate-100);
 }
 
+.b2bRef {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--green-700);
+}
+
+.branchSelector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--bg-white);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.branchSelectLabel {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.branchSelect {
+    flex: 1;
+    max-width: 320px;
+    padding: 8px 10px;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--bg-light);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: var(--text-sm);
+}
+
 /* - RESPONSIVE - */
 @media (max-width: 768px) {
     .layout {

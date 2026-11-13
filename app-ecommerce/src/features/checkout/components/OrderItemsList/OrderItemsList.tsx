@@ -12,7 +12,7 @@ export function OrderItemsList({ items }: OrderItemsListProps) {
 	return (
 		<ul className={styles.list}>
 			{items.map((item) => (
-				<li key={item.objectID} className={styles.row}>
+				<li key={item.lineId} className={styles.row}>
 					<img
 						className={styles.image}
 						src={buildImageUrl(item.imagen)}
@@ -24,8 +24,16 @@ export function OrderItemsList({ items }: OrderItemsListProps) {
 					<div className={styles.info}>
 						<p className={styles.name}>{item.titulo}</p>
 						<p className={styles.meta}>
-							{item.cantidad} x {formatPrice(item.precio)}
+							{item.cantidad} x {formatPrice(item.precio)} · {item.branchName}
 						</p>
+						{item.precioB2BReferencia !== null && item.precioB2BReferencia !== item.precio && (
+							<p className={styles.meta}>
+								Precio B2C · Referencia B2B {formatPrice(item.precioB2BReferencia)} c/u
+							</p>
+						)}
+						{item.tipoPrecio === 'B2B' && (
+							<p className={styles.meta}>Precio B2B aplicado</p>
+						)}
 					</div>
 					<p className={styles.total}>{formatPrice(item.precio * item.cantidad)}</p>
 				</li>

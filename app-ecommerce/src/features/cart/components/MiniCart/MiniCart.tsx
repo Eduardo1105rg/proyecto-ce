@@ -62,7 +62,7 @@ function MiniCartRow({ item, loading, failed }: MiniCartRowProps) {
                         ? 'No se cobrará'
                         : unresolved
                             ? '...'
-                            : `${item.cantidad} × ${formatPrice(item.precio)}`}
+                            : `${item.cantidad} × ${formatPrice(item.precio)} · ${item.branchName}`}
                 </p>
             </div>
         </>
@@ -152,7 +152,7 @@ export function MiniCart({ children }: MiniCartProps) {
                                 <ul className={styles.list}>
                                     {visibleItems.map((item) => (
                                         <MiniCartRow
-                                            key={item.objectID}
+                                            key={item.lineId}
                                             item={item}
                                             loading={cargando}
                                             failed={error !== null}

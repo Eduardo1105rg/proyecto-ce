@@ -62,8 +62,53 @@
 
 .unitPrice {
 	margin-top: 4px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 	font-size: var(--text-sm);
 	color: var(--text-secondary);
+}
+
+.priceBadge {
+	padding: 2px 6px;
+	border-radius: var(--radius-full);
+	background-color: var(--green-100);
+	color: var(--green-700);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.5px;
+}
+
+.b2bRef {
+	margin-top: 2px;
+	font-size: var(--text-xs);
+	color: var(--green-700);
+}
+
+.branchLabel {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 6px;
+	font-size: var(--text-xs);
+	color: var(--text-muted);
+}
+
+.branchSelect {
+	max-width: 230px;
+	padding: 4px 6px;
+	border: 1px solid var(--border-default);
+	border-radius: var(--radius-sm);
+	background-color: var(--bg-white);
+	color: var(--text-primary);
+	font-family: inherit;
+	font-size: var(--text-xs);
+}
+
+.stockWarning {
+	margin-top: 4px;
+	font-size: var(--text-xs);
+	color: var(--red-500);
 }
 
 .warning {
@@ -116,8 +161,13 @@
 	color: var(--blue-700);
 }
 
-.qtyButton:hover {
+.qtyButton:hover:not(:disabled) {
 	background-color: var(--bg-light);
+}
+
+.qtyButton:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
 }
 
 .removeButton {

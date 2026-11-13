@@ -1,4 +1,6 @@
-import type { Rol } from './usuario'
+import type { TipoPrecio } from './precios'
+import type { SucursalOrden } from './sucursal'
+import type { Empresa, Rol } from './usuario'
 
 /** Estado de la orden. Se maneja aparte del estado del pago a propósito. */
 export type OrderStatus = 'PENDING' | 'CONFIRMED' | 'FAILED'
@@ -23,24 +25,39 @@ export type DeliveryInfo = {
 export type OrderItem = {
     objectID: string
     name: string
+    branchId: string
+    branchName: string
+    /** Instantánea del stock consultado al momento de la compra. */
+    stockAtPurchase: number
+    pricingType: TipoPrecio
     unitPrice: number
+    /** Precio B2B de referencia cuando el precio aplicado fue B2C. */
+    b2bReferencePrice?: number
     quantity: number
     subtotal: number
+}
+
+export type CondicionComercial = {
+    tipo: 'ESTANDAR' | 'CANTIDAD_MINIMA'
+    minimo: number
 }
 
 export type Order = {
     /** Ejemplo: MB-20261015-0001 - MB-YYYYMMDD-NNNN */
     orderNumber: string
     createdAt: string
-    /** Usuario autenticado que realizó la compra (o `anonimo`). */
+    /** Usuario autenticado que realizó la compra. */
     usuarioId?: string
     /** Rol del usuario al momento de la compra. */
     rol?: Rol
-    /** Sucursal asociada a la compra, cuando el checkout la conozca. */
-    sucursal?: string
+    /** Empresa B2B congelada al momento de la compra. */
+    empresa?: Empresa
     buyer: BuyerInfo
     delivery: DeliveryInfo
     items: OrderItem[]
+    /** Sucursales involucradas en la compra. */
+    sucursales: SucursalOrden[]
+    condicionComercial: CondicionComercial
     subtotal: number
     /** IVA */
     tax: number

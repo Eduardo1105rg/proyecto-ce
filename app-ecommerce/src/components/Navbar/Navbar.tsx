@@ -138,21 +138,23 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
 					<UilStore size="22" />
 					<span>Catálogo</span>
 				</Link>
-				<Link
-					to="/carrito"
-					className={`${styles.bottomLink} ${isActive('/carrito') ? styles.bottomLinkActive : ''}`}
-					aria-label={cartLabel}
-				>
-					<span className={styles.iconWrap}>
-						<UilShoppingCart size="22" />
-						{count > 0 && (
-							<span className={styles.badge} aria-hidden="true">
-								{badgeText}
-							</span>
-						)}
-					</span>
-					<span>Carrito</span>
-				</Link>
+				{usuario?.rol !== 'ADMIN' && (
+					<Link
+						to="/carrito"
+						className={`${styles.bottomLink} ${isActive('/carrito') ? styles.bottomLinkActive : ''}`}
+						aria-label={cartLabel}
+					>
+						<span className={styles.iconWrap}>
+							<UilShoppingCart size="22" />
+							{count > 0 && (
+								<span className={styles.badge} aria-hidden="true">
+									{badgeText}
+								</span>
+							)}
+						</span>
+						<span>Carrito</span>
+					</Link>
+				)}
 				<Link
 					to="/login"
 					className={`${styles.bottomLink} ${isActive('/login') ? styles.bottomLinkActive : ''}`}

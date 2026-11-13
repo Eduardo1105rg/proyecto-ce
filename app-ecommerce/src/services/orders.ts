@@ -1,7 +1,14 @@
-import type { BuyerInfo, DeliveryInfo, Order, OrderItem } from '../types/order'
+import type {
+    BuyerInfo,
+    CondicionComercial,
+    DeliveryInfo,
+    Order,
+    OrderItem,
+} from '../types/order'
 import type { PaymentResult } from '../types/payment'
+import type { SucursalOrden } from '../types/sucursal'
 import { esRolValido } from '../types/usuario'
-import type { Rol } from '../types/usuario'
+import type { Empresa, Rol } from '../types/usuario'
 
 /*
  * Servicio de ordenes (destino definitivo de `crearOrden` y `aplicarResultado`).
@@ -17,10 +24,13 @@ import type { Rol } from '../types/usuario'
  */
 
 /** Clave del rubro de Ordenes en localStorage. */
-export const CLAVE_ORDENES = 'ordenes:v1'
+export const CLAVE_ORDENES = 'ordenes:v2'
+
+/** Version anterior; se descarta al leer para evitar mezclar contratos. */
+export const CLAVE_ORDENES_ANTERIOR = 'ordenes:v1'
 
 /** Version del formato guardado; permite descartar datos de versiones previas. */
-export const VERSION_ORDENES = 1
+export const VERSION_ORDENES = 2
 
 type OrdenesGuardadas = {
     version: number
@@ -30,10 +40,12 @@ type OrdenesGuardadas = {
 export type CrearOrdenInput = {
     usuarioId?: string
     rol?: Rol
-    sucursal?: string
+    empresa?: Empresa
     buyer: BuyerInfo
     delivery: DeliveryInfo
     items: OrderItem[]
+    sucursales: SucursalOrden[]
+    condicionComercial: CondicionComercial
     subtotal: number
     tax: number
     shipping: number
@@ -66,6 +78,45 @@ function esDeliveryValida(valor: unknown): valor is DeliveryInfo {
     )
 }
 
+function esEmpresaValida(valor: unknown): valor is Empresa {
+    if (typeof valor !== 'object' || valor === null) return false
+
+    const empresa = valor as Record<string, unknown>
+
+    return (
+        typeof empresa.nombre === 'string' &&
+        empresa.nombre.trim() !== '' &&
+        typeof empresa.cedulaJuridica === 'string' &&
+        empresa.cedulaJuridica.trim() !== ''
+    )
+}
+
+function esSucursalValida(valor: unknown): valor is SucursalOrden {
+    if (typeof valor !== 'object' || valor === null) return false
+
+    const sucursal = valor as Record<string, unknown>
+
+    return (
+        typeof sucursal.id === 'string' &&
+        sucursal.id.trim() !== '' &&
+        typeof sucursal.nombre === 'string' &&
+        sucursal.nombre.trim() !== ''
+    )
+}
+
+function esCondicionValida(valor: unknown): valor is CondicionComercial {
+    if (typeof valor !== 'object' || valor === null) return false
+
+    const condicion = valor as Record<string, unknown>
+
+    return (
+        (condicion.tipo === 'ESTANDAR' || condicion.tipo === 'CANTIDAD_MINIMA') &&
+        typeof condicion.minimo === 'number' &&
+        Number.isFinite(condicion.minimo) &&
+        condicion.minimo >= 0
+    )
+}
+
 function esItemValido(valor: unknown): valor is OrderItem {
     if (typeof valor !== 'object' || valor === null) return false
 
@@ -75,7 +126,16 @@ function esItemValido(valor: unknown): valor is OrderItem {
         typeof item.objectID === 'string' &&
         item.objectID.trim() !== '' &&
         typeof item.name === 'string' &&
+        typeof item.branchId === 'string' &&
+        item.branchId.trim() !== '' &&
+        typeof item.branchName === 'string' &&
+        item.branchName.trim() !== '' &&
+        typeof item.stockAtPurchase === 'number' &&
+        Number.isFinite(item.stockAtPurchase) &&
+        item.stockAtPurchase >= 0 &&
+        (item.pricingType === 'B2C' || item.pricingType === 'B2B') &&
         typeof item.unitPrice === 'number' &&
+        (item.b2bReferencePrice === undefined || typeof item.b2bReferencePrice === 'number') &&
         Number.isInteger(item.quantity) &&
         (item.quantity as number) >= 1 &&
         typeof item.subtotal === 'number'
@@ -97,11 +157,14 @@ export function esOrdenValida(valor: unknown): valor is Order {
         typeof orden.createdAt === 'string' &&
         (orden.usuarioId === undefined || typeof orden.usuarioId === 'string') &&
         (orden.rol === undefined || esRolValido(orden.rol)) &&
-        (orden.sucursal === undefined || typeof orden.sucursal === 'string') &&
+        (orden.empresa === undefined || esEmpresaValida(orden.empresa)) &&
         esBuyerValido(orden.buyer) &&
         esDeliveryValida(orden.delivery) &&
         Array.isArray(orden.items) &&
         orden.items.every(esItemValido) &&
+        Array.isArray(orden.sucursales) &&
+        orden.sucursales.every(esSucursalValida) &&
+        esCondicionValida(orden.condicionComercial) &&
         typeof orden.subtotal === 'number' &&
         typeof orden.tax === 'number' &&
         typeof orden.shipping === 'number' &&
@@ -132,11 +195,21 @@ function sanearOrdenes(valor: unknown, contexto: string): Order[] {
     return validas
 }
 
+function descartarVersionAnterior(): void {
+    try {
+        localStorage.removeItem(CLAVE_ORDENES_ANTERIOR)
+    } catch {
+        // Si localStorage no esta disponible, tampoco hay una version anterior que limpiar.
+    }
+}
+
 /**
  * Lee todas las ordenes persistidas. Ante cualquier fallo de parseo o de
  * disponibilidad de `localStorage` se trata como "sin ordenes".
  */
 export function listarOrdenes(): Order[] {
+    descartarVersionAnterior()
+
     let crudo: string | null
 
     try {
@@ -235,10 +308,12 @@ export async function crearOrden(input: CrearOrdenInput): Promise<Order> {
         createdAt: ahora,
         ...(input.usuarioId ? { usuarioId: input.usuarioId } : {}),
         ...(input.rol ? { rol: input.rol } : {}),
-        ...(input.sucursal ? { sucursal: input.sucursal } : {}),
+        ...(input.empresa ? { empresa: input.empresa } : {}),
         buyer: input.buyer,
         delivery: input.delivery,
         items: input.items,
+        sucursales: input.sucursales,
+        condicionComercial: input.condicionComercial,
         subtotal: input.subtotal,
         tax: input.tax,
         shipping: input.shipping,

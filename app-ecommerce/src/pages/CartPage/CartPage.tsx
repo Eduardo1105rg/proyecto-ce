@@ -10,8 +10,18 @@ import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
 import type { ItemCarritoEnriquecido } from '../../types/carrito'
 
 export function CartPage() {
-	const { items, totales, cargando, error, cambiarCantidad, eliminar, activarConsulta } =
-		useCarrito()
+	const {
+		items,
+		totales,
+		cargando,
+		error,
+		faltantesB2B,
+		puedeComprar,
+		cambiarCantidad,
+		cambiarSucursal,
+		eliminar,
+		activarConsulta,
+	} = useCarrito()
 	const navigate = useNavigate()
 	const location = useLocation()
 
@@ -35,27 +45,31 @@ export function CartPage() {
 	}, [activarConsulta])
 
 	/** Los productos no disponibles se quitan directo: no se cobran y no hay nada que perder */
-	const requestRemoval = (objectID: string) => {
-		const item = items.find((i) => i.objectID === objectID)
+	const requestRemoval = (lineId: string) => {
+		const item = items.find((i) => i.lineId === lineId)
 		if (!item) return
 		if (item.noDisponible) {
-			eliminar(objectID)
+			eliminar(lineId)
 			return
 		}
 		setPendingRemoval(item)
 	}
 
 	/** Bajar la cantidad a 0 equivale a quitar el producto, así que también se confirma */
-	const handleQuantityChange = (objectID: string, cantidad: number) => {
+	const handleQuantityChange = (lineId: string, cantidad: number) => {
 		if (cantidad <= 0) {
-			requestRemoval(objectID)
+			requestRemoval(lineId)
 			return
 		}
-		cambiarCantidad(objectID, cantidad)
+		cambiarCantidad(lineId, cantidad)
+	}
+
+	const handleBranchChange = (lineId: string, branchId: string) => {
+		cambiarSucursal(lineId, branchId)
 	}
 
 	const confirmRemoval = () => {
-		if (pendingRemoval) eliminar(pendingRemoval.objectID)
+		if (pendingRemoval) eliminar(pendingRemoval.lineId)
 		setPendingRemoval(null)
 	}
 
@@ -75,6 +89,19 @@ export function CartPage() {
 				</p>
 			)}
 
+			{faltantesB2B.length > 0 && (
+				<div className={styles.b2bNotice} role="status">
+					<strong>Mínimo mayorista pendiente</strong>
+					<ul>
+						{faltantesB2B.map((faltante) => (
+							<li key={faltante.objectID}>
+								{faltante.titulo || faltante.objectID}: agregue {faltante.faltan} unidades más para alcanzar las {faltante.minimo}.
+							</li>
+						))}
+					</ul>
+				</div>
+			)}
+
 			{items.length === 0 ? (
 				<CartEmpty />
 			) : (
@@ -83,18 +110,29 @@ export function CartPage() {
 					<ul className={styles.list}>
 						{items.map((item) => (
 							<CartItem
-								key={item.objectID}
+								key={item.lineId}
 								item={item}
 								loading={cargando}
 								failed={error !== null}
 								onQuantityChange={handleQuantityChange}
+								onBranchChange={handleBranchChange}
 								onRemove={requestRemoval}
 							/>
 						))}
 					</ul>
 
 					<div className={styles.summaryWrapper}>
-						<CartSummary totals={totales} loading={cargando || error !== null} onCheckout={() => navigate('/checkout')} />
+						<CartSummary
+							totals={totales}
+							loading={cargando || error !== null}
+							checkoutDisabled={!puedeComprar}
+							checkoutReason={
+								faltantesB2B.length > 0
+									? 'Alcance el mínimo B2B de cada producto para continuar.'
+									: undefined
+							}
+							onCheckout={() => navigate('/checkout')}
+						/>
 					</div>
 				</div>
 			)}

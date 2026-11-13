@@ -2,12 +2,14 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'r
 import type { PropsWithChildren } from 'react'
 import { ESTADO_INICIAL, accionesCarrito, carritoReducer } from '../services/carrito'
 import { calcularTotales } from '../services/carritoCalculos'
-import { guardarCarrito, leerCarrito } from '../services/carritoStorage'
+import { CLAVE_CARRITO, guardarCarrito, leerCarrito } from '../services/carritoStorage'
 import { combinarLineas, construirClaveProductos, obtenerProductosPorIds } from '../services/carritoProductos'
+import { validarMinimosB2B } from '../services/precios'
 import { CarritoContext } from './carritoContext'
 import type { ValorCarrito } from './carritoContext'
-import type { ItemCarritoEnriquecido } from '../types/carrito'
+import type { ProductoCarritoResuelto } from '../types/carrito'
 import { useAnalytics } from '../features/analytics/useAnalytics'
+import { useAuth } from '../features/auth/useAuth'
 
 /**
  * Proveedor del carrito.
@@ -24,13 +26,16 @@ import { useAnalytics } from '../features/analytics/useAnalytics'
 export function CarritoProvider({ children }: PropsWithChildren) {
     const [estado, dispatch] = useReducer(carritoReducer, ESTADO_INICIAL)
     const { registrar } = useAnalytics()
+    const { usuario } = useAuth()
+    const rol = usuario?.rol ?? null
+    const identidad = usuario ? `${usuario.id}:${usuario.rol}` : 'anonimo'
 
     // Datos devueltos por la última consulta al índice, y el conjunto de
     // productos que esos datos describen. Guardar la clave resuelta es lo que
     // permite distinguir "todavía no consulté" de "consulté y el producto no
     // existe": en ambos casos hay líneas sin precio, pero solo en el primero hay
     // algo pendiente por resolver.
-    const [resolucion, setResolucion] = useState<ItemCarritoEnriquecido[]>([])
+    const [resolucion, setResolucion] = useState<ProductoCarritoResuelto[]>([])
     const [claveResuelta, setClaveResuelta] = useState('')
     const [error, setError] = useState<string | null>(null)
 
@@ -63,6 +68,24 @@ export function CarritoProvider({ children }: PropsWithChildren) {
 
         guardarCarrito(estado.items)
     }, [estado.items, estado.hidratado])
+
+    // Al iniciar o cerrar sesión, o al cambiar de rol, se evita mezclar
+    // condiciones B2C y B2B. El primer render no cuenta como cambio: la sesión
+    // guardada ya está disponible de forma síncrona desde AuthProvider.
+    const identidadAnterior = useRef(identidad)
+
+    useEffect(() => {
+        if (identidadAnterior.current === identidad) return
+
+        identidadAnterior.current = identidad
+        dispatch(accionesCarrito.vaciar())
+
+        try {
+            localStorage.removeItem(CLAVE_CARRITO)
+        } catch {
+            // Si localStorage no está disponible, el carrito en memoria igual quedó vacío.
+        }
+    }, [identidad])
 
     // La clave ignora las cantidades a propósito, así que cambiar una cantidad no
     // vuelve a consultar el índice: los precios que ya tenemos siguen siendo
@@ -113,12 +136,18 @@ export function CarritoProvider({ children }: PropsWithChildren) {
     }, [clave, estado.hidratado, consultaActiva])
 
     // La cantidad de cada línea sale del reducer, no de la respuesta consultada.
+    // El rol sí influye en el precio, pero no obliga a repetir la consulta.
     const itemsEnriquecidos = useMemo(
-        () => combinarLineas(estado.items, resolucion),
-        [estado.items, resolucion],
+        () => combinarLineas(estado.items, resolucion, rol),
+        [estado.items, resolucion, rol],
     )
 
     const totales = useMemo(() => calcularTotales(itemsEnriquecidos), [itemsEnriquecidos])
+
+    const faltantesB2B = useMemo(
+        () => validarMinimosB2B(itemsEnriquecidos, rol),
+        [itemsEnriquecidos, rol],
+    )
 
     // Hay líneas sin resolver mientras la respuesta en estado no describa el
     // conjunto actual. El error apaga la señal de carga: si la consulta falló, no
@@ -126,25 +155,54 @@ export function CarritoProvider({ children }: PropsWithChildren) {
     const pendiente = estado.items.length > 0 && claveResuelta !== clave
     const cargando = consultaActiva && pendiente && error === null
 
-	const agregar = useCallback(
-		(objectID: string, cantidad = 1, nombre?: string) => {
-			dispatch(accionesCarrito.agregar(objectID, cantidad))
-			registrar('agregar_carrito', {
-				productoId: objectID,
-				cantidad,
-				...(nombre ? { nombre } : {}),
-			})
-		},
-		[registrar],
-	)
+    const hayConflicto = itemsEnriquecidos.some(
+        (item) => item.noDisponible || item.stockInsuficiente || item.errorCondicion,
+    )
 
-    const cambiarCantidad = useCallback((objectID: string, cantidad: number) => {
-        dispatch(accionesCarrito.cambiarCantidad(objectID, cantidad))
-    }, [])
+    const puedeComprar =
+        !cargando &&
+        error === null &&
+        itemsEnriquecidos.length > 0 &&
+        !hayConflicto &&
+        faltantesB2B.length === 0
 
-    const eliminar = useCallback((objectID: string) => {
-        dispatch(accionesCarrito.eliminar(objectID))
-    }, [])
+    const agregar = useCallback(
+        (objectID: string, branchId: string, cantidad = 1, nombre?: string) => {
+            if (usuario?.rol === 'ADMIN' || branchId.trim() === '') return
+
+            dispatch(accionesCarrito.agregar(objectID, branchId, cantidad))
+            registrar('agregar_carrito', {
+                productoId: objectID,
+                cantidad,
+                ...(nombre ? { nombre } : {}),
+            })
+        },
+        [registrar, usuario?.rol],
+    )
+
+    const cambiarCantidad = useCallback(
+        (lineId: string, cantidad: number) => {
+            if (usuario?.rol === 'ADMIN') return
+            dispatch(accionesCarrito.cambiarCantidad(lineId, cantidad))
+        },
+        [usuario?.rol],
+    )
+
+    const cambiarSucursal = useCallback(
+        (lineId: string, branchId: string) => {
+            if (usuario?.rol === 'ADMIN' || branchId.trim() === '') return
+            dispatch(accionesCarrito.cambiarSucursal(lineId, branchId))
+        },
+        [usuario?.rol],
+    )
+
+    const eliminar = useCallback(
+        (lineId: string) => {
+            if (usuario?.rol === 'ADMIN') return
+            dispatch(accionesCarrito.eliminar(lineId))
+        },
+        [usuario?.rol],
+    )
 
     const vaciar = useCallback(() => {
         dispatch(accionesCarrito.vaciar())
@@ -160,8 +218,11 @@ export function CarritoProvider({ children }: PropsWithChildren) {
             totales,
             cargando,
             error,
+            faltantesB2B,
+            puedeComprar,
             agregar,
             cambiarCantidad,
+            cambiarSucursal,
             eliminar,
             vaciar,
             activarConsulta,
@@ -171,8 +232,11 @@ export function CarritoProvider({ children }: PropsWithChildren) {
             totales,
             cargando,
             error,
+            faltantesB2B,
+            puedeComprar,
             agregar,
             cambiarCantidad,
+            cambiarSucursal,
             eliminar,
             vaciar,
             activarConsulta,

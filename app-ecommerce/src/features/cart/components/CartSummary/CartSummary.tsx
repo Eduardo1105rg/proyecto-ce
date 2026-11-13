@@ -6,6 +6,10 @@ import styles from './CartSummary.module.css'
 type CartSummaryProps = {
   totals: TotalesCarrito
   loading: boolean
+  /** Bloquea el checkout por reglas de negocio (stock, mínimo B2B, etc.). */
+  checkoutDisabled?: boolean
+  /** Motivo visible cuando el checkout está bloqueado. */
+  checkoutReason?: string
   /** Si no se recibe, el boton de pagar no se muestra (hasta que exista el checkout) */
   onCheckout?: () => void
 }
@@ -17,7 +21,13 @@ type CartSummaryProps = {
  * presenta. Mientras los precios cargan se muestran guiones para no mostrar
  * un total parcial que despues cambie.
  */
-export function CartSummary({ totals, loading, onCheckout }: CartSummaryProps) {
+export function CartSummary({
+  totals,
+  loading,
+  checkoutDisabled = false,
+  checkoutReason,
+  onCheckout,
+}: CartSummaryProps) {
   const missing = Math.max(UMBRAL_ENVIO_GRATIS - totals.subtotal, 0)
   const money = (value: number) => (loading ? '—' : formatPrice(value))
 
@@ -50,12 +60,16 @@ export function CartSummary({ totals, loading, onCheckout }: CartSummaryProps) {
         </p>
       )}
 
+      {checkoutDisabled && checkoutReason && (
+        <p className={styles.hint}>{checkoutReason}</p>
+      )}
+
       {onCheckout && (
         <button
           type="button"
           className={styles.checkout}
           onClick={onCheckout}
-          disabled={loading || totals.subtotal <= 0}
+          disabled={loading || totals.subtotal <= 0 || checkoutDisabled}
         >
           Proceder al pago
         </button>

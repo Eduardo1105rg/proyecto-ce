@@ -51,7 +51,16 @@ function resultadoDesdeOrden(order: Order): PaymentResult | null {
 }
 
 export function CheckoutPage() {
-	const { items, totales, cargando, error, vaciar, activarConsulta } = useCarrito()
+	const {
+		items,
+		totales,
+		cargando,
+		error,
+		faltantesB2B,
+		puedeComprar,
+		vaciar,
+		activarConsulta,
+	} = useCarrito()
 	const { registrar, usuarioId } = useAnalytics()
 	const { usuario } = useAuth()
 
@@ -129,6 +138,15 @@ export function CheckoutPage() {
 	}
 
 	const handleConfirm = async () => {
+		if (!puedeComprar) {
+			setSubmitError(
+				faltantesB2B.length > 0
+					? 'Alcance el mínimo B2B de cada producto antes de confirmar la compra.'
+					: 'Revise su carrito: hay productos sin stock o con datos pendientes.',
+			)
+			return
+		}
+
 		if (submittingRef.current) return
 		submittingRef.current = true
 		setProcessing(true)
@@ -139,20 +157,46 @@ export function CheckoutPage() {
 			let current = order
 
 			if (!current) {
+				const sucursales = [
+					...new Map(
+						items.map((item) => [
+							item.branchId,
+							{ id: item.branchId, nombre: item.branchName },
+						]),
+					).values(),
+				]
+				const minimoB2B = items.reduce(
+					(maximo, item) => Math.max(maximo, item.minimoB2B),
+					0,
+				)
+
 				current = await crearOrden({
 					usuarioId,
 					rol: usuario?.rol,
+					...(usuario?.rol === 'B2B' && usuario.empresa
+						? { empresa: usuario.empresa }
+						: {}),
 					buyer: toBuyer(values),
 					delivery: toDelivery(values),
-					items: items
-						.filter((item) => !item.noDisponible)
-						.map((item) => ({
-							objectID: item.objectID,
-							name: item.titulo,
-							unitPrice: item.precio,
-							quantity: item.cantidad,
-							subtotal: item.precio * item.cantidad,
-						})),
+					items: items.map((item) => ({
+						objectID: item.objectID,
+						name: item.titulo,
+						branchId: item.branchId,
+						branchName: item.branchName,
+						stockAtPurchase: item.stockSucursal,
+						pricingType: item.tipoPrecio,
+						unitPrice: item.precio,
+						...(item.precioB2BReferencia !== null
+							? { b2bReferencePrice: item.precioB2BReferencia }
+							: {}),
+						quantity: item.cantidad,
+						subtotal: item.precio * item.cantidad,
+					})),
+					sucursales,
+					condicionComercial:
+						usuario?.rol === 'B2B'
+							? { tipo: 'CANTIDAD_MINIMA', minimo: minimoB2B }
+							: { tipo: 'ESTANDAR', minimo: 0 },
 					// Los montos salen del carrito: no se recalculan aquí.
 					subtotal: totales.subtotal,
 					tax: totales.iva,
@@ -218,9 +262,15 @@ export function CheckoutPage() {
 			? `No se pudieron cargar los precios: ${error}`
 			: cargando
 				? 'Cargando los productos de su carrito…'
-				: items.some((item) => item.noDisponible)
-					? 'Algunos productos ya no están disponibles. Revise su carrito antes de continuar.'
-					: null
+				: usuario?.rol === 'ADMIN'
+					? 'Los administradores no pueden realizar compras.'
+					: items.some((item) => item.noDisponible)
+						? 'Algunos productos ya no están disponibles. Revise su carrito antes de continuar.'
+						: items.some((item) => item.stockInsuficiente)
+							? 'Hay productos con stock insuficiente en la sucursal elegida. Revise su carrito.'
+							: faltantesB2B.length > 0
+								? 'Alcance el mínimo B2B de cada producto antes de continuar.'
+								: null
 
 		if (!message) return null
 
