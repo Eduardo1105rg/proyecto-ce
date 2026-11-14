@@ -13,7 +13,7 @@ import type { Order } from '../../types/order'
 import type { PaymentResult } from '../../types/payment'
 import styles from './CheckoutPage.module.css'
 
-import { aplicarResultado, crearOrden, obtenerOrden } from '../../services/orders'
+import { aplicarResultado, crearOrden, obtenerOrdenDeUsuario } from '../../services/orders'
 import { ErrorServicioPago, procesarPago } from '../../services/paymentSandbox'
 import type { SandboxScenario } from '../../services/paymentSandbox'
 import { useAnalytics } from '../../features/analytics/useAnalytics'
@@ -70,12 +70,23 @@ export function CheckoutPage() {
 	// quedó guardada por el servicio de órdenes. Al montar se lee una sola vez
 	// para reconstruir la pantalla de resultado cuando se recarga el paso; el
 	// resto del flujo controla el estado por su cuenta.
-	const [recovery] = useState(() => {
+	const [consultaOrden] = useState(() => {
 		const numero = searchParams.get('orden')
-		const recuperada = numero ? obtenerOrden(numero) : null
+
+		if (!numero) {
+			return { solicitada: false, noEncontrada: false, recovery: null }
+		}
+
+		const recuperada = obtenerOrdenDeUsuario(numero, usuarioId)
 		const pago = recuperada ? resultadoDesdeOrden(recuperada) : null
-		return pago ? { order: recuperada, result: pago } : null
+
+		return {
+			solicitada: true,
+			noEncontrada: !recuperada,
+			recovery: pago ? { order: recuperada, result: pago } : null,
+		}
 	})
+	const recovery = consultaOrden.recovery
 
 	const [step, setStep] = useState<CheckoutStep>(recovery ? 'outcome' : 'data')
 	const [values, setValues] = useState<CheckoutValues>(EMPTY_VALUES)
@@ -293,7 +304,14 @@ export function CheckoutPage() {
 			<h1 className={styles.heading}>Finalizar compra</h1>
 			<CheckoutSteps current={step} />
 
-			{guard ??
+			{consultaOrden.noEncontrada ? (
+				<div className={styles.notice} role="alert">
+					<p>La orden solicitada no existe o no pertenece a su usuario.</p>
+					<Link className={styles.noticeLink} to="/mis-ordenes">
+						Ir a mis órdenes
+					</Link>
+				</div>
+			) : guard ??
 				(step === 'data' ? (
 					<CheckoutForm values={values} onChange={setValues} onContinue={() => goTo('review')} />
 				) : step === 'review' ? (

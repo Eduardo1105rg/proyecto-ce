@@ -14,6 +14,7 @@ import { AuthProvider } from './features/auth/AuthProvider'
 import { LoginPage } from './pages/LoginPage/LoginPage'
 import { RutaProtegida } from './features/auth/components/RutaProtegida/RutaProtegida'
 import { AnalyticsPage } from './pages/AnalyticsPage/AnalyticsPage'
+import { MisOrdenesPage } from './pages/MisOrdenesPage/MisOrdenesPage'
 
 function App() {
 	const { theme, toggleTheme } = useTheme()
@@ -42,6 +43,14 @@ function App() {
 							element={
 								<RutaProtegida roles={['B2C', 'B2B']}>
 									<CheckoutPage />
+								</RutaProtegida>
+							}
+						/>
+						<Route
+							path="/mis-ordenes"
+							element={
+								<RutaProtegida roles={['B2C', 'B2B']}>
+									<MisOrdenesPage />
 								</RutaProtegida>
 							}
 						/>

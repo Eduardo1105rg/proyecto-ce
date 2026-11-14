@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import styles from './Navbar.module.css'
 import logo from '../../assets/LogoNaranga.png'
-import { UilSun, UilMoon, UilEstate, UilStore, UilShoppingCart, UilUser } from '@iconscout/react-unicons'
+import { UilSun, UilMoon, UilEstate, UilStore, UilShoppingCart, UilUser, UilReceipt } from '@iconscout/react-unicons'
 import { useCarrito } from '../../context/carritoContext'
 import { MiniCart } from '../../features/cart/components/MiniCart/MiniCart'
 import { UserChip } from '../../features/auth/components/UserChip/UserChip'
@@ -81,6 +81,14 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
 					>
 						Catálogo
 					</Link>
+					{usuario && usuario.rol !== 'ADMIN' && (
+						<Link
+							to="/mis-ordenes"
+							className={`${styles.navLink} ${isActive('/mis-ordenes') ? styles.navLinkActive : ''}`}
+						>
+							Mis órdenes
+						</Link>
+					)}
 					{usuario && (
 						<Link
 							to="/analytics"
@@ -121,16 +129,26 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
 
 			{/* Bottom navbar - visible solo en móvil (CSS lo oculta en desktop) */}
 			<nav className={styles.bottomNav}>
-				<Link
-					to="/"
-					className={`${styles.bottomLink} ${styles.bottomLinkDisabled}`}
-					onClick={handleDisabledClick}
-					aria-disabled="true"
-					tabIndex={-1}
-				>
-					<UilEstate size="22" />
-					<span>Home</span>
-				</Link>
+				{usuario && usuario.rol !== 'ADMIN' ? (
+					<Link
+						to="/mis-ordenes"
+						className={`${styles.bottomLink} ${isActive('/mis-ordenes') ? styles.bottomLinkActive : ''}`}
+					>
+						<UilReceipt size="22" />
+						<span>Órdenes</span>
+					</Link>
+				) : (
+					<Link
+						to="/"
+						className={`${styles.bottomLink} ${styles.bottomLinkDisabled}`}
+						onClick={handleDisabledClick}
+						aria-disabled="true"
+						tabIndex={-1}
+					>
+						<UilEstate size="22" />
+						<span>Home</span>
+					</Link>
+				)}
 				<Link
 					to="/catalogo"
 					className={`${styles.bottomLink} ${isCatalogActive ? styles.bottomLinkActive : ''}`}

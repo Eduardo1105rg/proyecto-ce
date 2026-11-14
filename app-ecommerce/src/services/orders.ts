@@ -190,9 +190,13 @@ function sanearOrdenes(valor: unknown, contexto: string): Order[] {
         )
     }
 
-    console.log('[ordenes] ordenes validas', validas)
-
     return validas
+}
+
+function ordenarPorFechaDesc(ordenes: Order[]): Order[] {
+    return [...ordenes].sort(
+        (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt),
+    )
 }
 
 function descartarVersionAnterior(): void {
@@ -244,6 +248,29 @@ export function listarOrdenes(): Order[] {
  */
 export function obtenerOrden(orderNumber: string): Order | null {
     return listarOrdenes().find((orden) => orden.orderNumber === orderNumber) ?? null
+}
+
+/** Devuelve las ordenes locales de un usuario, de la mas reciente a la mas antigua. */
+export function listarOrdenesDeUsuario(usuarioId: string): Order[] {
+    if (usuarioId.trim() === '') return []
+
+    return ordenarPorFechaDesc(
+        listarOrdenes().filter((orden) => orden.usuarioId === usuarioId),
+    )
+}
+
+/** Recupera una orden solo si pertenece al usuario indicado. */
+export function obtenerOrdenDeUsuario(
+    orderNumber: string,
+    usuarioId: string,
+): Order | null {
+    if (usuarioId.trim() === '') return null
+
+    const orden = obtenerOrden(orderNumber)
+
+    if (!orden || !orden.usuarioId || orden.usuarioId !== usuarioId) return null
+
+    return orden
 }
 
 function guardarOrdenes(ordenes: Order[]): void {
@@ -324,7 +351,6 @@ export async function crearOrden(input: CrearOrdenInput): Promise<Order> {
         termsAcceptedAt: ahora,
     }
 
-    console.log('[ordenes] creando orden', order);
     persistirOrden(order)
 
     return order

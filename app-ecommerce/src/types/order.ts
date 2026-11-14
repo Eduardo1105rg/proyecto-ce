@@ -42,6 +42,18 @@ export type CondicionComercial = {
     minimo: number
 }
 
+export type OrigenOrden = 'local' | 'demo'
+
+/** Orden lista para consulta, con la fuente de la que proviene. */
+export type OrdenConsulta = Order & {
+    origen: OrigenOrden
+}
+
+export type ResultadoConsultaOrdenes = {
+    ordenes: OrdenConsulta[]
+    errorDemo: string | null
+}
+
 export type Order = {
     /** Ejemplo: MB-20261015-0001 - MB-YYYYMMDD-NNNN */
     orderNumber: string

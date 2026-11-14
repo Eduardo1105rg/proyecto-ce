@@ -94,6 +94,9 @@ export function LoginPage() {
 					</div>
 					<div className={styles.sessionActions}>
 						<Button label="Ver mi actividad" variant="soft" onClick={() => navigate('/analytics')} />
+						{usuario.rol !== 'ADMIN' && (
+							<Button label="Mis órdenes" variant="soft" onClick={() => navigate('/mis-ordenes')} />
+						)}
 						<Button label="Cerrar sesión" onClick={cerrarSesion} />
 					</div>
 				</section>
