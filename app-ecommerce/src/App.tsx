@@ -15,6 +15,7 @@ import { LoginPage } from './pages/LoginPage/LoginPage'
 import { RutaProtegida } from './features/auth/components/RutaProtegida/RutaProtegida'
 import { AnalyticsPage } from './pages/AnalyticsPage/AnalyticsPage'
 import { MisOrdenesPage } from './pages/MisOrdenesPage/MisOrdenesPage'
+import { AdminPage } from './pages/AdminPage/AdminPage'
 
 function App() {
 	const { theme, toggleTheme } = useTheme()
@@ -65,6 +66,14 @@ function App() {
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/politicas" element={<PoliciesPage />} />
 						<Route path="/politicas/:slug" element={<PoliciesPage />} />
+						<Route
+							path="/admin"
+							element={
+								<RutaProtegida roles={['ADMIN']}>
+									<AdminPage />
+								</RutaProtegida>
+							}
+						/>
 					</Routes>
 					<Footer />
 				</CarritoProvider>
