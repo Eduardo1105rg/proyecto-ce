@@ -1,8 +1,11 @@
 import { UilMinus, UilPlus, UilTrashAlt } from '@iconscout/react-unicons'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import type { ItemCarritoEnriquecido } from '../../../../types/carrito'
 import { SUCURSALES } from '../../../../data/sucursales'
+import { Dropdown } from '../../../../components/Dropdown/Dropdown'
+import type { DropdownOption } from '../../../../components/Dropdown/Dropdown'
 import { formatPrice } from '../../../../utils/formatPrice'
+import { buildImageUrl } from '../../../../utils/imageUrl'
 import styles from './CartItem.module.css'
 
 type CartItemProps = {
@@ -14,18 +17,7 @@ type CartItemProps = {
     onRemove: (lineId: string) => void
 }
 
-/**
- * Construye la URL completa de la imagen del producto.
- */
-function build_imageUrl(imagePath: string): string {
-    const url = `https://eduardo1105rg.github.io/proyecto-ce/images/${imagePath}`;
-    return url
-}
-
-
 export function CartItem({ item, loading, failed, onQuantityChange, onBranchChange, onRemove }: CartItemProps) {
-    const navigate = useNavigate()
-
     const unresolved = item.noDisponible && (loading || failed)
     const unavailable = item.noDisponible && !loading && !failed
 
@@ -37,12 +29,15 @@ export function CartItem({ item, loading, failed, onQuantityChange, onBranchChan
                 ? 'No se pudo cargar este producto'
                 : 'Producto no disponible')
 
-    // Función para navegar al detalle del producto
-    const handleTitleClick = () => {
-        if (!unavailable && item.objectID) {
-            navigate(`/producto/${item.objectID}`)
+    const branchOptions: DropdownOption[] = SUCURSALES.map((sucursal) => {
+        const stock = item.stockPorSucursal[sucursal.id] ?? 0
+
+        return {
+            value: sucursal.id,
+            label: `${sucursal.nombre} - ${stock > 0 ? `${stock} disponibles` : 'Agotado'}`,
+            disabled: loading || failed || (stock <= 0 && sucursal.id !== item.branchId),
         }
-    }
+    })
 
     return (
         <li className={`${styles.item} ${unavailable ? styles.unavailable : ''}`}>
@@ -50,8 +45,8 @@ export function CartItem({ item, loading, failed, onQuantityChange, onBranchChan
                 {item.imagen && !unavailable ? (
                     <img
                         className={styles.image}
-                        src={build_imageUrl(item.imagen)}
-                        alt={title}
+                        src={buildImageUrl(item.imagen)}
+                        alt=""
                         onError={(e) => {
                             (e.target as HTMLImageElement).src = 'https://placehold.co/300x220?text=Sin+imagen'
                         }}
@@ -62,21 +57,16 @@ export function CartItem({ item, loading, failed, onQuantityChange, onBranchChan
             </div>
 
             <div className={styles.info}>
-                {/* Título clickeable */}
-                <p
-                    className={`${styles.title} ${!unavailable ? styles.titleClickable : ''}`}
-                    onClick={handleTitleClick}
-                    role={!unavailable ? "button" : undefined}
-                    tabIndex={!unavailable ? 0 : undefined}
-                    onKeyDown={(e) => {
-                        if (!unavailable && (e.key === 'Enter' || e.key === ' ')) {
-                            e.preventDefault()
-                            handleTitleClick()
-                        }
-                    }}
-                >
-                    {title}
-                </p>
+                {unavailable ? (
+                    <p className={styles.title}>{title}</p>
+                ) : (
+                    <Link
+                        to={`/producto/${item.objectID}`}
+                        className={`${styles.title} ${styles.titleLink}`}
+                    >
+                        {title}
+                    </Link>
+                )}
 
                 {unavailable ? (
                     <p className={styles.warning}>Este producto ya no está disponible y no se cobrará.</p>
@@ -93,29 +83,17 @@ export function CartItem({ item, loading, failed, onQuantityChange, onBranchChan
                                 Ref. B2B: {formatPrice(item.precioB2BReferencia)} c/u desde {item.minimoB2B} unidades
                             </p>
                         )}
-                        <label className={styles.branchLabel}>
-                            Sucursal
-                            <select
-                                className={styles.branchSelect}
-                                value={item.branchId}
-                                onChange={(event) => onBranchChange(item.lineId, event.target.value)}
-                                disabled={loading || failed}
-                            >
-                                {SUCURSALES.map((sucursal) => {
-                                    const stock = item.stockPorSucursal[sucursal.id] ?? 0
-
-                                    return (
-                                        <option
-                                            key={sucursal.id}
-                                            value={sucursal.id}
-                                            disabled={stock <= 0 && sucursal.id !== item.branchId}
-                                        >
-                                            {sucursal.nombre} — {stock > 0 ? `${stock} disponibles` : 'Agotado'}
-                                        </option>
-                                    )
-                                })}
-                            </select>
-                        </label>
+                        <div className={styles.branchLabel}>
+                            <span>Sucursal</span>
+                            <div className={styles.branchField}>
+                                <Dropdown
+                                    options={branchOptions}
+                                    value={item.branchId}
+                                    onChange={(branchId) => onBranchChange(item.lineId, branchId)}
+                                    ariaLabel={`Sucursal de ${title}`}
+                                />
+                            </div>
+                        </div>
                         {item.stockInsuficiente && (
                             <p className={styles.stockWarning}>
                                 Solo hay {item.stockSucursal} unidades en {item.branchName}.

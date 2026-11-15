@@ -44,21 +44,22 @@
 	transition: color 0.15s ease;
 }
 
-.titleClickable {
-	cursor: pointer;
+.titleLink {
+	display: block;
+	text-decoration: none;
+	color: var(--text-primary);
 }
 
-.titleClickable:hover {
+.titleLink:hover {
 	color: var(--blue-700);
 	text-decoration: underline;
 }
 
-.titleClickable:focus-visible {
+.titleLink:focus-visible {
 	outline: 2px solid var(--border-focus);
 	outline-offset: 2px;
 	border-radius: var(--radius-sm);
 }
-
 
 .unitPrice {
 	margin-top: 4px;
@@ -72,7 +73,7 @@
 .priceBadge {
 	padding: 2px 6px;
 	border-radius: var(--radius-full);
-	background-color: var(--green-100);
+	background-color: var(--green-soft);
 	color: var(--green-700);
 	font-size: 10px;
 	font-weight: 700;
@@ -87,6 +88,7 @@
 
 .branchLabel {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	gap: 8px;
 	margin-top: 6px;
@@ -94,15 +96,9 @@
 	color: var(--text-muted);
 }
 
-.branchSelect {
-	max-width: 230px;
-	padding: 4px 6px;
-	border: 1px solid var(--border-default);
-	border-radius: var(--radius-sm);
-	background-color: var(--bg-white);
-	color: var(--text-primary);
-	font-family: inherit;
-	font-size: var(--text-xs);
+.branchField {
+	width: 260px;
+	max-width: 100%;
 }
 
 .stockWarning {
@@ -210,4 +206,44 @@
 		grid-column: 4;
 		justify-self: end;
 	}
+}
+
+@media (max-width: 380px) {
+	.item {
+		grid-template-columns: 56px 1fr auto auto;
+		gap: 8px;
+		padding: 12px;
+	}
+
+	.imageBox {
+		width: 56px;
+		height: 56px;
+	}
+
+	.quantity {
+		gap: 6px;
+	}
+
+	.qtyValue {
+		min-width: 24px;
+	}
+
+	.branchLabel {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 4px;
+	}
+
+	.branchField {
+		width: auto;
+	}
+}
+
+:global(.dark) .priceBadge,
+:global(.dark) .b2bRef {
+	color: var(--green-400);
+}
+
+:global(.dark) .titleLink:hover {
+	color: var(--blue-400);
 }
