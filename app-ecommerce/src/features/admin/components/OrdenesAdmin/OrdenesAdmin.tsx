@@ -21,6 +21,7 @@ function textoSucursal(orden: OrdenConsulta): string {
 /**
  * Tabla de órdenes del panel administrativo. Combina las órdenes locales con las
  * demo de Algolia mediante `obtenerOrdenesParaMostrar` y avisa si las demo fallan.
+ * En pantallas menores a 900 px cada fila se muestra como una tarjeta.
  */
 export function OrdenesAdmin() {
     const [resultado, setResultado] = useState<ResultadoConsultaOrdenes | null>(null)
@@ -105,18 +106,20 @@ export function OrdenesAdmin() {
                                             <span className={styles.numero}>{orden.orderNumber}</span>
                                             {orden.origen === 'demo' && <span className={styles.demo}>Demo</span>}
                                         </td>
-                                        <td>{formatearFechaOrden(orden.createdAt)}</td>
-                                        <td>{orden.buyer.fullName}</td>
-                                        <td>{orden.rol === 'B2B' ? 'B2B' : 'B2C'}</td>
-                                        <td>{orden.empresa?.nombre ?? '-'}</td>
-                                        <td>{textoSucursal(orden)}</td>
-                                        <td className={styles.derecha}>{formatPrice(orden.total)}</td>
-                                        <td>
+                                        <td data-label="Fecha">{formatearFechaOrden(orden.createdAt)}</td>
+                                        <td data-label="Cliente">{orden.buyer.fullName}</td>
+                                        <td data-label="Tipo">{orden.rol === 'B2B' ? 'B2B' : 'B2C'}</td>
+                                        <td data-label="Empresa">{orden.empresa?.nombre ?? '-'}</td>
+                                        <td data-label="Sucursal">{textoSucursal(orden)}</td>
+                                        <td data-label="Total" className={styles.derecha}>
+                                            {formatPrice(orden.total)}
+                                        </td>
+                                        <td data-label="Estado">
                                             <span className={`${styles.badge} ${styles[`orden${orden.status}`]}`}>
                                                 {ETIQUETA_ESTADO_ORDEN[orden.status]}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td data-label="Pago">
                                             <span className={`${styles.badge} ${styles[`pago${orden.paymentStatus}`]}`}>
                                                 {ETIQUETA_ESTADO_PAGO[orden.paymentStatus]}
                                             </span>
