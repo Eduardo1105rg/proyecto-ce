@@ -83,10 +83,12 @@ function ProductosContenido() {
 											<span className={styles.name}>{p.name}</span>
 											<span className={styles.sku}>SKU {p.sku}</span>
 										</td>
-										<td>{p.category}</td>
-										<td>{p.brand}</td>
-										<td className={styles.right}>{formatPrice(p.price)}</td>
-										<td className={styles.right}>
+										<td data-label="Categoría">{p.category}</td>
+										<td data-label="Marca">{p.brand}</td>
+										<td data-label="Precio B2C" className={styles.right}>
+											{formatPrice(p.price)}
+										</td>
+										<td data-label="Precio B2B" className={styles.right}>
 											{tramo ? (
 												<>
 													<span>{formatPrice(tramo.unit_price)}</span>
