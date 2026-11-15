@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { UilUser, UilSignout } from '@iconscout/react-unicons'
 import { useAuth } from '../../useAuth'
 import { ETIQUETA_ROL, ETIQUETA_ROL_CORTA } from '../../rolLabels'
@@ -6,6 +6,12 @@ import styles from './UserChip.module.css'
 
 export function UserChip() {
     const { usuario, cerrarSesion } = useAuth()
+    const navigate = useNavigate()
+
+    const alCerrarSesion = () => {
+        cerrarSesion()
+        navigate('/login')
+    }
 
     if (!usuario) {
         return (
@@ -32,7 +38,7 @@ export function UserChip() {
             <button
                 type="button"
                 className={styles.logout}
-                onClick={cerrarSesion}
+                onClick={alCerrarSesion}
                 aria-label="Cerrar sesión"
             >
                 <UilSignout size="18" />

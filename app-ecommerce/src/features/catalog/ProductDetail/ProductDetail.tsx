@@ -8,10 +8,11 @@ import {
 } from '@iconscout/react-unicons'
 import { UisStar, UisStarHalfAlt } from '@iconscout/react-unicons-solid'
 import { Button } from '../../../components/Button/Button'
+import { Dropdown } from '../../../components/Dropdown/Dropdown'
 import { QuantityStepper } from '../../../components/QuantityStepper/QuantityStepper'
 import { useCarrito } from '../../../context/carritoContext'
 import { useAuth } from '../../auth/useAuth'
-import { SUCURSALES, nombreSucursal } from '../../../data/sucursales'
+import { SUCURSALES } from '../../../data/sucursales'
 import { resolverPrecio } from '../../../services/precios'
 import {
   obtenerStockSucursal,
@@ -95,6 +96,9 @@ function buildImageUrl(imagePath: string | undefined): string {
  * total del producto en el carrito. La sucursal de compra se elige aqui y la
  * cantidad maxima se limita al stock efectivo de esa sucursal.
  *
+ * Para usuarios B2B el precio principal es el B2B y el regular se muestra
+ * pequeno como referencia.
+ *
  * Al final de la pagina renderiza los children recibidos, que se usan para
  * mostrar un grid de productos relacionados.
  */
@@ -106,6 +110,7 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
   const inStock = totalStock > 0
   const displayName = product.name ?? 'Sin nombre'
   const esAdmin = usuario?.rol === 'ADMIN'
+  const esB2B = usuario?.rol === 'B2B'
 
   const [branchId, setBranchId] = useState(
     () => obtenerSucursalConMayorStock(product).branchId,
@@ -121,12 +126,30 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
   const stockSucursal = obtenerStockSucursal(product, branchId)
   const agotadoSucursal = stockSucursal <= 0
   const lowStock = stockSucursal > 0 && stockSucursal <= 5
+  const llegoAlMaximo = quantity > 0 && quantity >= stockSucursal
+  const hayOtraSucursal = SUCURSALES.some((sucursal) => {
+    if (sucursal.id === branchId) return false
+    const enCarrito = lineasProducto.find((item) => item.branchId === sucursal.id)?.cantidad ?? 0
+    return obtenerStockSucursal(product, sucursal.id) - enCarrito > 0
+  })
   const precio = resolverPrecio(product, usuario?.rol ?? null, cantidadTotalProducto)
   const referenciaB2B =
     precio.precioB2BReferencia !== null && precio.precioB2BReferencia !== precio.precioUnitario
       ? precio.precioB2BReferencia
       : null
+  const precioPrincipal = esB2B ? (referenciaB2B ?? precio.precioUnitario) : precio.precioUnitario
+  const mostrarPrecioRegular = esB2B && product.price !== precioPrincipal
   const minQty = precio.minimoB2B || product.tiered_b2b_pricing[0]?.min_qty
+
+  const opcionesSucursal = SUCURSALES.map((sucursal) => {
+    const stock = obtenerStockSucursal(product, sucursal.id)
+
+    return {
+      value: sucursal.id,
+      label: `${sucursal.nombre} - ${stock > 0 ? `${stock} unidades` : 'Agotado'}`,
+      disabled: stock <= 0,
+    }
+  })
 
   /** Construye el arreglo de URLs de imagenes; usa placeholder si no hay imagenes */
   const images = product.images && product.images.length > 0
@@ -185,25 +208,15 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
         <div className={styles.rightCol}>
 
           <div className={styles.branchSelector}>
-            <label className={styles.branchSelectLabel} htmlFor="sucursal-compra">
-              Sucursal de compra
-            </label>
-            <select
-              id="sucursal-compra"
-              className={styles.branchSelect}
-              value={branchId}
-              onChange={(event) => setBranchId(event.target.value)}
-            >
-              {SUCURSALES.map((sucursal) => {
-                const stock = obtenerStockSucursal(product, sucursal.id)
-
-                return (
-                  <option key={sucursal.id} value={sucursal.id} disabled={stock <= 0}>
-                    {sucursal.nombre} — {stock > 0 ? `${stock} unidades` : 'Agotado'}
-                  </option>
-                )
-              })}
-            </select>
+            <span className={styles.branchSelectLabel}>Sucursal de compra</span>
+            <div className={styles.branchDropdown}>
+              <Dropdown
+                options={opcionesSucursal}
+                value={branchId}
+                onChange={setBranchId}
+                ariaLabel="Sucursal de compra"
+              />
+            </div>
           </div>
 
           {/* Card 1 - info principal, precio y botones de accion */}
@@ -231,36 +244,43 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
             </div>
 
             <div className={styles.priceBlock}>
-              <span className={styles.price}>{formatPrice(precio.precioUnitario)}</span>
+              <span className={styles.price}>{formatPrice(precioPrincipal)}</span>
               <span className={styles.currency}>{product.currency}</span>
-              {precio.tipo === 'B2B' && (
-                <span className={styles.minQty}>Precio B2B aplicado</span>
-              )}
-              {referenciaB2B !== null && (
+              {esB2B && <span className={styles.minQty}>Precio B2B</span>}
+              {!esB2B && referenciaB2B !== null && (
                 <span className={styles.b2bRef}>
                   Referencia B2B: {formatPrice(referenciaB2B)} c/u
                 </span>
               )}
-              {usuario?.rol === 'B2B' && minQty > 0 && (
-                <span className={styles.minQty}>min. {minQty} unidades por producto</span>
-              )}
             </div>
+
+            {mostrarPrecioRegular && (
+              <p className={styles.priceRegular}>Precio regular: {formatPrice(product.price)}</p>
+            )}
+
+            {esB2B && minQty > 0 && (
+              <p className={styles.b2bProgress} role="status">
+                {cantidadTotalProducto >= minQty
+                  ? `Mínimo B2B cumplido: ${cantidadTotalProducto} de ${minQty} unidades`
+                  : `Mínimo B2B: ${cantidadTotalProducto} de ${minQty} unidades (sumando sucursales)`}
+              </p>
+            )}
 
             <div className={styles.stockRow}>
               {!inStock && <span className={`${styles.stock} ${styles.stockOut}`}>Agotado en todas las sucursales</span>}
               {inStock && agotadoSucursal && (
                 <span className={`${styles.stock} ${styles.stockOut}`}>
-                  Agotado en {nombreSucursal(branchId)}
+                  Agotado en esta sucursal
                 </span>
               )}
               {lowStock && (
                 <span className={`${styles.stock} ${styles.stockLow}`}>
-                  Pocas unidades en {nombreSucursal(branchId)} - quedan {stockSucursal}
+                  Quedan {stockSucursal} unidades
                 </span>
               )}
               {inStock && !agotadoSucursal && !lowStock && (
                 <span className={`${styles.stock} ${styles.stockOk}`}>
-                  En stock en {nombreSucursal(branchId)} ({stockSucursal} disponibles)
+                  {stockSucursal} disponibles
                 </span>
               )}
             </div>
@@ -289,6 +309,14 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
               )}
               {/* <Button label="Comprar ahora" variant="primary" size="lg" fullWidth disabled={!inStock} /> */}
             </div>
+
+            {llegoAlMaximo && (
+              <p className={styles.aviso} role="status">
+                {hayOtraSucursal
+                  ? 'Llegó al máximo de esta sucursal. Cambie de sucursal para agregar más.'
+                  : 'Llegó al máximo disponible.'}
+              </p>
+            )}
           </div>
 
           {/* Card 2 - atributos del producto y tags */}
