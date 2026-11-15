@@ -3,6 +3,8 @@ import type { KeyboardEvent } from 'react'
 import { useAuth } from '../../features/auth/useAuth'
 import styles from './AdminPage.module.css'
 import { ProductosAdmin } from '../../features/admin/components/ProductosAdmin/ProductosAdmin'
+import { OrdenesAdmin } from '../../features/admin/components/OrdenesAdmin/OrdenesAdmin'
+import { InventarioAdmin } from '../../features/admin/components/InventarioAdmin/InventarioAdmin'
 
 type Pestana = 'ordenes' | 'productos' | 'inventario'
 
@@ -61,13 +63,9 @@ export function AdminPage() {
                 aria-labelledby={`tab-${activa}`}
                 className={styles.panel}
             >
-                {activa === 'productos' ? (
-                    <ProductosAdmin />
-                ) : (
-                    <p className={styles.placeholder}>
-                        Sección de {PESTANAS.find((p) => p.id === activa)?.label.toLowerCase()} en construcción.
-                    </p>
-                )}
+                {activa === 'ordenes' && <OrdenesAdmin />}
+                {activa === 'productos' && <ProductosAdmin />}
+                {activa === 'inventario' && <InventarioAdmin />}
             </section>
         </main>
     )
