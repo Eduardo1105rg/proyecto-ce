@@ -19,6 +19,7 @@ import type { SandboxScenario } from '../../services/paymentSandbox'
 import { useAnalytics } from '../../features/analytics/useAnalytics'
 import { existeCompra } from '../../features/analytics/analyticsApi'
 import { useAuth } from '../../features/auth/useAuth'
+import { motivoBloqueoCompra } from '../../features/cart/motivoBloqueo'
 
 /**
  * Reconstruye el resultado de pago de una orden persistida para poder mostrar
@@ -151,9 +152,8 @@ export function CheckoutPage() {
 	const handleConfirm = async () => {
 		if (!puedeComprar) {
 			setSubmitError(
-				faltantesB2B.length > 0
-					? 'Alcance el mínimo B2B de cada producto antes de confirmar la compra.'
-					: 'Revise su carrito: hay productos sin stock o con datos pendientes.',
+				motivoBloqueoCompra(items, faltantesB2B.length > 0) ??
+				'Revise su carrito antes de confirmar la compra.',
 			)
 			return
 		}
@@ -272,16 +272,10 @@ export function CheckoutPage() {
 		const message = error
 			? `No se pudieron cargar los precios: ${error}`
 			: cargando
-				? 'Cargando los productos de su carrito…'
+				? 'Cargando su carrito...'
 				: usuario?.rol === 'ADMIN'
 					? 'Los administradores no pueden realizar compras.'
-					: items.some((item) => item.noDisponible)
-						? 'Algunos productos ya no están disponibles. Revise su carrito antes de continuar.'
-						: items.some((item) => item.stockInsuficiente)
-							? 'Hay productos con stock insuficiente en la sucursal elegida. Revise su carrito.'
-							: faltantesB2B.length > 0
-								? 'Alcance el mínimo B2B de cada producto antes de continuar.'
-								: null
+					: (motivoBloqueoCompra(items, faltantesB2B.length > 0) ?? null)
 
 		if (!message) return null
 
@@ -312,23 +306,23 @@ export function CheckoutPage() {
 					</Link>
 				</div>
 			) : guard ??
-				(step === 'data' ? (
-					<CheckoutForm values={values} onChange={setValues} onContinue={() => goTo('review')} />
-				) : step === 'review' ? (
-					<OrderReview
-						items={items}
-						totales={totales}
-						values={values}
-						scenario={scenario}
-						processing={processing}
-						submitError={submitError}
-						onScenarioChange={setScenario}
-						onEdit={handleEdit}
-						onConfirm={handleConfirm}
-					/>
-				) : (
-					result && <PaymentOutcome order={order} result={result} onRetry={handleRetry} />
-				))}
+			(step === 'data' ? (
+				<CheckoutForm values={values} onChange={setValues} onContinue={() => goTo('review')} />
+			) : step === 'review' ? (
+				<OrderReview
+					items={items}
+					totales={totales}
+					values={values}
+					scenario={scenario}
+					processing={processing}
+					submitError={submitError}
+					onScenarioChange={setScenario}
+					onEdit={handleEdit}
+					onConfirm={handleConfirm}
+				/>
+			) : (
+				result && <PaymentOutcome order={order} result={result} onRetry={handleRetry} />
+			))}
 		</main>
 	)
 }

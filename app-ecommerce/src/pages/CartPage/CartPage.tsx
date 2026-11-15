@@ -3,11 +3,14 @@ import { useCarrito } from '../../context/carritoContext'
 import { CartEmpty } from '../../features/cart/components/CartEmpty/CartEmpty'
 import { CartItem } from '../../features/cart/components/CartItem/CartItem'
 import { CartSummary } from '../../features/cart/components/CartSummary/CartSummary'
+import { motivoBloqueoCompra } from '../../features/cart/motivoBloqueo'
 import styles from './CartPage.module.css'
-import { useLocation, useNavigate } from 'react-router-dom'
 import { UilShoppingCart, UilArrowLeft } from '@iconscout/react-unicons'
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
 import type { ItemCarritoEnriquecido } from '../../types/carrito'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { SUCURSALES } from '../../data/sucursales'
+import { useAuth } from '../../features/auth/useAuth'
 
 export function CartPage() {
 	const {
@@ -24,9 +27,17 @@ export function CartPage() {
 	} = useCarrito()
 	const navigate = useNavigate()
 	const location = useLocation()
+	const { usuario } = useAuth()
 
 	/** Línea que se está por quitar; null si no hay ninguna pendiente de confirmar */
 	const [pendingRemoval, setPendingRemoval] = useState<ItemCarritoEnriquecido | null>(null)
+
+	/** Cambio de sucursal que requiere confirmación por falta de stock */
+	const [pendingBranch, setPendingBranch] = useState<{
+		item: ItemCarritoEnriquecido
+		branchId: string
+		stock: number
+	} | null>(null)
 
 	/**
 	 * Vuelve a la página anterior. Si el carrito se abrió directamente
@@ -65,12 +76,53 @@ export function CartPage() {
 	}
 
 	const handleBranchChange = (lineId: string, branchId: string) => {
-		cambiarSucursal(lineId, branchId)
+		const item = items.find((i) => i.lineId === lineId)
+		if (!item) return
+
+		const stock = item.stockPorSucursal[branchId] ?? 0
+
+		if (stock >= item.cantidad) {
+			cambiarSucursal(lineId, branchId)
+			return
+		}
+
+		setPendingBranch({ item, branchId, stock })
 	}
 
 	const confirmRemoval = () => {
 		if (pendingRemoval) eliminar(pendingRemoval.lineId)
 		setPendingRemoval(null)
+	}
+
+	const confirmBranch = () => {
+		if (pendingBranch) {
+			const { item, branchId, stock } = pendingBranch
+			// TODO conectar: Eduardo debería ajustar la cantidad dentro de cambiarSucursal
+			cambiarCantidad(item.lineId, stock)
+			cambiarSucursal(item.lineId, branchId)
+		}
+		setPendingBranch(null)
+	}
+
+	const branchMessage = () => {
+		if (!pendingBranch) return ''
+
+		const { item, branchId, stock } = pendingBranch
+		const nombre = SUCURSALES.find((s) => s.id === branchId)?.nombre ?? 'La sucursal'
+		const totalProducto = items
+			.filter((i) => i.objectID === item.objectID)
+			.reduce((suma, i) => suma + i.cantidad, 0)
+		const nuevoTotal = totalProducto - item.cantidad + stock
+		const bajaDelMinimo = usuario?.rol === 'B2B' && nuevoTotal < item.minimoB2B
+
+		return (
+			`${nombre} solo tiene ${stock} ${stock === 1 ? 'unidad' : 'unidades'}. ` +
+			`Su cantidad pasará de ${item.cantidad} a ${stock}.` +
+			(bajaDelMinimo
+				? ` Quedará por debajo del mínimo B2B (${item.minimoB2B}); deberá agregar más desde otra sucursal.`
+				: '') +
+			' ¿Desea cambiar de sucursal?'
+		)
 	}
 
 	return (
@@ -91,11 +143,13 @@ export function CartPage() {
 
 			{faltantesB2B.length > 0 && (
 				<div className={styles.b2bNotice} role="status">
-					<strong>Mínimo mayorista pendiente</strong>
+					<strong>Mínimo B2B pendiente</strong>
 					<ul>
 						{faltantesB2B.map((faltante) => (
 							<li key={faltante.objectID}>
-								{faltante.titulo || faltante.objectID}: agregue {faltante.faltan} unidades más para alcanzar las {faltante.minimo}.
+								{faltante.titulo || faltante.objectID}: {faltante.minimo - faltante.faltan} de {faltante.minimo} unidades.
+								Agregue {faltante.faltan} más, también desde otra sucursal.{' '}
+								<Link to={`/producto/${faltante.objectID}`}>Ir al producto</Link>
 							</li>
 						))}
 					</ul>
@@ -105,7 +159,6 @@ export function CartPage() {
 			{items.length === 0 ? (
 				<CartEmpty />
 			) : (
-				/* Dos columnas: lista de items y resumen de compra */
 				<div className={styles.content}>
 					<ul className={styles.list}>
 						{items.map((item) => (
@@ -121,23 +174,21 @@ export function CartPage() {
 						))}
 					</ul>
 
-					<div className={styles.summaryWrapper}>
-						<CartSummary
-							totals={totales}
-							loading={cargando || error !== null}
-							checkoutDisabled={!puedeComprar}
-							checkoutReason={
-								faltantesB2B.length > 0
-									? 'Alcance el mínimo B2B de cada producto para continuar.'
-									: undefined
-							}
-							onCheckout={() => navigate('/checkout')}
-						/>
-					</div>
+					<CartSummary
+						totals={totales}
+						loading={cargando || error !== null}
+						checkoutDisabled={!puedeComprar}
+						checkoutReason={
+							cargando || error !== null
+								? undefined
+								: motivoBloqueoCompra(items, faltantesB2B.length > 0)
+						}
+						onCheckout={() => navigate('/checkout')}
+					/>
 				</div>
 			)}
 
-			{/* Siempre montado (fuera del condicional) para que el diálogo no se desmonte al quitar el último producto */}
+			{/* Siempre montados (fuera del condicional) para que los diálogos no se desmonten al quitar el último producto */}
 			<ConfirmDialog
 				open={pendingRemoval !== null}
 				title="Quitar producto"
@@ -145,6 +196,15 @@ export function CartPage() {
 				confirmLabel="Quitar"
 				onConfirm={confirmRemoval}
 				onCancel={() => setPendingRemoval(null)}
+			/>
+
+			<ConfirmDialog
+				open={pendingBranch !== null}
+				title="Cambiar de sucursal"
+				message={branchMessage()}
+				confirmLabel="Cambiar"
+				onConfirm={confirmBranch}
+				onCancel={() => setPendingBranch(null)}
 			/>
 		</main>
 	)
