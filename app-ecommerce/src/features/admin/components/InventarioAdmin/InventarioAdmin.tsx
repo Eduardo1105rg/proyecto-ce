@@ -89,7 +89,7 @@ function FilaInventario({ producto, overrides, onCambio }: FilaInventarioProps) 
                 </span>
             </td>
             {SUCURSALES.map((s) => (
-                <td key={s.id}>
+                <td key={s.id} data-label={s.nombre}>
                     <input
                         type="number"
                         min={0}
@@ -105,7 +105,10 @@ function FilaInventario({ producto, overrides, onCambio }: FilaInventarioProps) 
                     />
                 </td>
             ))}
-            <td className={`${styles.right} ${total === 0 ? styles.sinStock : ''}`}>
+            <td
+                data-label="Total"
+                className={`${styles.right} ${total === 0 ? styles.sinStock : ''}`}
+            >
                 {total === 0 ? 'Sin stock' : total}
             </td>
             <td>

@@ -211,3 +211,93 @@
 .pagination {
     margin-top: 16px;
 }
+
+@media (max-width: 900px) {
+    .tableWrap {
+        overflow: visible;
+        border: 0;
+    }
+
+    .table {
+        min-width: 0;
+    }
+
+    .table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+    }
+
+    .table,
+    .table tbody {
+        display: grid;
+        gap: 12px;
+    }
+
+    .table tbody tr {
+        display: block;
+        padding: 6px 16px;
+        background: var(--bg-white);
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .table td,
+    .table tbody tr:last-child td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 10px 0;
+        border-bottom: 1px dashed var(--border-default);
+        text-align: right;
+    }
+
+    .table tbody tr td:first-child {
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border-default);
+    }
+
+    .table tbody tr td:last-child {
+        border-bottom: 0;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        flex-shrink: 0;
+        color: var(--text-muted);
+        font-size: var(--text-xs);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-align: left;
+        text-transform: uppercase;
+    }
+
+    .table td:not([data-label]) {
+        display: block;
+        text-align: left;
+    }
+
+    .table td:not([data-label])::before {
+        display: none;
+    }
+}
+
+@media (max-width: 380px) {
+    .table tbody tr {
+        padding: 4px 12px;
+    }
+
+    .table td,
+    .table tbody tr:last-child td {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .stockInput {
+        width: 72px;
+    }
+}
