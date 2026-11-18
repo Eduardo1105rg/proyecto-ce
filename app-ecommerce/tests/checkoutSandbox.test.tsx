@@ -116,8 +116,8 @@ afterEach(() => {
 describe('Checkout y Sandbox con componentes reales', () => {
     for (const scenario of [
         { id: 'SBX-01', label: 'Tarjeta Visa', code: 'PAYMENT_APPROVED', title: '¡Gracias por su compra!', status: 'CONFIRMED', payment: 'APPROVED' },
-        { id: 'SBX-02', label: 'Tarjeta American Express', code: 'PAYMENT_DECLINED', title: 'Su pago fue rechazado', status: 'PENDING', payment: 'DECLINED' },
-        { id: 'SBX-03', label: 'Tarjeta Mastercard', code: 'PAYMENT_ERROR', title: 'No pudimos procesar su pago', status: 'PENDING', payment: 'ERROR' },
+        { id: 'SBX-02', label: 'Tarjeta American Express', code: 'PAYMENT_DECLINED', title: 'Su pago fue rechazado', status: 'FAILED', payment: 'DECLINED' },
+        { id: 'SBX-03', label: 'Tarjeta Mastercard', code: 'PAYMENT_ERROR', title: 'No pudimos procesar su pago', status: 'FAILED', payment: 'ERROR' },
     ]) {
         it(`${scenario.id}: ${scenario.label}, montos y persistencia coherentes`, async () => {
             const payment = vi.spyOn(sandbox, 'procesarPago')
@@ -157,8 +157,9 @@ describe('Checkout y Sandbox con componentes reales', () => {
             await openReview()
             confirm(label)
             await advance(2000)
-            const original = expectOrder('PENDING', status)
+            const original = expectOrder('FAILED', status)
             fireEvent.click(screen.getByRole('button', { name: 'Intentar de nuevo' }))
+            expect(expectOrder('PENDING', 'PENDING').orderNumber).toBe(original.orderNumber)
             expect(screen.getByText(BUYER.email)).toBeTruthy()
             confirm()
             await advance(2000)
@@ -178,7 +179,7 @@ describe('Checkout y Sandbox con componentes reales', () => {
         expect(screen.getByRole('button', { name: 'Procesando pago…' })).toHaveProperty('disabled', true)
         await advance(1)
         expect(screen.getByText(/tardó demasiado en responder/)).toBeTruthy()
-        expectOrder('PENDING', 'ERROR')
+        expectOrder('FAILED', 'ERROR')
         expect(persistedCart()).toEqual(CART)
         expect(screen.getByRole('button', { name: 'Intentar de nuevo' })).toHaveProperty('disabled', false)
     })
@@ -191,15 +192,16 @@ describe('Checkout y Sandbox con componentes reales', () => {
         await openReview()
         confirm()
         await advance(5000)
-        const order = expectOrder('PENDING', 'ERROR')
+        const order = expectOrder('FAILED', 'ERROR')
         await act(async () => {
             resolveLate({ code: 'PAYMENT_APPROVED', orderId: order.orderNumber, message: 'Aprobado', transactionId: 'SBX-late' })
         })
         expect(screen.getByText(/tardó demasiado en responder/)).toBeTruthy()
-        expectOrder('PENDING', 'ERROR')
+        expectOrder('FAILED', 'ERROR')
         expect(persistedCart()).toEqual(CART)
         payment.mockRestore()
         fireEvent.click(screen.getByRole('button', { name: 'Intentar de nuevo' }))
+        expect(expectOrder('PENDING', 'PENDING').orderNumber).toBe(order.orderNumber)
         confirm()
         await advance(2000)
         expect(expectOrder('CONFIRMED', 'APPROVED').orderNumber).toBe(order.orderNumber)
@@ -222,7 +224,7 @@ describe('Checkout y Sandbox con componentes reales', () => {
         await openReview()
         confirm('Tarjeta American Express')
         await advance(2000)
-        const order = expectOrder('PENDING', 'DECLINED')
+        const order = expectOrder('FAILED', 'DECLINED')
         cleanup()
         await openCheckout(order.orderNumber)
         fireEvent.click(screen.getByRole('button', { name: 'Intentar de nuevo' }))

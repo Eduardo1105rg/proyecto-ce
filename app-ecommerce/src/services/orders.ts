@@ -17,10 +17,9 @@ import type { Empresa, Rol } from '../types/usuario'
  *  - Los montos llegan calculados por el carrito y NO se recalculan aqui.
  *  - Los items no disponibles no se incluyen (la pagina los filtra antes).
  *  - Numero de orden unico `MB-YYYYMMDD-NNNN` (secuencia diaria creciente).
- *  - Estados iniciales `PENDING` / `PENDING`.
- *  - `FAILED` (G9): reservado para invalidacion definitiva; no se emite en este
- *    servicio. En `aplicarResultado`, si la orden ya esta `CONFIRMED` se devuelve
- *    sin cambios; en cualquier otro caso se mantiene `PENDING`.
+ *  - Estados iniciales `PENDING` / `PENDING`; rechazo o error -> `FAILED`.
+ *  - En `aplicarResultado`, si la orden ya esta `CONFIRMED` se devuelve sin
+ *    cambios; `reiniciarOrdenParaReintento` la devuelve a `PENDING`.
  */
 
 /** Clave del rubro de Ordenes en localStorage. */
@@ -360,9 +359,9 @@ export async function crearOrden(input: CrearOrdenInput): Promise<Order> {
  * Devuelve la orden actualizada segun el resultado del pago y la persiste. No
  * toca el Sandbox (solo recibe y devuelve datos).
  *
- * Transiciones: aprobado -> `CONFIRMED` / `APPROVED`; rechazado -> `PENDING` /
- * `DECLINED`; error -> `PENDING` / `ERROR`. `FAILED` no se emite; si la orden
- * ya esta `CONFIRMED` se devuelve sin cambios.
+ * Transiciones: aprobado -> `CONFIRMED` / `APPROVED`; rechazado -> `FAILED` /
+ * `DECLINED`; error -> `FAILED` / `ERROR`. Si la orden ya esta `CONFIRMED`
+ * se devuelve sin cambios.
  *
  * @param order Orden a actualizar.
  * @param result Resultado devuelto por el servicio de pago.
@@ -378,12 +377,22 @@ export function aplicarResultado(order: Order, result: PaymentResult): Order {
     }
 
     if (result.code === 'PAYMENT_DECLINED') {
-        const rechazada: Order = { ...order, status: 'PENDING', paymentStatus: 'DECLINED' }
+        const rechazada: Order = { ...order, status: 'FAILED', paymentStatus: 'DECLINED' }
         persistirOrden(rechazada)
         return rechazada
     }
 
-    const conError: Order = { ...order, status: 'PENDING', paymentStatus: 'ERROR' }
-    persistirOrden(conError)
-    return conError
+    const fallida: Order = { ...order, status: 'FAILED', paymentStatus: 'ERROR' }
+    persistirOrden(fallida)
+    return fallida
+}
+
+export function reiniciarOrdenParaReintento(order: Order): Order {
+    if (order.status === 'CONFIRMED') return order
+
+    if (order.status === 'PENDING' && order.paymentStatus === 'PENDING') return order
+
+    const reiniciada: Order = { ...order, status: 'PENDING', paymentStatus: 'PENDING' }
+    persistirOrden(reiniciada)
+    return reiniciada
 }

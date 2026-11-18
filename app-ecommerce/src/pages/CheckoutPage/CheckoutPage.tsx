@@ -13,7 +13,7 @@ import type { Order } from '../../types/order'
 import type { PaymentResult } from '../../types/payment'
 import styles from './CheckoutPage.module.css'
 
-import { aplicarResultado, crearOrden, obtenerOrdenDeUsuario } from '../../services/orders'
+import { aplicarResultado, crearOrden, obtenerOrdenDeUsuario, reiniciarOrdenParaReintento } from '../../services/orders'
 import { ErrorServicioPago, procesarPago } from '../../services/paymentSandbox'
 import type { SandboxScenario } from '../../services/paymentSandbox'
 import { useAnalytics } from '../../features/analytics/useAnalytics'
@@ -144,6 +144,7 @@ export function CheckoutPage() {
 	}
 
 	const handleRetry = () => {
+		if (order) setOrder(reiniciarOrdenParaReintento(order))
 		setResult(null)
 		setSearchParams({}, { replace: true })
 		goTo('review')
