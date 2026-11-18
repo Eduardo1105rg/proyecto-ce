@@ -8,13 +8,14 @@ import styles from './RutaProtegida.module.css'
 
 type RutaProtegidaProps = {
     roles: Rol[]
+    permitirInvitado?: boolean
     children: ReactNode
 }
 
-export function RutaProtegida({ roles, children }: RutaProtegidaProps) {
+export function RutaProtegida({ roles, permitirInvitado = false, children }: RutaProtegidaProps) {
     const { usuario } = useAuth()
 
-    if (!usuario) {
+    if (!usuario && !permitirInvitado) {
         return (
             <main className={styles.page}>
                 <section className={styles.card} role="alert">
@@ -29,7 +30,7 @@ export function RutaProtegida({ roles, children }: RutaProtegidaProps) {
         )
     }
 
-    if (!roles.includes(usuario.rol)) {
+    if (usuario && !roles.includes(usuario.rol)) {
         return (
             <main className={styles.page}>
                 <section className={styles.card} role="alert">

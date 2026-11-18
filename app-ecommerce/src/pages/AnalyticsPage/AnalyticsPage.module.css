@@ -63,10 +63,10 @@
 }
 
 .columns {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap: 16px;
-    align-items: start;
+	display: grid;
+	grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+	gap: 16px;
+	align-items: start;
 }
 
 .stack {
@@ -115,10 +115,15 @@
 
 .chip {
     padding: 6px 12px;
-    border-radius: var(--radius-full);
-    background: var(--bg-subtle);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-default);
+    background: var(--bg-page);
     color: var(--text-primary);
     font-size: var(--text-sm);
+}
+
+.detalle {
+	scroll-margin-top: 80px;
 }
 
 @media (max-width: 900px) {
@@ -126,9 +131,9 @@
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .columns {
-        grid-template-columns: 1fr;
-    }
+	.columns {
+		grid-template-columns: minmax(0, 1fr);
+	}
 }
 
 @media (max-width: 768px) {
@@ -139,4 +144,28 @@
     .title {
         font-size: var(--text-2xl);
     }
+}
+
+@media (max-width: 600px) {
+	.metrics {
+		gap: 8px;
+		margin-bottom: 16px;
+	}
+
+	.metric {
+		gap: 6px;
+		padding: 12px;
+	}
+
+	.metricHead {
+		align-items: flex-start;
+	}
+
+	.metricLabel {
+		font-size: var(--text-xs);
+	}
+
+	.metricValue {
+		font-size: var(--text-2xl);
+	}
 }

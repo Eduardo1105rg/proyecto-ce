@@ -83,6 +83,15 @@
     background: var(--blue-100);
 }
 
+.option:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.option:disabled:hover {
+    background: none;
+}
+
 .check {
     color: var(--blue-700);
     flex-shrink: 0;

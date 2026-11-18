@@ -13,12 +13,13 @@ import type { Order } from '../../types/order'
 import type { PaymentResult } from '../../types/payment'
 import styles from './CheckoutPage.module.css'
 
-import { aplicarResultado, crearOrden, obtenerOrden } from '../../services/orders'
+import { aplicarResultado, crearOrden, obtenerOrdenDeUsuario, reiniciarOrdenParaReintento } from '../../services/orders'
 import { ErrorServicioPago, procesarPago } from '../../services/paymentSandbox'
 import type { SandboxScenario } from '../../services/paymentSandbox'
 import { useAnalytics } from '../../features/analytics/useAnalytics'
 import { existeCompra } from '../../features/analytics/analyticsApi'
 import { useAuth } from '../../features/auth/useAuth'
+import { motivoBloqueoCompra } from '../../features/cart/motivoBloqueo'
 
 /**
  * Reconstruye el resultado de pago de una orden persistida para poder mostrar
@@ -51,7 +52,16 @@ function resultadoDesdeOrden(order: Order): PaymentResult | null {
 }
 
 export function CheckoutPage() {
-	const { items, totales, cargando, error, vaciar, activarConsulta } = useCarrito()
+	const {
+		items,
+		totales,
+		cargando,
+		error,
+		faltantesB2B,
+		puedeComprar,
+		vaciar,
+		activarConsulta,
+	} = useCarrito()
 	const { registrar, usuarioId } = useAnalytics()
 	const { usuario } = useAuth()
 
@@ -61,12 +71,23 @@ export function CheckoutPage() {
 	// quedó guardada por el servicio de órdenes. Al montar se lee una sola vez
 	// para reconstruir la pantalla de resultado cuando se recarga el paso; el
 	// resto del flujo controla el estado por su cuenta.
-	const [recovery] = useState(() => {
+	const [consultaOrden] = useState(() => {
 		const numero = searchParams.get('orden')
-		const recuperada = numero ? obtenerOrden(numero) : null
+
+		if (!numero) {
+			return { solicitada: false, noEncontrada: false, recovery: null }
+		}
+
+		const recuperada = obtenerOrdenDeUsuario(numero, usuarioId)
 		const pago = recuperada ? resultadoDesdeOrden(recuperada) : null
-		return pago ? { order: recuperada, result: pago } : null
+
+		return {
+			solicitada: true,
+			noEncontrada: !recuperada,
+			recovery: pago ? { order: recuperada, result: pago } : null,
+		}
 	})
+	const recovery = consultaOrden.recovery
 
 	const [step, setStep] = useState<CheckoutStep>(recovery ? 'outcome' : 'data')
 	const [values, setValues] = useState<CheckoutValues>(EMPTY_VALUES)
@@ -123,12 +144,21 @@ export function CheckoutPage() {
 	}
 
 	const handleRetry = () => {
+		if (order) setOrder(reiniciarOrdenParaReintento(order))
 		setResult(null)
 		setSearchParams({}, { replace: true })
 		goTo('review')
 	}
 
 	const handleConfirm = async () => {
+		if (!puedeComprar) {
+			setSubmitError(
+				motivoBloqueoCompra(items, faltantesB2B.length > 0) ??
+				'Revise su carrito antes de confirmar la compra.',
+			)
+			return
+		}
+
 		if (submittingRef.current) return
 		submittingRef.current = true
 		setProcessing(true)
@@ -139,20 +169,46 @@ export function CheckoutPage() {
 			let current = order
 
 			if (!current) {
+				const sucursales = [
+					...new Map(
+						items.map((item) => [
+							item.branchId,
+							{ id: item.branchId, nombre: item.branchName },
+						]),
+					).values(),
+				]
+				const minimoB2B = items.reduce(
+					(maximo, item) => Math.max(maximo, item.minimoB2B),
+					0,
+				)
+
 				current = await crearOrden({
 					usuarioId,
 					rol: usuario?.rol,
+					...(usuario?.rol === 'B2B' && usuario.empresa
+						? { empresa: usuario.empresa }
+						: {}),
 					buyer: toBuyer(values),
 					delivery: toDelivery(values),
-					items: items
-						.filter((item) => !item.noDisponible)
-						.map((item) => ({
-							objectID: item.objectID,
-							name: item.titulo,
-							unitPrice: item.precio,
-							quantity: item.cantidad,
-							subtotal: item.precio * item.cantidad,
-						})),
+					items: items.map((item) => ({
+						objectID: item.objectID,
+						name: item.titulo,
+						branchId: item.branchId,
+						branchName: item.branchName,
+						stockAtPurchase: item.stockSucursal,
+						pricingType: item.tipoPrecio,
+						unitPrice: item.precio,
+						...(item.precioB2BReferencia !== null
+							? { b2bReferencePrice: item.precioB2BReferencia }
+							: {}),
+						quantity: item.cantidad,
+						subtotal: item.precio * item.cantidad,
+					})),
+					sucursales,
+					condicionComercial:
+						usuario?.rol === 'B2B'
+							? { tipo: 'CANTIDAD_MINIMA', minimo: minimoB2B }
+							: { tipo: 'ESTANDAR', minimo: 0 },
 					// Los montos salen del carrito: no se recalculan aquí.
 					subtotal: totales.subtotal,
 					tax: totales.iva,
@@ -217,10 +273,10 @@ export function CheckoutPage() {
 		const message = error
 			? `No se pudieron cargar los precios: ${error}`
 			: cargando
-				? 'Cargando los productos de su carrito…'
-				: items.some((item) => item.noDisponible)
-					? 'Algunos productos ya no están disponibles. Revise su carrito antes de continuar.'
-					: null
+				? 'Cargando su carrito...'
+				: usuario?.rol === 'ADMIN'
+					? 'Los administradores no pueden realizar compras.'
+					: (motivoBloqueoCompra(items, faltantesB2B.length > 0) ?? null)
 
 		if (!message) return null
 
@@ -243,24 +299,31 @@ export function CheckoutPage() {
 			<h1 className={styles.heading}>Finalizar compra</h1>
 			<CheckoutSteps current={step} />
 
-			{guard ??
-				(step === 'data' ? (
-					<CheckoutForm values={values} onChange={setValues} onContinue={() => goTo('review')} />
-				) : step === 'review' ? (
-					<OrderReview
-						items={items}
-						totales={totales}
-						values={values}
-						scenario={scenario}
-						processing={processing}
-						submitError={submitError}
-						onScenarioChange={setScenario}
-						onEdit={handleEdit}
-						onConfirm={handleConfirm}
-					/>
-				) : (
-					result && <PaymentOutcome order={order} result={result} onRetry={handleRetry} />
-				))}
+			{consultaOrden.noEncontrada ? (
+				<div className={styles.notice} role="alert">
+					<p>La orden solicitada no existe o no pertenece a su usuario.</p>
+					<Link className={styles.noticeLink} to="/mis-ordenes">
+						Ir a mis órdenes
+					</Link>
+				</div>
+			) : guard ??
+			(step === 'data' ? (
+				<CheckoutForm values={values} onChange={setValues} onContinue={() => goTo('review')} />
+			) : step === 'review' ? (
+				<OrderReview
+					items={items}
+					totales={totales}
+					values={values}
+					scenario={scenario}
+					processing={processing}
+					submitError={submitError}
+					onScenarioChange={setScenario}
+					onEdit={handleEdit}
+					onConfirm={handleConfirm}
+				/>
+			) : (
+				result && <PaymentOutcome order={order} result={result} onRetry={handleRetry} />
+			))}
 		</main>
 	)
 }

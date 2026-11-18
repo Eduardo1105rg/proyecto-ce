@@ -162,6 +162,19 @@
     white-space: nowrap;
 }
 
+.b2bRef {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--green-700);
+    text-align: center;
+}
+
+.branchHint {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
 .btns {
     display: flex;
     flex-direction: column;

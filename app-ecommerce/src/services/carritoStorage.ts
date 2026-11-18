@@ -1,17 +1,16 @@
 import type { ItemCarrito } from '../types/carrito'
+import { crearLineId } from './carrito'
 
+export const CLAVE_CARRITO = 'carrito:v2'
 
-export const CLAVE_CARRITO = 'carrito:v1'
+export const CLAVE_CARRITO_ANTERIOR = 'carrito:v1'
 
-
-export const VERSION_CARRITO = 1
-
+export const VERSION_CARRITO = 2
 
 type CarritoGuardado = {
   version: number
   items: ItemCarrito[]
 }
-
 
 function esItemValido(valor: unknown): valor is ItemCarrito {
   if (typeof valor !== 'object' || valor === null) return false
@@ -21,11 +20,12 @@ function esItemValido(valor: unknown): valor is ItemCarrito {
   return (
     typeof item.objectID === 'string' &&
     item.objectID.trim() !== '' &&
+    typeof item.branchId === 'string' &&
+    item.branchId.trim() !== '' &&
     Number.isInteger(item.cantidad) &&
     (item.cantidad as number) >= 1
   )
 }
-
 
 function sanearItems(valor: unknown, contexto: string): ItemCarrito[] {
   if (!Array.isArray(valor)) return []
@@ -41,24 +41,33 @@ function sanearItems(valor: unknown, contexto: string): ItemCarrito[] {
   return validos
 }
 
-
 function consolidarDuplicados(items: ItemCarrito[]): ItemCarrito[] {
-  const porId = new Map<string, ItemCarrito>()
+  const porLinea = new Map<string, ItemCarrito>()
 
   for (const item of items) {
-    const existente = porId.get(item.objectID)
+    const lineId = crearLineId(item.objectID, item.branchId)
+    const existente = porLinea.get(lineId)
 
-    porId.set(
-      item.objectID,
+    porLinea.set(
+      lineId,
       existente ? { ...existente, cantidad: existente.cantidad + item.cantidad } : item,
     )
   }
 
-  return [...porId.values()]
+  return [...porLinea.values()]
 }
 
+function descartarVersionAnterior(): void {
+  try {
+    localStorage.removeItem(CLAVE_CARRITO_ANTERIOR)
+  } catch {
+    // Si localStorage no está disponible, tampoco hay una versión anterior que limpiar.
+  }
+}
 
 export function leerCarrito(): ItemCarrito[] {
+  descartarVersionAnterior()
+
   let crudo: string | null
 
   try {
@@ -88,11 +97,10 @@ export function leerCarrito(): ItemCarrito[] {
   return consolidarDuplicados(sanearItems(guardado.items, 'carrito guardado'))
 }
 
-
 export function guardarCarrito(items: ItemCarrito[]): void {
   const guardado: CarritoGuardado = {
     version: VERSION_CARRITO,
-    items: sanearItems(items, 'carrito a guardar'),
+    items: consolidarDuplicados(sanearItems(items, 'carrito a guardar')),
   }
 
   try {

@@ -1,7 +1,14 @@
-import type { BuyerInfo, DeliveryInfo, Order, OrderItem } from '../types/order'
+import type {
+    BuyerInfo,
+    CondicionComercial,
+    DeliveryInfo,
+    Order,
+    OrderItem,
+} from '../types/order'
 import type { PaymentResult } from '../types/payment'
+import type { SucursalOrden } from '../types/sucursal'
 import { esRolValido } from '../types/usuario'
-import type { Rol } from '../types/usuario'
+import type { Empresa, Rol } from '../types/usuario'
 
 /*
  * Servicio de ordenes (destino definitivo de `crearOrden` y `aplicarResultado`).
@@ -10,17 +17,19 @@ import type { Rol } from '../types/usuario'
  *  - Los montos llegan calculados por el carrito y NO se recalculan aqui.
  *  - Los items no disponibles no se incluyen (la pagina los filtra antes).
  *  - Numero de orden unico `MB-YYYYMMDD-NNNN` (secuencia diaria creciente).
- *  - Estados iniciales `PENDING` / `PENDING`.
- *  - `FAILED` (G9): reservado para invalidacion definitiva; no se emite en este
- *    servicio. En `aplicarResultado`, si la orden ya esta `CONFIRMED` se devuelve
- *    sin cambios; en cualquier otro caso se mantiene `PENDING`.
+ *  - Estados iniciales `PENDING` / `PENDING`; rechazo o error -> `FAILED`.
+ *  - En `aplicarResultado`, si la orden ya esta `CONFIRMED` se devuelve sin
+ *    cambios; `reiniciarOrdenParaReintento` la devuelve a `PENDING`.
  */
 
 /** Clave del rubro de Ordenes en localStorage. */
-export const CLAVE_ORDENES = 'ordenes:v1'
+export const CLAVE_ORDENES = 'ordenes:v2'
+
+/** Version anterior; se descarta al leer para evitar mezclar contratos. */
+export const CLAVE_ORDENES_ANTERIOR = 'ordenes:v1'
 
 /** Version del formato guardado; permite descartar datos de versiones previas. */
-export const VERSION_ORDENES = 1
+export const VERSION_ORDENES = 2
 
 type OrdenesGuardadas = {
     version: number
@@ -30,10 +39,12 @@ type OrdenesGuardadas = {
 export type CrearOrdenInput = {
     usuarioId?: string
     rol?: Rol
-    sucursal?: string
+    empresa?: Empresa
     buyer: BuyerInfo
     delivery: DeliveryInfo
     items: OrderItem[]
+    sucursales: SucursalOrden[]
+    condicionComercial: CondicionComercial
     subtotal: number
     tax: number
     shipping: number
@@ -66,6 +77,45 @@ function esDeliveryValida(valor: unknown): valor is DeliveryInfo {
     )
 }
 
+function esEmpresaValida(valor: unknown): valor is Empresa {
+    if (typeof valor !== 'object' || valor === null) return false
+
+    const empresa = valor as Record<string, unknown>
+
+    return (
+        typeof empresa.nombre === 'string' &&
+        empresa.nombre.trim() !== '' &&
+        typeof empresa.cedulaJuridica === 'string' &&
+        empresa.cedulaJuridica.trim() !== ''
+    )
+}
+
+function esSucursalValida(valor: unknown): valor is SucursalOrden {
+    if (typeof valor !== 'object' || valor === null) return false
+
+    const sucursal = valor as Record<string, unknown>
+
+    return (
+        typeof sucursal.id === 'string' &&
+        sucursal.id.trim() !== '' &&
+        typeof sucursal.nombre === 'string' &&
+        sucursal.nombre.trim() !== ''
+    )
+}
+
+function esCondicionValida(valor: unknown): valor is CondicionComercial {
+    if (typeof valor !== 'object' || valor === null) return false
+
+    const condicion = valor as Record<string, unknown>
+
+    return (
+        (condicion.tipo === 'ESTANDAR' || condicion.tipo === 'CANTIDAD_MINIMA') &&
+        typeof condicion.minimo === 'number' &&
+        Number.isFinite(condicion.minimo) &&
+        condicion.minimo >= 0
+    )
+}
+
 function esItemValido(valor: unknown): valor is OrderItem {
     if (typeof valor !== 'object' || valor === null) return false
 
@@ -75,7 +125,16 @@ function esItemValido(valor: unknown): valor is OrderItem {
         typeof item.objectID === 'string' &&
         item.objectID.trim() !== '' &&
         typeof item.name === 'string' &&
+        typeof item.branchId === 'string' &&
+        item.branchId.trim() !== '' &&
+        typeof item.branchName === 'string' &&
+        item.branchName.trim() !== '' &&
+        typeof item.stockAtPurchase === 'number' &&
+        Number.isFinite(item.stockAtPurchase) &&
+        item.stockAtPurchase >= 0 &&
+        (item.pricingType === 'B2C' || item.pricingType === 'B2B') &&
         typeof item.unitPrice === 'number' &&
+        (item.b2bReferencePrice === undefined || typeof item.b2bReferencePrice === 'number') &&
         Number.isInteger(item.quantity) &&
         (item.quantity as number) >= 1 &&
         typeof item.subtotal === 'number'
@@ -97,11 +156,14 @@ export function esOrdenValida(valor: unknown): valor is Order {
         typeof orden.createdAt === 'string' &&
         (orden.usuarioId === undefined || typeof orden.usuarioId === 'string') &&
         (orden.rol === undefined || esRolValido(orden.rol)) &&
-        (orden.sucursal === undefined || typeof orden.sucursal === 'string') &&
+        (orden.empresa === undefined || esEmpresaValida(orden.empresa)) &&
         esBuyerValido(orden.buyer) &&
         esDeliveryValida(orden.delivery) &&
         Array.isArray(orden.items) &&
         orden.items.every(esItemValido) &&
+        Array.isArray(orden.sucursales) &&
+        orden.sucursales.every(esSucursalValida) &&
+        esCondicionValida(orden.condicionComercial) &&
         typeof orden.subtotal === 'number' &&
         typeof orden.tax === 'number' &&
         typeof orden.shipping === 'number' &&
@@ -127,9 +189,21 @@ function sanearOrdenes(valor: unknown, contexto: string): Order[] {
         )
     }
 
-    console.log('[ordenes] ordenes validas', validas)
-
     return validas
+}
+
+function ordenarPorFechaDesc(ordenes: Order[]): Order[] {
+    return [...ordenes].sort(
+        (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt),
+    )
+}
+
+function descartarVersionAnterior(): void {
+    try {
+        localStorage.removeItem(CLAVE_ORDENES_ANTERIOR)
+    } catch {
+        // Si localStorage no esta disponible, tampoco hay una version anterior que limpiar.
+    }
 }
 
 /**
@@ -137,6 +211,8 @@ function sanearOrdenes(valor: unknown, contexto: string): Order[] {
  * disponibilidad de `localStorage` se trata como "sin ordenes".
  */
 export function listarOrdenes(): Order[] {
+    descartarVersionAnterior()
+
     let crudo: string | null
 
     try {
@@ -171,6 +247,29 @@ export function listarOrdenes(): Order[] {
  */
 export function obtenerOrden(orderNumber: string): Order | null {
     return listarOrdenes().find((orden) => orden.orderNumber === orderNumber) ?? null
+}
+
+/** Devuelve las ordenes locales de un usuario, de la mas reciente a la mas antigua. */
+export function listarOrdenesDeUsuario(usuarioId: string): Order[] {
+    if (usuarioId.trim() === '') return []
+
+    return ordenarPorFechaDesc(
+        listarOrdenes().filter((orden) => orden.usuarioId === usuarioId),
+    )
+}
+
+/** Recupera una orden solo si pertenece al usuario indicado. */
+export function obtenerOrdenDeUsuario(
+    orderNumber: string,
+    usuarioId: string,
+): Order | null {
+    if (usuarioId.trim() === '') return null
+
+    const orden = obtenerOrden(orderNumber)
+
+    if (!orden || !orden.usuarioId || orden.usuarioId !== usuarioId) return null
+
+    return orden
 }
 
 function guardarOrdenes(ordenes: Order[]): void {
@@ -235,10 +334,12 @@ export async function crearOrden(input: CrearOrdenInput): Promise<Order> {
         createdAt: ahora,
         ...(input.usuarioId ? { usuarioId: input.usuarioId } : {}),
         ...(input.rol ? { rol: input.rol } : {}),
-        ...(input.sucursal ? { sucursal: input.sucursal } : {}),
+        ...(input.empresa ? { empresa: input.empresa } : {}),
         buyer: input.buyer,
         delivery: input.delivery,
         items: input.items,
+        sucursales: input.sucursales,
+        condicionComercial: input.condicionComercial,
         subtotal: input.subtotal,
         tax: input.tax,
         shipping: input.shipping,
@@ -249,7 +350,6 @@ export async function crearOrden(input: CrearOrdenInput): Promise<Order> {
         termsAcceptedAt: ahora,
     }
 
-    console.log('[ordenes] creando orden', order);
     persistirOrden(order)
 
     return order
@@ -259,9 +359,9 @@ export async function crearOrden(input: CrearOrdenInput): Promise<Order> {
  * Devuelve la orden actualizada segun el resultado del pago y la persiste. No
  * toca el Sandbox (solo recibe y devuelve datos).
  *
- * Transiciones: aprobado -> `CONFIRMED` / `APPROVED`; rechazado -> `PENDING` /
- * `DECLINED`; error -> `PENDING` / `ERROR`. `FAILED` no se emite; si la orden
- * ya esta `CONFIRMED` se devuelve sin cambios.
+ * Transiciones: aprobado -> `CONFIRMED` / `APPROVED`; rechazado -> `FAILED` /
+ * `DECLINED`; error -> `FAILED` / `ERROR`. Si la orden ya esta `CONFIRMED`
+ * se devuelve sin cambios.
  *
  * @param order Orden a actualizar.
  * @param result Resultado devuelto por el servicio de pago.
@@ -277,12 +377,22 @@ export function aplicarResultado(order: Order, result: PaymentResult): Order {
     }
 
     if (result.code === 'PAYMENT_DECLINED') {
-        const rechazada: Order = { ...order, status: 'PENDING', paymentStatus: 'DECLINED' }
+        const rechazada: Order = { ...order, status: 'FAILED', paymentStatus: 'DECLINED' }
         persistirOrden(rechazada)
         return rechazada
     }
 
-    const conError: Order = { ...order, status: 'PENDING', paymentStatus: 'ERROR' }
-    persistirOrden(conError)
-    return conError
+    const fallida: Order = { ...order, status: 'FAILED', paymentStatus: 'ERROR' }
+    persistirOrden(fallida)
+    return fallida
+}
+
+export function reiniciarOrdenParaReintento(order: Order): Order {
+    if (order.status === 'CONFIRMED') return order
+
+    if (order.status === 'PENDING' && order.paymentStatus === 'PENDING') return order
+
+    const reiniciada: Order = { ...order, status: 'PENDING', paymentStatus: 'PENDING' }
+    persistirOrden(reiniciada)
+    return reiniciada
 }

@@ -1,10 +1,14 @@
 import styles from './ProductCardGrid.module.css'
-import type { Product, StockBranch } from '../../../types/product'
+import type { Product } from '../../../types/product'
 import { UilShoppingCart, UilStar } from '@iconscout/react-unicons'
 import { UisStar, UisStarHalfAlt } from '@iconscout/react-unicons-solid'
 import { Button } from '../../Button/Button'
 import { QuantityStepper } from '../../QuantityStepper/QuantityStepper'
 import { useCarrito } from '../../../context/carritoContext'
+import { useAuth } from '../../../features/auth/useAuth'
+import { nombreSucursal } from '../../../data/sucursales'
+import { resolverPrecio } from '../../../services/precios'
+import { obtenerStockTotal, obtenerSucursalConMayorStock } from '../../../services/inventario'
 
 /**
  * Props del componente ProductCardGrid.
@@ -19,16 +23,6 @@ type ProductCardGridProps = {
   imageUrl?: string
   onAddToCart?: (product: Product) => void
   onClick?: (product: Product) => void
-}
-
-/**
- * Calcula el stock total sumando todas las sucursales del producto.
- *
- * @param product - Producto con su arreglo stock_by_branch.
- * @returns Número total de unidades disponibles entre todas las sucursales.
- */
-function getTotalStock(product: Product): number {
-  return product.stock_by_branch.reduce((acc: number, b: StockBranch) => acc + b.stock, 0)
 }
 
 /**
@@ -103,12 +97,22 @@ function build_imageUrl(imagePath: string): string {
  * />
  */
 export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: ProductCardGridProps) {
-  const totalStock = getTotalStock(product)
+  const totalStock = obtenerStockTotal(product)
   const inStock = totalStock > 0
   const lowStock = totalStock > 0 && totalStock <= 5
   const displayName = product.name ?? 'Sin nombre'
   const { items, agregar, cambiarCantidad } = useCarrito()
-  const quantity = items.find((item) => item.objectID === product.objectID)?.cantidad ?? 0
+  const { usuario } = useAuth()
+  const lineasProducto = items.filter((item) => item.objectID === product.objectID)
+  const quantity = lineasProducto.reduce((total, item) => total + item.cantidad, 0)
+  const lineaAjuste = lineasProducto[lineasProducto.length - 1]
+  const { branchId: sucursalSugerida } = obtenerSucursalConMayorStock(product)
+  const precio = resolverPrecio(product, usuario?.rol ?? null, quantity)
+  const puedeAgregar = usuario?.rol !== 'ADMIN'
+  const referenciaB2B =
+    precio.precioB2BReferencia !== null && precio.precioB2BReferencia !== precio.precioUnitario
+      ? precio.precioB2BReferencia
+      : null
 
   return (
     <article className={styles.card} onClick={() => onClick?.(product)}>
@@ -159,24 +163,30 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
       {/* Footer: precio y acciones */}
       <div className={styles.footer}>
         <div className={styles.priceRow}>
-          <div className={styles.price}>{formatPrice(product.price)}</div>
+          <div>
+            <div className={styles.price}>{formatPrice(precio.precioUnitario)}</div>
+            {referenciaB2B !== null && (
+              <span className={styles.b2bRef}>B2B: {formatPrice(referenciaB2B)} c/u</span>
+            )}
+            <span className={styles.branchHint}>Desde {nombreSucursal(sucursalSugerida)}</span>
+          </div>
 
           {/* Si el producto ya esta en el carrito, el boton se transforma en el control de cantidad */}
-          {quantity > 0 ? (
+          {quantity > 0 && lineaAjuste ? (
             <QuantityStepper
               label={displayName}
               quantity={quantity}
               max={totalStock}
               size="sm"
-              onDecrease={() => cambiarCantidad(product.objectID, quantity - 1)}
-              onIncrease={() => agregar(product.objectID, 1, product.name)}
+              onDecrease={() => cambiarCantidad(lineaAjuste.lineId, lineaAjuste.cantidad - 1)}
+              onIncrease={() => agregar(product.objectID, sucursalSugerida, 1, product.name)}
             />
           ) : (
             /* stopPropagation evita que el clic en carrito también active onClick de la tarjeta */
             <button
               className={styles.cartBtn}
-              disabled={!inStock}
-              title={inStock ? 'Agregar al carrito' : 'Sin stock'}
+              disabled={!inStock || !puedeAgregar}
+              title={!puedeAgregar ? 'Los administradores no pueden comprar' : inStock ? 'Agregar al carrito' : 'Sin stock'}
               onClick={(e) => { e.stopPropagation(); onAddToCart?.(product) }}
             >
               <UilShoppingCart size="16" />

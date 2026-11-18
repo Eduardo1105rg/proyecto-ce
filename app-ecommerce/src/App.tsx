@@ -14,6 +14,8 @@ import { AuthProvider } from './features/auth/AuthProvider'
 import { LoginPage } from './pages/LoginPage/LoginPage'
 import { RutaProtegida } from './features/auth/components/RutaProtegida/RutaProtegida'
 import { AnalyticsPage } from './pages/AnalyticsPage/AnalyticsPage'
+import { MisOrdenesPage } from './pages/MisOrdenesPage/MisOrdenesPage'
+import { AdminPage } from './pages/AdminPage/AdminPage'
 
 function App() {
 	const { theme, toggleTheme } = useTheme()
@@ -32,7 +34,7 @@ function App() {
 						<Route
 							path="/carrito"
 							element={
-								<RutaProtegida roles={['B2C', 'B2B']}>
+								<RutaProtegida roles={['B2C', 'B2B']} permitirInvitado>
 									<CartPage />
 								</RutaProtegida>
 							}
@@ -40,8 +42,16 @@ function App() {
 						<Route
 							path="/checkout"
 							element={
-								<RutaProtegida roles={['B2C', 'B2B']}>
+								<RutaProtegida roles={['B2C', 'B2B']} permitirInvitado>
 									<CheckoutPage />
+								</RutaProtegida>
+							}
+						/>
+						<Route
+							path="/mis-ordenes"
+							element={
+								<RutaProtegida roles={['B2C', 'B2B']}>
+									<MisOrdenesPage />
 								</RutaProtegida>
 							}
 						/>
@@ -56,6 +66,14 @@ function App() {
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/politicas" element={<PoliciesPage />} />
 						<Route path="/politicas/:slug" element={<PoliciesPage />} />
+						<Route
+							path="/admin"
+							element={
+								<RutaProtegida roles={['ADMIN']}>
+									<AdminPage />
+								</RutaProtegida>
+							}
+						/>
 					</Routes>
 					<Footer />
 				</CarritoProvider>

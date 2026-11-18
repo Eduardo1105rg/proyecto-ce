@@ -64,7 +64,7 @@ export function TablaUsuarios({
 									<span className={styles.nombre}>{nombreVisible(usuario)}</span>
 									<span className={styles.identificador}>{usuario.usuarioId}</span>
 								</td>
-								<td>
+								<td data-label="Rol">
 									{usuario.rol ? (
 										<span className={`${styles.rol} ${claseRol(usuario.rol)}`}>
 											{usuario.rol}
@@ -73,12 +73,12 @@ export function TablaUsuarios({
 										'—'
 									)}
 								</td>
-								<td>{usuario.eventos}</td>
-								<td>{usuario.metricas.productosVistos}</td>
-								<td>{usuario.metricas.busquedas}</td>
-								<td>{usuario.metricas.agregadosCarrito}</td>
-								<td>{usuario.metricas.compras}</td>
-								<td>{fechaVisible(usuario.ultimaActividad)}</td>
+								<td data-label="Eventos">{usuario.eventos}</td>
+								<td data-label="Vistos">{usuario.metricas.productosVistos}</td>
+								<td data-label="Búsquedas">{usuario.metricas.busquedas}</td>
+								<td data-label="Carrito">{usuario.metricas.agregadosCarrito}</td>
+								<td data-label="Compras">{usuario.metricas.compras}</td>
+								<td data-label="Última actividad">{fechaVisible(usuario.ultimaActividad)}</td>
 								<td>
 									<button
 										type="button"

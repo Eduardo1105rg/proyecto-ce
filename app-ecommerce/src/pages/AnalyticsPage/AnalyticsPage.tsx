@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { UilEye, UilSearch, UilShoppingCartAlt, UilCheckCircle } from '@iconscout/react-unicons'
 import { useAuth } from '../../features/auth/useAuth'
 import {
@@ -87,6 +87,7 @@ function ClienteAnalytics({ usuario }: { usuario: Usuario }) {
 
 function AdminAnalytics() {
 	const [seleccionadoId, setSeleccionadoId] = useState<string | null>(null)
+	const detalleRef = useRef<HTMLDivElement>(null)
 	const usuarios = listarActividadPorUsuario()
 	const resumen = obtenerResumenGlobal()
 	const seleccionado =
@@ -96,6 +97,17 @@ function AdminAnalytics() {
 	const alternarDetalle = (usuarioId: string) => {
 		setSeleccionadoId((actual) => (actual === usuarioId ? null : usuarioId))
 	}
+
+	useEffect(() => {
+		if (seleccionadoId === null) return
+		if (!window.matchMedia('(max-width: 900px)').matches) return
+
+		const sinAnimacion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		detalleRef.current?.scrollIntoView({
+			behavior: sinAnimacion ? 'auto' : 'smooth',
+			block: 'start',
+		})
+	}, [seleccionadoId])
 
 	return (
 		<main className={styles.page}>
@@ -124,7 +136,9 @@ function AdminAnalytics() {
 				</section>
 
 				{seleccionado ? (
-					<DetalleUsuario resumen={seleccionado} eventos={eventosSeleccionado} />
+					<div ref={detalleRef} className={styles.detalle}>
+						<DetalleUsuario resumen={seleccionado} eventos={eventosSeleccionado} />
+					</div>
 				) : (
 					<p className={styles.hint}>
 						Seleccione un usuario de la tabla para ver su detalle.
@@ -134,7 +148,6 @@ function AdminAnalytics() {
 		</main>
 	)
 }
-
 export function AnalyticsPage() {
 	const { usuario } = useAuth()
 
