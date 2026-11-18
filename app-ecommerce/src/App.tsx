@@ -34,7 +34,7 @@ function App() {
 						<Route
 							path="/carrito"
 							element={
-								<RutaProtegida roles={['B2C', 'B2B']}>
+								<RutaProtegida roles={['B2C', 'B2B']} permitirInvitado>
 									<CartPage />
 								</RutaProtegida>
 							}
@@ -42,7 +42,7 @@ function App() {
 						<Route
 							path="/checkout"
 							element={
-								<RutaProtegida roles={['B2C', 'B2B']}>
+								<RutaProtegida roles={['B2C', 'B2B']} permitirInvitado>
 									<CheckoutPage />
 								</RutaProtegida>
 							}

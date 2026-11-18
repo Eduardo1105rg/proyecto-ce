@@ -2,6 +2,9 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { MemoryRouter } from 'react-router-dom'
 import { CarritoProvider } from '../src/context/CarritoProvider'
+import { AuthProvider } from '../src/features/auth/AuthProvider'
+import { RutaProtegida } from '../src/features/auth/components/RutaProtegida/RutaProtegida'
+import { CartPage } from '../src/pages/CartPage/CartPage'
 import { CheckoutPage } from '../src/pages/CheckoutPage/CheckoutPage'
 import * as sandbox from '../src/services/paymentSandbox'
 import { listarOrdenes } from '../src/services/orders'
@@ -16,10 +19,21 @@ vi.mock('../src/services/Algolia', () => ({
     searchClient: { search },
 }))
 
-const CART = [{ objectID: 'sandbox-a', cantidad: 2 }, { objectID: 'sandbox-b', cantidad: 1 }]
+const CLAVE_USUARIO = 'marketbyte_usuario'
+const SUCURSAL = 'sj-escazu'
+const CART = [
+    { objectID: 'sandbox-a', branchId: SUCURSAL, cantidad: 2 },
+    { objectID: 'sandbox-b', branchId: SUCURSAL, cantidad: 1 },
+]
 const PRODUCTS = [
-    { objectID: 'sandbox-a', name: 'Producto de prueba A', price: 1000, image: '', facets: { free_shipping: false } },
-    { objectID: 'sandbox-b', name: 'Producto de prueba B', price: 500, image: '', facets: { free_shipping: false } },
+    {
+        objectID: 'sandbox-a', name: 'Producto de prueba A', price: 1000, image: '',
+        facets: { free_shipping: false }, stock_by_branch: [{ branch_id: SUCURSAL, stock: 10 }],
+    },
+    {
+        objectID: 'sandbox-b', name: 'Producto de prueba B', price: 500, image: '',
+        facets: { free_shipping: false }, stock_by_branch: [{ branch_id: SUCURSAL, stock: 10 }],
+    },
 ]
 const BUYER = { fullName: 'Persona Prueba', email: 'sandbox@example.com', phone: '88888888' }
 
@@ -27,7 +41,17 @@ async function openCheckout(orderNumber?: string) {
     await act(async () => {
         render(
             <MemoryRouter initialEntries={[orderNumber ? `/checkout?orden=${orderNumber}` : '/checkout']}>
-                <CarritoProvider><CheckoutPage /></CarritoProvider>
+                <AuthProvider><CarritoProvider><CheckoutPage /></CarritoProvider></AuthProvider>
+            </MemoryRouter>,
+        )
+    })
+}
+
+async function openCart() {
+    await act(async () => {
+        render(
+            <MemoryRouter initialEntries={['/carrito']}>
+                <AuthProvider><CarritoProvider><CartPage /></CarritoProvider></AuthProvider>
             </MemoryRouter>,
         )
     })
@@ -41,6 +65,7 @@ async function openReview() {
     ]) {
         fireEvent.change(screen.getByLabelText(label), { target: { value } })
     }
+    fireEvent.click(screen.getByRole('checkbox', { name: /Acepto los términos/ }))
     fireEvent.click(screen.getByRole('button', { name: 'Continuar' }))
     expect(screen.getByRole('button', { name: 'Confirmar y pagar' })).toBeTruthy()
 }
@@ -70,7 +95,10 @@ function expectOrder(status: string, paymentStatus: string) {
 
 beforeEach(() => {
     localStorage.clear()
-    localStorage.setItem(CLAVE_CARRITO, JSON.stringify({ version: 1, items: CART }))
+    localStorage.setItem(CLAVE_USUARIO, JSON.stringify({
+        id: 'b2c-tests', nombre: 'Cliente Prueba', correo: 'b2c@example.com', rol: 'B2C',
+    }))
+    localStorage.setItem(CLAVE_CARRITO, JSON.stringify({ version: 2, items: CART }))
     search.mockResolvedValue({ results: [{ hits: PRODUCTS }] })
     vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
     vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
@@ -199,5 +227,134 @@ describe('Checkout y Sandbox con componentes reales', () => {
         await openCheckout(order.orderNumber)
         fireEvent.click(screen.getByRole('button', { name: 'Intentar de nuevo' }))
         expect(screen.getByText(BUYER.email)).toBeTruthy()
+    })
+})
+
+describe('Compra sin sesión', () => {
+    it('muestra el carrito con precios B2C y permite avanzar al pago', async () => {
+        localStorage.removeItem(CLAVE_USUARIO)
+        await openCart()
+
+        expect(screen.getByText('Producto de prueba A')).toBeTruthy()
+        expect(screen.getAllByText(/₡1\s*000/).length).toBeGreaterThan(0)
+        expect(screen.queryByText(/Precio B2B/)).toBeNull()
+        expect(screen.getByRole('button', { name: 'Proceder al pago' })).toHaveProperty('disabled', false)
+    })
+
+    it('guarda la orden como anónima con condición estándar', async () => {
+        localStorage.removeItem(CLAVE_USUARIO)
+        await openReview()
+        confirm()
+        await advance(2000)
+
+        const order = expectOrder('CONFIRMED', 'APPROVED')
+        expect(order).toMatchObject({
+            usuarioId: 'anonimo',
+            condicionComercial: { tipo: 'ESTANDAR', minimo: 0 },
+        })
+        expect(order.rol).toBeUndefined()
+        expect(persistedCart()).toEqual([])
+    })
+
+    it('recupera la confirmación por URL sin iniciar sesión', async () => {
+        localStorage.removeItem(CLAVE_USUARIO)
+        await openReview()
+        confirm()
+        await advance(2000)
+        const order = expectOrder('CONFIRMED', 'APPROVED')
+        cleanup()
+
+        await openCheckout(order.orderNumber)
+
+        expect(screen.getByRole('heading', { name: '¡Gracias por su compra!' })).toBeTruthy()
+        expect(screen.getByText(order.orderNumber)).toBeTruthy()
+    })
+
+    it('permite las rutas de compra a invitados pero no a ADMIN', () => {
+        localStorage.removeItem(CLAVE_USUARIO)
+        render(
+            <MemoryRouter>
+                <AuthProvider>
+                    <RutaProtegida roles={['B2C', 'B2B']} permitirInvitado>
+                        <p>Contenido de compra</p>
+                    </RutaProtegida>
+                </AuthProvider>
+            </MemoryRouter>,
+        )
+        expect(screen.getByText('Contenido de compra')).toBeTruthy()
+        cleanup()
+
+        localStorage.setItem(CLAVE_USUARIO, JSON.stringify({
+            id: 'admin-tests', nombre: 'Administrador', correo: 'admin@example.com', rol: 'ADMIN',
+        }))
+        render(
+            <MemoryRouter>
+                <AuthProvider>
+                    <RutaProtegida roles={['B2C', 'B2B']} permitirInvitado>
+                        <p>Contenido de compra</p>
+                    </RutaProtegida>
+                </AuthProvider>
+            </MemoryRouter>,
+        )
+        expect(screen.getByText('Acceso denegado')).toBeTruthy()
+    })
+
+    it('sigue pidiendo sesión cuando la ruta no permite invitados', () => {
+        localStorage.removeItem(CLAVE_USUARIO)
+        render(
+            <MemoryRouter>
+                <AuthProvider>
+                    <RutaProtegida roles={['B2C', 'B2B']}>
+                        <p>Contenido privado</p>
+                    </RutaProtegida>
+                </AuthProvider>
+            </MemoryRouter>,
+        )
+
+        expect(screen.getByText('Inicie sesión para continuar')).toBeTruthy()
+        expect(screen.queryByText('Contenido privado')).toBeNull()
+    })
+
+    it('mantiene el bloqueo del mínimo B2B para usuarios autenticados', async () => {
+        localStorage.removeItem(CLAVE_USUARIO)
+        localStorage.setItem(CLAVE_USUARIO, JSON.stringify({
+            id: 'b2b-tests',
+            nombre: 'Cliente B2B',
+            correo: 'b2b@example.com',
+            rol: 'B2B',
+            empresa: { nombre: 'Empresa Prueba', cedulaJuridica: '123456789' },
+        }))
+        localStorage.setItem(CLAVE_CARRITO, JSON.stringify({
+            version: 2,
+            items: [{ objectID: 'b2b-minimo', branchId: SUCURSAL, cantidad: 9 }],
+        }))
+        search.mockResolvedValue({
+            results: [{
+                hits: [{
+                    objectID: 'b2b-minimo',
+                    name: 'Producto B2B',
+                    price: 1000,
+                    image: '',
+                    facets: { free_shipping: false },
+                    tiered_b2b_pricing: [{ min_qty: 12, unit_price: 800 }],
+                    stock_by_branch: [{ branch_id: SUCURSAL, stock: 50 }],
+                }],
+            }],
+        })
+
+        await act(async () => {
+            render(
+                <MemoryRouter initialEntries={['/checkout']}>
+                    <AuthProvider>
+                        <CarritoProvider>
+                            <CheckoutPage />
+                        </CarritoProvider>
+                    </AuthProvider>
+                </MemoryRouter>,
+            )
+        })
+
+        expect(screen.getByText(/Complete el mínimo B2B de cada producto para continuar/)).toBeTruthy()
+        expect(listarOrdenes()).toHaveLength(0)
     })
 })
