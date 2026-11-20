@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import styles from './ProductCardList.module.css'
 import type { Product } from '../../../types/product'
 import { UilStar } from '@iconscout/react-unicons'
@@ -8,7 +9,12 @@ import { useCarrito } from '../../../context/carritoContext'
 import { useAuth } from '../../../features/auth/useAuth'
 import { nombreSucursal } from '../../../data/sucursales'
 import { resolverPrecio } from '../../../services/precios'
-import { obtenerStockTotal, obtenerSucursalConMayorStock } from '../../../services/inventario'
+import {
+  obtenerStockTotal,
+  obtenerStockSucursal,
+  obtenerSucursalConMayorStock,
+  obtenerSucursalConMayorDisponible,
+} from '../../../services/inventario'
 
 /**
  * Props del componente ProductCardList.
@@ -115,10 +121,44 @@ export function ProductCardList({ product, imageUrl, onAddToCart, onClick }: Pro
       ? precio.precioB2BReferencia
       : null
 
+  const [aviso, setAviso] = useState<string | null>(null)
+  const ultimaSucursal = useRef<string | null>(null)
+  const avisoTimer = useRef<number | undefined>(undefined)
+
+  useEffect(() => {
+    return () => window.clearTimeout(avisoTimer.current)
+  }, [])
+
+  const cantidadesPorSucursal = lineasProducto.reduce<Record<string, number>>((acc, item) => {
+    acc[item.branchId] = (acc[item.branchId] ?? 0) + item.cantidad
+    return acc
+  }, {})
+
+  const handleIncrease = () => {
+    const { branchId, disponible } = obtenerSucursalConMayorDisponible(product, cantidadesPorSucursal)
+    if (disponible <= 0) return
+
+    const anterior = ultimaSucursal.current ?? lineaAjuste?.branchId ?? null
+
+    if (anterior && anterior !== branchId) {
+      const anteriorLlena =
+        obtenerStockSucursal(product, anterior) - (cantidadesPorSucursal[anterior] ?? 0) <= 0
+
+      if (anteriorLlena) {
+        setAviso(`${nombreSucursal(anterior)} llegó al máximo. Se agregó desde ${nombreSucursal(branchId)}.`)
+        window.clearTimeout(avisoTimer.current)
+        avisoTimer.current = window.setTimeout(() => setAviso(null), 4000)
+      }
+    }
+
+    ultimaSucursal.current = branchId
+    agregar(product.objectID, branchId, 1, product.name)
+  }
+
   return (
     <article className={styles.card} onClick={() => onClick?.(product)}>
 
-      {/* Columna izquierda — información del producto */}
+      {/* Columna izquierda - información del producto */}
       <div className={styles.body}>
         <div className={styles.meta}>
           <span className={styles.category}>{product.category}</span>
@@ -146,7 +186,7 @@ export function ProductCardList({ product, imageUrl, onAddToCart, onClick }: Pro
         </div>
       </div>
 
-      {/* Columna central — precio y botones */}
+      {/* Columna central - precio y botones */}
       <div className={styles.actions}>
         <div className={styles.price}>{formatPrice(precio.precioUnitario)}</div>
         {referenciaB2B !== null && (
@@ -173,7 +213,7 @@ export function ProductCardList({ product, imageUrl, onAddToCart, onClick }: Pro
               size="md"
               fullWidth
               onDecrease={() => cambiarCantidad(lineaAjuste.lineId, lineaAjuste.cantidad - 1)}
-              onIncrease={() => agregar(product.objectID, sucursalSugerida, 1, product.name)}
+              onIncrease={handleIncrease}
             />
           ) : (
             <Button
@@ -186,9 +226,15 @@ export function ProductCardList({ product, imageUrl, onAddToCart, onClick }: Pro
             />
           )}
         </div>
+
+        {aviso && (
+          <p className={styles.branchNotice} role="status">
+            {aviso}
+          </p>
+        )}
       </div>
 
-      {/* Columna derecha — imagen */}
+      {/* Columna derecha - imagen */}
       <div className={styles.imgWrapper}>
         <img
           src={build_imageUrl(imageUrl ?? '')}

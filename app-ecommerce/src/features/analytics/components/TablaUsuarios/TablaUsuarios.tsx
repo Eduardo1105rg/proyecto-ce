@@ -14,7 +14,7 @@ function nombreVisible(usuario: ResumenActividadUsuario): string {
 }
 
 function fechaVisible(fecha: string | null): string {
-	if (!fecha) return '—'
+	if (!fecha) return '-'
 
 	return new Date(fecha).toLocaleString('es-CR', {
 		dateStyle: 'short',
@@ -70,7 +70,7 @@ export function TablaUsuarios({
 											{usuario.rol}
 										</span>
 									) : (
-										'—'
+										'-'
 									)}
 								</td>
 								<td data-label="Eventos">{usuario.eventos}</td>

@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import styles from './ProductCardGrid.module.css'
 import type { Product } from '../../../types/product'
 import { UilShoppingCart, UilStar } from '@iconscout/react-unicons'
@@ -8,7 +9,12 @@ import { useCarrito } from '../../../context/carritoContext'
 import { useAuth } from '../../../features/auth/useAuth'
 import { nombreSucursal } from '../../../data/sucursales'
 import { resolverPrecio } from '../../../services/precios'
-import { obtenerStockTotal, obtenerSucursalConMayorStock } from '../../../services/inventario'
+import {
+  obtenerStockTotal,
+  obtenerStockSucursal,
+  obtenerSucursalConMayorStock,
+  obtenerSucursalConMayorDisponible,
+} from '../../../services/inventario'
 
 /**
  * Props del componente ProductCardGrid.
@@ -114,6 +120,40 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
       ? precio.precioB2BReferencia
       : null
 
+  const [aviso, setAviso] = useState<string | null>(null)
+  const ultimaSucursal = useRef<string | null>(null)
+  const avisoTimer = useRef<number | undefined>(undefined)
+
+  useEffect(() => {
+    return () => window.clearTimeout(avisoTimer.current)
+  }, [])
+
+  const cantidadesPorSucursal = lineasProducto.reduce<Record<string, number>>((acc, item) => {
+    acc[item.branchId] = (acc[item.branchId] ?? 0) + item.cantidad
+    return acc
+  }, {})
+
+  const handleIncrease = () => {
+    const { branchId, disponible } = obtenerSucursalConMayorDisponible(product, cantidadesPorSucursal)
+    if (disponible <= 0) return
+
+    const anterior = ultimaSucursal.current ?? lineaAjuste?.branchId ?? null
+
+    if (anterior && anterior !== branchId) {
+      const anteriorLlena =
+        obtenerStockSucursal(product, anterior) - (cantidadesPorSucursal[anterior] ?? 0) <= 0
+
+      if (anteriorLlena) {
+        setAviso(`${nombreSucursal(anterior)} llegó al máximo. Se agregó desde ${nombreSucursal(branchId)}.`)
+        window.clearTimeout(avisoTimer.current)
+        avisoTimer.current = window.setTimeout(() => setAviso(null), 4000)
+      }
+    }
+
+    ultimaSucursal.current = branchId
+    agregar(product.objectID, branchId, 1, product.name)
+  }
+
   return (
     <article className={styles.card} onClick={() => onClick?.(product)}>
 
@@ -128,7 +168,7 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
           }}
         />
 
-        {/* Badges — esquina izquierda */}
+        {/* Badges - esquina izquierda */}
         <div className={styles.badges}>
           {product.facets.free_shipping && (
             <span className={`${styles.badge} ${styles.badgeShipping}`}>Envío gratis</span>
@@ -141,7 +181,7 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
           )}
         </div>
 
-        {/* Badge de stock — esquina derecha, solo si es bajo o agotado */}
+        {/* Badge de stock - esquina derecha, solo si es bajo o agotado */}
         <div className={styles.stockBadge}>
           {!inStock && <span className={`${styles.stock} ${styles.stockOut}`}>Agotado</span>}
           {lowStock && <span className={`${styles.stock} ${styles.stockLow}`}>Pocas unidades</span>}
@@ -179,7 +219,7 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
               max={totalStock}
               size="sm"
               onDecrease={() => cambiarCantidad(lineaAjuste.lineId, lineaAjuste.cantidad - 1)}
-              onIncrease={() => agregar(product.objectID, sucursalSugerida, 1, product.name)}
+              onIncrease={handleIncrease}
             />
           ) : (
             /* stopPropagation evita que el clic en carrito también active onClick de la tarjeta */
@@ -193,6 +233,12 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
             </button>
           )}
         </div>
+
+        {aviso && (
+          <p className={styles.branchNotice} role="status">
+            {aviso}
+          </p>
+        )}
 
         {/* Button no entrega el evento, asi que el div corta la propagacion
             para que onClick no se ejecute dos veces (boton + tarjeta) */}

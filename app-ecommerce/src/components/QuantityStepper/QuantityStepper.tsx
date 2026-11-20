@@ -69,7 +69,7 @@ export function QuantityStepper({
                 onClick={onIncrease}
                 disabled={reachedMax}
                 aria-label={`Aumentar cantidad de ${label}`}
-                title={reachedMax ? 'Alcanzaste el stock disponible' : undefined}
+                title={reachedMax ? 'Alcanzó el stock disponible' : undefined}
             >
                 <UilPlus size={iconSize} />
             </button>
