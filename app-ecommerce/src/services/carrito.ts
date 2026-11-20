@@ -11,6 +11,10 @@ export const ESTADO_INICIAL: EstadoCarrito = {
   hidratado: false,
 }
 
+export function crearLineId(objectID: string, branchId: string): string {
+  return `${objectID}::${branchId}`
+}
+
 /**
  * Redondea hacia abajo y garantiza un mínimo de 1.
  *
@@ -22,7 +26,6 @@ function sanearCantidad(cantidad: number): number {
   return Math.max(Math.floor(cantidad), 1)
 }
 
-
 export function carritoReducer(estado: EstadoCarrito, accion: AccionCarrito): EstadoCarrito {
   switch (accion.type) {
     case 'HIDRATAR': {
@@ -31,12 +34,18 @@ export function carritoReducer(estado: EstadoCarrito, accion: AccionCarrito): Es
 
     case 'AGREGAR': {
       const cantidad = sanearCantidad(accion.cantidad)
-      const indice = estado.items.findIndex((item) => item.objectID === accion.objectID)
+      const lineId = crearLineId(accion.objectID, accion.branchId)
+      const indice = estado.items.findIndex(
+        (item) => crearLineId(item.objectID, item.branchId) === lineId,
+      )
 
       if (indice === -1) {
         return {
           ...estado,
-          items: [...estado.items, { objectID: accion.objectID, cantidad }],
+          items: [
+            ...estado.items,
+            { objectID: accion.objectID, branchId: accion.branchId, cantidad },
+          ],
         }
       }
 
@@ -47,7 +56,9 @@ export function carritoReducer(estado: EstadoCarrito, accion: AccionCarrito): Es
     }
 
     case 'CAMBIAR_CANTIDAD': {
-      const indice = estado.items.findIndex((item) => item.objectID === accion.objectID)
+      const indice = estado.items.findIndex(
+        (item) => crearLineId(item.objectID, item.branchId) === accion.lineId,
+      )
       if (indice === -1) return estado
 
       // Se redondea antes de comparar contra cero para que un 0.5 no termine
@@ -64,12 +75,49 @@ export function carritoReducer(estado: EstadoCarrito, accion: AccionCarrito): Es
       return { ...estado, items }
     }
 
+    case 'CAMBIAR_SUCURSAL': {
+      const indice = estado.items.findIndex(
+        (item) => crearLineId(item.objectID, item.branchId) === accion.lineId,
+      )
+      if (indice === -1) return estado
+
+      const origen = estado.items[indice]
+      if (origen.branchId === accion.branchId) return estado
+
+      const lineIdDestino = crearLineId(origen.objectID, accion.branchId)
+      const indiceDestino = estado.items.findIndex(
+        (item) => crearLineId(item.objectID, item.branchId) === lineIdDestino,
+      )
+
+      if (indiceDestino === -1) {
+        const items = [...estado.items]
+        items[indice] = { ...origen, branchId: accion.branchId }
+        return { ...estado, items }
+      }
+
+      const destino = estado.items[indiceDestino]
+      const items = estado.items
+        .filter((_, i) => i !== indice)
+        .map((item) =>
+          item === destino
+            ? { ...item, cantidad: item.cantidad + origen.cantidad }
+            : item,
+        )
+
+      return { ...estado, items }
+    }
+
     case 'ELIMINAR': {
-      if (!estado.items.some((item) => item.objectID === accion.objectID)) return estado
+      const existe = estado.items.some(
+        (item) => crearLineId(item.objectID, item.branchId) === accion.lineId,
+      )
+      if (!existe) return estado
 
       return {
         ...estado,
-        items: estado.items.filter((item) => item.objectID !== accion.objectID),
+        items: estado.items.filter(
+          (item) => crearLineId(item.objectID, item.branchId) !== accion.lineId,
+        ),
       }
     }
 
@@ -81,23 +129,29 @@ export function carritoReducer(estado: EstadoCarrito, accion: AccionCarrito): Es
   }
 }
 
-
 export const accionesCarrito = {
   hidratar: (items: ItemCarrito[]): AccionCarrito => ({ type: 'HIDRATAR', items }),
 
-  agregar: (objectID: string, cantidad: number): AccionCarrito => ({
+  agregar: (objectID: string, branchId: string, cantidad: number): AccionCarrito => ({
     type: 'AGREGAR',
     objectID,
+    branchId,
     cantidad,
   }),
 
-  cambiarCantidad: (objectID: string, cantidad: number): AccionCarrito => ({
+  cambiarCantidad: (lineId: string, cantidad: number): AccionCarrito => ({
     type: 'CAMBIAR_CANTIDAD',
-    objectID,
+    lineId,
     cantidad,
   }),
 
-  eliminar: (objectID: string): AccionCarrito => ({ type: 'ELIMINAR', objectID }),
+  cambiarSucursal: (lineId: string, branchId: string): AccionCarrito => ({
+    type: 'CAMBIAR_SUCURSAL',
+    lineId,
+    branchId,
+  }),
+
+  eliminar: (lineId: string): AccionCarrito => ({ type: 'ELIMINAR', lineId }),
 
   vaciar: (): AccionCarrito => ({ type: 'VACIAR' }),
 }

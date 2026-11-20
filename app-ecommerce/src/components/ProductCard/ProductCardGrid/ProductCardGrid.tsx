@@ -1,10 +1,20 @@
+import { useEffect, useRef, useState } from 'react'
 import styles from './ProductCardGrid.module.css'
-import type { Product, StockBranch } from '../../../types/product'
+import type { Product } from '../../../types/product'
 import { UilShoppingCart, UilStar } from '@iconscout/react-unicons'
 import { UisStar, UisStarHalfAlt } from '@iconscout/react-unicons-solid'
 import { Button } from '../../Button/Button'
 import { QuantityStepper } from '../../QuantityStepper/QuantityStepper'
 import { useCarrito } from '../../../context/carritoContext'
+import { useAuth } from '../../../features/auth/useAuth'
+import { nombreSucursal } from '../../../data/sucursales'
+import { resolverPrecio } from '../../../services/precios'
+import {
+  obtenerStockTotal,
+  obtenerStockSucursal,
+  obtenerSucursalConMayorStock,
+  obtenerSucursalConMayorDisponible,
+} from '../../../services/inventario'
 
 /**
  * Props del componente ProductCardGrid.
@@ -19,16 +29,6 @@ type ProductCardGridProps = {
   imageUrl?: string
   onAddToCart?: (product: Product) => void
   onClick?: (product: Product) => void
-}
-
-/**
- * Calcula el stock total sumando todas las sucursales del producto.
- *
- * @param product - Producto con su arreglo stock_by_branch.
- * @returns Número total de unidades disponibles entre todas las sucursales.
- */
-function getTotalStock(product: Product): number {
-  return product.stock_by_branch.reduce((acc: number, b: StockBranch) => acc + b.stock, 0)
 }
 
 /**
@@ -103,12 +103,56 @@ function build_imageUrl(imagePath: string): string {
  * />
  */
 export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: ProductCardGridProps) {
-  const totalStock = getTotalStock(product)
+  const totalStock = obtenerStockTotal(product)
   const inStock = totalStock > 0
   const lowStock = totalStock > 0 && totalStock <= 5
   const displayName = product.name ?? 'Sin nombre'
   const { items, agregar, cambiarCantidad } = useCarrito()
-  const quantity = items.find((item) => item.objectID === product.objectID)?.cantidad ?? 0
+  const { usuario } = useAuth()
+  const lineasProducto = items.filter((item) => item.objectID === product.objectID)
+  const quantity = lineasProducto.reduce((total, item) => total + item.cantidad, 0)
+  const lineaAjuste = lineasProducto[lineasProducto.length - 1]
+  const { branchId: sucursalSugerida } = obtenerSucursalConMayorStock(product)
+  const precio = resolverPrecio(product, usuario?.rol ?? null, quantity)
+  const puedeAgregar = usuario?.rol !== 'ADMIN'
+  const referenciaB2B =
+    precio.precioB2BReferencia !== null && precio.precioB2BReferencia !== precio.precioUnitario
+      ? precio.precioB2BReferencia
+      : null
+
+  const [aviso, setAviso] = useState<string | null>(null)
+  const ultimaSucursal = useRef<string | null>(null)
+  const avisoTimer = useRef<number | undefined>(undefined)
+
+  useEffect(() => {
+    return () => window.clearTimeout(avisoTimer.current)
+  }, [])
+
+  const cantidadesPorSucursal = lineasProducto.reduce<Record<string, number>>((acc, item) => {
+    acc[item.branchId] = (acc[item.branchId] ?? 0) + item.cantidad
+    return acc
+  }, {})
+
+  const handleIncrease = () => {
+    const { branchId, disponible } = obtenerSucursalConMayorDisponible(product, cantidadesPorSucursal)
+    if (disponible <= 0) return
+
+    const anterior = ultimaSucursal.current ?? lineaAjuste?.branchId ?? null
+
+    if (anterior && anterior !== branchId) {
+      const anteriorLlena =
+        obtenerStockSucursal(product, anterior) - (cantidadesPorSucursal[anterior] ?? 0) <= 0
+
+      if (anteriorLlena) {
+        setAviso(`${nombreSucursal(anterior)} llegó al máximo. Se agregó desde ${nombreSucursal(branchId)}.`)
+        window.clearTimeout(avisoTimer.current)
+        avisoTimer.current = window.setTimeout(() => setAviso(null), 4000)
+      }
+    }
+
+    ultimaSucursal.current = branchId
+    agregar(product.objectID, branchId, 1, product.name)
+  }
 
   return (
     <article className={styles.card} onClick={() => onClick?.(product)}>
@@ -124,7 +168,7 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
           }}
         />
 
-        {/* Badges — esquina izquierda */}
+        {/* Badges - esquina izquierda */}
         <div className={styles.badges}>
           {product.facets.free_shipping && (
             <span className={`${styles.badge} ${styles.badgeShipping}`}>Envío gratis</span>
@@ -137,7 +181,7 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
           )}
         </div>
 
-        {/* Badge de stock — esquina derecha, solo si es bajo o agotado */}
+        {/* Badge de stock - esquina derecha, solo si es bajo o agotado */}
         <div className={styles.stockBadge}>
           {!inStock && <span className={`${styles.stock} ${styles.stockOut}`}>Agotado</span>}
           {lowStock && <span className={`${styles.stock} ${styles.stockLow}`}>Pocas unidades</span>}
@@ -159,30 +203,42 @@ export function ProductCardGrid({ product, imageUrl, onAddToCart, onClick }: Pro
       {/* Footer: precio y acciones */}
       <div className={styles.footer}>
         <div className={styles.priceRow}>
-          <div className={styles.price}>{formatPrice(product.price)}</div>
+          <div>
+            <div className={styles.price}>{formatPrice(precio.precioUnitario)}</div>
+            {referenciaB2B !== null && (
+              <span className={styles.b2bRef}>B2B: {formatPrice(referenciaB2B)} c/u</span>
+            )}
+            <span className={styles.branchHint}>Desde {nombreSucursal(sucursalSugerida)}</span>
+          </div>
 
           {/* Si el producto ya esta en el carrito, el boton se transforma en el control de cantidad */}
-          {quantity > 0 ? (
+          {quantity > 0 && lineaAjuste ? (
             <QuantityStepper
               label={displayName}
               quantity={quantity}
               max={totalStock}
               size="sm"
-              onDecrease={() => cambiarCantidad(product.objectID, quantity - 1)}
-              onIncrease={() => agregar(product.objectID, 1, product.name)}
+              onDecrease={() => cambiarCantidad(lineaAjuste.lineId, lineaAjuste.cantidad - 1)}
+              onIncrease={handleIncrease}
             />
           ) : (
             /* stopPropagation evita que el clic en carrito también active onClick de la tarjeta */
             <button
               className={styles.cartBtn}
-              disabled={!inStock}
-              title={inStock ? 'Agregar al carrito' : 'Sin stock'}
+              disabled={!inStock || !puedeAgregar}
+              title={!puedeAgregar ? 'Los administradores no pueden comprar' : inStock ? 'Agregar al carrito' : 'Sin stock'}
               onClick={(e) => { e.stopPropagation(); onAddToCart?.(product) }}
             >
               <UilShoppingCart size="16" />
             </button>
           )}
         </div>
+
+        {aviso && (
+          <p className={styles.branchNotice} role="status">
+            {aviso}
+          </p>
+        )}
 
         {/* Button no entrega el evento, asi que el div corta la propagacion
             para que onClick no se ejecute dos veces (boton + tarjeta) */}

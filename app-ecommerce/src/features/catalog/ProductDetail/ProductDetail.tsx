@@ -1,15 +1,24 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styles from './ProductDetail.module.css'
-import type { Product, StockBranch } from '../../../types/product'
+import type { Product } from '../../../types/product'
 import {
   UilArrowLeft,
   UilStar
 } from '@iconscout/react-unicons'
 import { UisStar, UisStarHalfAlt } from '@iconscout/react-unicons-solid'
 import { Button } from '../../../components/Button/Button'
+import { Dropdown } from '../../../components/Dropdown/Dropdown'
 import { QuantityStepper } from '../../../components/QuantityStepper/QuantityStepper'
 import { useCarrito } from '../../../context/carritoContext'
+import { useAuth } from '../../auth/useAuth'
+import { SUCURSALES } from '../../../data/sucursales'
+import { resolverPrecio } from '../../../services/precios'
+import {
+  obtenerStockSucursal,
+  obtenerStockTotal,
+  obtenerSucursalConMayorStock,
+} from '../../../services/inventario'
 
 /**
  * Props del componente ProductDetail.
@@ -22,16 +31,6 @@ import { useCarrito } from '../../../context/carritoContext'
 type ProductDetailProps = {
   product: Product
   children?: React.ReactNode
-}
-
-/**
- * Calcula el stock total sumando todas las sucursales del producto.
- *
- * @param product - Producto con su arreglo stock_by_branch.
- * @returns Numero total de unidades disponibles entre todas las sucursales.
- */
-function getTotalStock(product: Product): number {
-  return product.stock_by_branch.reduce((acc: number, b: StockBranch) => acc + b.stock, 0)
 }
 
 /**
@@ -83,24 +82,6 @@ function buildImageUrl(imagePath: string | undefined): string {
   return `https://eduardo1105rg.github.io/proyecto-ce/images/${imagePath}`;
 }
 
-/** Capitaliza la primera letra de un string */
-const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
-
-/**
- * Convierte un branch_id interno al nombre legible de la sucursal.
- * Si el ID no esta en la lista conocida, lo formatea separando por guion y capitalizando.
- *
- * @param branchId - ID de sucursal (ej. 'lm-guapiles').
- * @returns Nombre legible (ej. 'Limon, Guapiles').
- */
-function nombreSucursal(branchId: string): string {
-  if (branchId === 'lm-guapiles') return 'Limon, Guapiles'
-  if (branchId === 'sj-escazu') return 'San Jose, Escazu'
-  if (branchId === 'ct-central') return 'Cartago, Central'
-  if (branchId === 'hr-sarapiqui') return 'Heredia, Sarapiqui'
-  return branchId.split('-').map(word => capitalize(word)).join(' ')
-}
-
 /**
  * Vista de detalle de un producto.
  *
@@ -111,36 +92,64 @@ function nombreSucursal(branchId: string): string {
  *   2. Info del producto - atributos del facet, SKU, garantia, tags.
  *   3. Stock por sucursal - disponibilidad desglosada por branch.
  *
- * Incluye un switch de modo B2B que cambia el precio activo al primer
- * precio del arreglo tiered_b2b_pricing cuando esta activado.
- * Solo aparece si el producto tiene precios B2B configurados.
+ * El precio se resuelve automaticamente a partir del rol y de la cantidad
+ * total del producto en el carrito. La sucursal de compra se elige aqui y la
+ * cantidad maxima se limita al stock efectivo de esa sucursal.
+ *
+ * Para usuarios B2B el precio principal es el B2B y el regular se muestra
+ * pequeno como referencia.
  *
  * Al final de la pagina renderiza los children recibidos, que se usan para
  * mostrar un grid de productos relacionados.
  */
 export function ProductDetail({ product, children }: ProductDetailProps) {
   const navigate = useNavigate()
-  const totalStock = getTotalStock(product)
-  const inStock = totalStock > 0
-  const lowStock = totalStock > 0 && totalStock <= 5
-  const displayName = product.name ?? 'Sin nombre'
   const { items, agregar, cambiarCantidad } = useCarrito()
-  /** Cantidad de este producto que ya esta en el carrito (0 si no esta) */
-  const quantity = items.find((item) => item.objectID === product.objectID)?.cantidad ?? 0
+  const { usuario } = useAuth()
+  const totalStock = obtenerStockTotal(product)
+  const inStock = totalStock > 0
+  const displayName = product.name ?? 'Sin nombre'
+  const esAdmin = usuario?.rol === 'ADMIN'
+  const esB2B = usuario?.rol === 'B2B'
 
-  /** Controla si el modo mayorista B2B esta activo */
-  const [isB2B, setIsB2B] = useState(false)
+  const [branchId, setBranchId] = useState(
+    () => obtenerSucursalConMayorStock(product).branchId,
+  )
 
-  /**
-   * Precio activo segun el modo:
-   * - B2B activo: primer precio del arreglo tiered_b2b_pricing.
-   * - B2B inactivo: precio normal del producto.
-   */
-  const activePrice = isB2B && product.tiered_b2b_pricing.length > 0
-    ? product.tiered_b2b_pricing[0].unit_price
-    : product.price
+  const lineasProducto = items.filter((item) => item.objectID === product.objectID)
+  const cantidadTotalProducto = lineasProducto.reduce(
+    (total, item) => total + item.cantidad,
+    0,
+  )
+  const lineaSeleccionada = lineasProducto.find((item) => item.branchId === branchId)
+  const quantity = lineaSeleccionada?.cantidad ?? 0
+  const stockSucursal = obtenerStockSucursal(product, branchId)
+  const agotadoSucursal = stockSucursal <= 0
+  const lowStock = stockSucursal > 0 && stockSucursal <= 5
+  const llegoAlMaximo = quantity > 0 && quantity >= stockSucursal
+  const hayOtraSucursal = SUCURSALES.some((sucursal) => {
+    if (sucursal.id === branchId) return false
+    const enCarrito = lineasProducto.find((item) => item.branchId === sucursal.id)?.cantidad ?? 0
+    return obtenerStockSucursal(product, sucursal.id) - enCarrito > 0
+  })
+  const precio = resolverPrecio(product, usuario?.rol ?? null, cantidadTotalProducto)
+  const referenciaB2B =
+    precio.precioB2BReferencia !== null && precio.precioB2BReferencia !== precio.precioUnitario
+      ? precio.precioB2BReferencia
+      : null
+  const precioPrincipal = esB2B ? (referenciaB2B ?? precio.precioUnitario) : precio.precioUnitario
+  const mostrarPrecioRegular = esB2B && product.price !== precioPrincipal
+  const minQty = precio.minimoB2B || product.tiered_b2b_pricing[0]?.min_qty
 
-  const minQty = product.tiered_b2b_pricing[0]?.min_qty
+  const opcionesSucursal = SUCURSALES.map((sucursal) => {
+    const stock = obtenerStockSucursal(product, sucursal.id)
+
+    return {
+      value: sucursal.id,
+      label: `${sucursal.nombre} - ${stock > 0 ? `${stock} unidades` : 'Agotado'}`,
+      disabled: stock <= 0,
+    }
+  })
 
   /** Construye el arreglo de URLs de imagenes; usa placeholder si no hay imagenes */
   const images = product.images && product.images.length > 0
@@ -198,19 +207,17 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
         {/* Columna derecha - informacion apilada en cards */}
         <div className={styles.rightCol}>
 
-          {/* Switch B2B - visible solo si el producto tiene precios mayoristas */}
-          {product.tiered_b2b_pricing.length > 0 && (
-            <div className={styles.b2bRow}>
-              <span className={styles.b2bLabel}>Modo mayorista (B2B)</span>
-              <button
-                className={`${styles.switch} ${isB2B ? styles.switchOn : ''}`}
-                onClick={() => setIsB2B(prev => !prev)}
-                aria-label="Cambiar modo B2B"
-              >
-                <span className={styles.switchThumb} />
-              </button>
+          <div className={styles.branchSelector}>
+            <span className={styles.branchSelectLabel}>Sucursal de compra</span>
+            <div className={styles.branchDropdown}>
+              <Dropdown
+                options={opcionesSucursal}
+                value={branchId}
+                onChange={setBranchId}
+                ariaLabel="Sucursal de compra"
+              />
             </div>
-          )}
+          </div>
 
           {/* Card 1 - info principal, precio y botones de accion */}
           <div className={styles.card}>
@@ -237,44 +244,79 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
             </div>
 
             <div className={styles.priceBlock}>
-              <span className={styles.price}>{formatPrice(activePrice)}</span>
+              <span className={styles.price}>{formatPrice(precioPrincipal)}</span>
               <span className={styles.currency}>{product.currency}</span>
-              {/* Cantidad minima de compra en modo B2B */}
-              {isB2B && minQty && (
-                <span className={styles.minQty}>min. {minQty} unidades</span>
+              {esB2B && <span className={styles.minQty}>Precio B2B</span>}
+              {!esB2B && referenciaB2B !== null && (
+                <span className={styles.b2bRef}>
+                  Referencia B2B: {formatPrice(referenciaB2B)} c/u
+                </span>
               )}
             </div>
 
+            {mostrarPrecioRegular && (
+              <p className={styles.priceRegular}>Precio regular: {formatPrice(product.price)}</p>
+            )}
+
+            {esB2B && minQty > 0 && (
+              <p className={styles.b2bProgress} role="status">
+                {cantidadTotalProducto >= minQty
+                  ? `Mínimo B2B cumplido: ${cantidadTotalProducto} de ${minQty} unidades`
+                  : `Mínimo B2B: ${cantidadTotalProducto} de ${minQty} unidades (sumando sucursales)`}
+              </p>
+            )}
+
             <div className={styles.stockRow}>
-              {!inStock && <span className={`${styles.stock} ${styles.stockOut}`}>Agotado</span>}
-              {lowStock && <span className={`${styles.stock} ${styles.stockLow}`}>Pocas unidades - quedan {totalStock}</span>}
-              {inStock && !lowStock && <span className={`${styles.stock} ${styles.stockOk}`}>En stock ({totalStock} disponibles)</span>}
+              {!inStock && <span className={`${styles.stock} ${styles.stockOut}`}>Agotado en todas las sucursales</span>}
+              {inStock && agotadoSucursal && (
+                <span className={`${styles.stock} ${styles.stockOut}`}>
+                  Agotado en esta sucursal
+                </span>
+              )}
+              {lowStock && (
+                <span className={`${styles.stock} ${styles.stockLow}`}>
+                  Quedan {stockSucursal} unidades
+                </span>
+              )}
+              {inStock && !agotadoSucursal && !lowStock && (
+                <span className={`${styles.stock} ${styles.stockOk}`}>
+                  {stockSucursal} disponibles
+                </span>
+              )}
             </div>
 
             <div className={styles.btnGroup}>
               {/* Si el producto ya esta en el carrito, el boton se transforma en el control de cantidad */}
-              {quantity > 0 ? (
+              {quantity > 0 && lineaSeleccionada ? (
                 <QuantityStepper
                   label={displayName}
                   quantity={quantity}
-                  max={totalStock}
+                  max={stockSucursal}
                   size="lg"
                   fullWidth
-                  onDecrease={() => cambiarCantidad(product.objectID, quantity - 1)}
-                  onIncrease={() => agregar(product.objectID, 1, product.name)}
+                  onDecrease={() => cambiarCantidad(lineaSeleccionada.lineId, quantity - 1)}
+                  onIncrease={() => agregar(product.objectID, branchId, 1, product.name)}
                 />
               ) : (
                 <Button
-                  label="Agregar al carrito"
+                  label={esAdmin ? 'No disponible para ADMIN' : 'Agregar al carrito'}
                   variant="outline"
                   size="lg"
                   fullWidth
-                  disabled={!inStock}
-                  onClick={() => agregar(product.objectID, 1, product.name)}
+                  disabled={!inStock || agotadoSucursal || esAdmin}
+                  onClick={() => agregar(product.objectID, branchId, 1, product.name)}
                 />
               )}
               {/* <Button label="Comprar ahora" variant="primary" size="lg" fullWidth disabled={!inStock} /> */}
             </div>
+
+            {llegoAlMaximo && (
+              <p className={styles.aviso} role="status">
+                {hayOtraSucursal
+                  ? 'Llegó al máximo de esta sucursal. Cambie de sucursal para agregar más.'
+                  : 'Llegó al máximo disponible.'}
+              </p>
+            )}
           </div>
 
           {/* Card 2 - atributos del producto y tags */}
@@ -335,24 +377,23 @@ export function ProductDetail({ product, children }: ProductDetailProps) {
           </div>
 
           {/* Card 3 - stock desglosado por sucursal */}
-          {product.stock_by_branch && product.stock_by_branch.length > 0 && (
-            <div className={styles.card}>
-              <span className={styles.cardTitle}>Disponibilidad por sucursal</span>
-              <div className={styles.branchStock}>
-                {product.stock_by_branch.map((branch) => {
-                  const branchName = nombreSucursal(branch.branch_id)
-                  return (
-                    <div key={branch.branch_id} className={styles.branchStockRow}>
-                      <span className={styles.branchName}>{branchName}</span>
-                      <span className={branch.stock > 0 ? styles.branchStockOk : styles.branchStockOut}>
-                        {branch.stock > 0 ? `${branch.stock} unidades` : 'Agotado'}
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
+          <div className={styles.card}>
+            <span className={styles.cardTitle}>Disponibilidad por sucursal</span>
+            <div className={styles.branchStock}>
+              {SUCURSALES.map((sucursal) => {
+                const stock = obtenerStockSucursal(product, sucursal.id)
+
+                return (
+                  <div key={sucursal.id} className={styles.branchStockRow}>
+                    <span className={styles.branchName}>{sucursal.nombre}</span>
+                    <span className={stock > 0 ? styles.branchStockOk : styles.branchStockOut}>
+                      {stock > 0 ? `${stock} unidades` : 'Agotado'}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
-          )}
+          </div>
         </div>
       </div>
 

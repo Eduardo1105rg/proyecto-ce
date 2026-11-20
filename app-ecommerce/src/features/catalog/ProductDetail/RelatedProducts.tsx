@@ -4,6 +4,8 @@ import styles from './ProductDetail.module.css'
 import { ProductGrid } from '../components/ProductGrid/ProductGrid'
 import type { Product } from '../../../types/product'
 import { useCarrito } from '../../../context/carritoContext'
+import { useAuth } from '../../auth/useAuth'
+import { obtenerSucursalConMayorStock } from '../../../services/inventario'
 
 /**
  * Props del componente RelatedProducts.
@@ -29,9 +31,17 @@ type RelatedProductsProps = {
 export function RelatedProducts({ category }: RelatedProductsProps) {
   const navigate = useNavigate()
   const { agregar } = useCarrito()
+  const { usuario } = useAuth()
   const { items } = useHits<Product>()
 
   if (items.length === 0) return null
+
+  const agregarDesdeRelacionados = (producto: Product) => {
+    if (usuario?.rol === 'ADMIN') return
+
+    const { branchId } = obtenerSucursalConMayorStock(producto)
+    agregar(producto.objectID, branchId, 1, producto.name)
+  }
 
   return (
     <section className={styles.related}>
@@ -44,7 +54,7 @@ export function RelatedProducts({ category }: RelatedProductsProps) {
         viewMode="grid"
         columns={4}
         onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
-        onAddToCart={(p) => agregar(p.objectID, 1, p.name)}
+        onAddToCart={agregarDesdeRelacionados}
       />
     </section>
   )

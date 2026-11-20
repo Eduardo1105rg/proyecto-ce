@@ -50,6 +50,24 @@
 
 @media (max-width: 560px) {
 	.grid {
-		grid-template-columns: 1fr;
+		gap: 8px;
+		margin-bottom: 16px;
+	}
+
+	.card {
+		gap: 6px;
+		padding: 12px;
+	}
+
+	.head {
+		align-items: flex-start;
+	}
+
+	.label {
+		font-size: var(--text-xs);
+	}
+
+	.value {
+		font-size: var(--text-2xl);
 	}
 }

@@ -89,8 +89,9 @@
 
 .chip {
 	padding: 6px 12px;
-	border-radius: var(--radius-full);
-	background: var(--bg-subtle);
+	border-radius: var(--radius-md);
+	border: 1px solid var(--border-strong);
+	background: var(--bg-light);
 	color: var(--text-primary);
 	font-size: var(--text-sm);
 }

@@ -1,29 +1,23 @@
 import { UilMinus, UilPlus, UilTrashAlt } from '@iconscout/react-unicons'
-import { useNavigate } from 'react-router-dom' // Asegúrate de tener react-router-dom instalado
+import { Link } from 'react-router-dom'
 import type { ItemCarritoEnriquecido } from '../../../../types/carrito'
+import { SUCURSALES } from '../../../../data/sucursales'
+import { Dropdown } from '../../../../components/Dropdown/Dropdown'
+import type { DropdownOption } from '../../../../components/Dropdown/Dropdown'
 import { formatPrice } from '../../../../utils/formatPrice'
+import { buildImageUrl } from '../../../../utils/imageUrl'
 import styles from './CartItem.module.css'
 
 type CartItemProps = {
     item: ItemCarritoEnriquecido
     loading: boolean
     failed: boolean
-    onQuantityChange: (objectID: string, quantity: number) => void
-    onRemove: (objectID: string) => void
+    onQuantityChange: (lineId: string, quantity: number) => void
+    onBranchChange: (lineId: string, branchId: string) => void
+    onRemove: (lineId: string) => void
 }
 
-/**
- * Construye la URL completa de la imagen del producto.
- */
-function build_imageUrl(imagePath: string): string {
-    const url = `https://eduardo1105rg.github.io/proyecto-ce/images/${imagePath}`;
-    return url
-}
-
-
-export function CartItem({ item, loading, failed, onQuantityChange, onRemove }: CartItemProps) {
-    const navigate = useNavigate()
-
+export function CartItem({ item, loading, failed, onQuantityChange, onBranchChange, onRemove }: CartItemProps) {
     const unresolved = item.noDisponible && (loading || failed)
     const unavailable = item.noDisponible && !loading && !failed
 
@@ -35,12 +29,15 @@ export function CartItem({ item, loading, failed, onQuantityChange, onRemove }: 
                 ? 'No se pudo cargar este producto'
                 : 'Producto no disponible')
 
-    // Función para navegar al detalle del producto
-    const handleTitleClick = () => {
-        if (!unavailable && item.objectID) {
-            navigate(`/producto/${item.objectID}`)
+    const branchOptions: DropdownOption[] = SUCURSALES.map((sucursal) => {
+        const stock = item.stockPorSucursal[sucursal.id] ?? 0
+
+        return {
+            value: sucursal.id,
+            label: `${sucursal.nombre} - ${stock > 0 ? `${stock} disponibles` : 'Agotado'}`,
+            disabled: loading || failed || (stock <= 0 && sucursal.id !== item.branchId),
         }
-    }
+    })
 
     return (
         <li className={`${styles.item} ${unavailable ? styles.unavailable : ''}`}>
@@ -48,8 +45,8 @@ export function CartItem({ item, loading, failed, onQuantityChange, onRemove }: 
                 {item.imagen && !unavailable ? (
                     <img
                         className={styles.image}
-                        src={build_imageUrl(item.imagen)}
-                        alt={title}
+                        src={buildImageUrl(item.imagen)}
+                        alt=""
                         onError={(e) => {
                             (e.target as HTMLImageElement).src = 'https://placehold.co/300x220?text=Sin+imagen'
                         }}
@@ -60,28 +57,49 @@ export function CartItem({ item, loading, failed, onQuantityChange, onRemove }: 
             </div>
 
             <div className={styles.info}>
-                {/* Título clickeable */}
-                <p
-                    className={`${styles.title} ${!unavailable ? styles.titleClickable : ''}`}
-                    onClick={handleTitleClick}
-                    role={!unavailable ? "button" : undefined}
-                    tabIndex={!unavailable ? 0 : undefined}
-                    onKeyDown={(e) => {
-                        if (!unavailable && (e.key === 'Enter' || e.key === ' ')) {
-                            e.preventDefault()
-                            handleTitleClick()
-                        }
-                    }}
-                >
-                    {title}
-                </p>
+                {unavailable ? (
+                    <p className={styles.title}>{title}</p>
+                ) : (
+                    <Link
+                        to={`/producto/${item.objectID}`}
+                        className={`${styles.title} ${styles.titleLink}`}
+                    >
+                        {title}
+                    </Link>
+                )}
 
                 {unavailable ? (
                     <p className={styles.warning}>Este producto ya no está disponible y no se cobrará.</p>
                 ) : (
-                    <p className={styles.unitPrice}>
-                        {unresolved ? '...' : `${formatPrice(item.precio)} c/u`}
-                    </p>
+                    <>
+                        <p className={styles.unitPrice}>
+                            {unresolved ? '...' : `${formatPrice(item.precio)} c/u`}
+                            {item.tipoPrecio === 'B2B' && (
+                                <span className={styles.priceBadge}>B2B</span>
+                            )}
+                        </p>
+                        {item.precioB2BReferencia !== null && item.precioB2BReferencia !== item.precio && (
+                            <p className={styles.b2bRef}>
+                                Ref. B2B: {formatPrice(item.precioB2BReferencia)} c/u desde {item.minimoB2B} unidades
+                            </p>
+                        )}
+                        <div className={styles.branchLabel}>
+                            <span>Sucursal</span>
+                            <div className={styles.branchField}>
+                                <Dropdown
+                                    options={branchOptions}
+                                    value={item.branchId}
+                                    onChange={(branchId) => onBranchChange(item.lineId, branchId)}
+                                    ariaLabel={`Sucursal de ${title}`}
+                                />
+                            </div>
+                        </div>
+                        {item.stockInsuficiente && (
+                            <p className={styles.stockWarning}>
+                                Solo hay {item.stockSucursal} unidades en {item.branchName}.
+                            </p>
+                        )}
+                    </>
                 )}
             </div>
 
@@ -90,7 +108,7 @@ export function CartItem({ item, loading, failed, onQuantityChange, onRemove }: 
                     <button
                         type="button"
                         className={styles.qtyButton}
-                        onClick={() => onQuantityChange(item.objectID, item.cantidad - 1)}
+                        onClick={() => onQuantityChange(item.lineId, item.cantidad - 1)}
                         aria-label={
                             item.cantidad === 1 ? `Quitar ${title} del carrito` : `Disminuir cantidad de ${title}`
                         }
@@ -103,8 +121,9 @@ export function CartItem({ item, loading, failed, onQuantityChange, onRemove }: 
                     <button
                         type="button"
                         className={styles.qtyButton}
-                        onClick={() => onQuantityChange(item.objectID, item.cantidad + 1)}
+                        onClick={() => onQuantityChange(item.lineId, item.cantidad + 1)}
                         aria-label={`Aumentar cantidad de ${title}`}
+                        disabled={item.cantidad >= item.stockSucursal}
                     >
                         <UilPlus size="18" />
                     </button>
@@ -120,7 +139,7 @@ export function CartItem({ item, loading, failed, onQuantityChange, onRemove }: 
             <button
                 type="button"
                 className={styles.removeButton}
-                onClick={() => onRemove(item.objectID)}
+                onClick={() => onRemove(item.lineId)}
                 aria-label={`Eliminar ${title} del carrito`}
                 title="Eliminar"
             >

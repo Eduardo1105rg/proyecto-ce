@@ -97,10 +97,10 @@ El timeout termina la espera del llamador, pero no cancela la ejecución del pro
 | Resultado | Estado de orden | Estado de pago | Carrito y continuación |
 | --- | --- | --- | --- |
 | `PAYMENT_APPROVED` | `CONFIRMED` | `APPROVED` | Se vacía; se muestra la confirmación y el número de orden. |
-| `PAYMENT_DECLINED` | `PENDING` | `DECLINED` | Se conserva; el usuario puede reintentar. |
-| `PAYMENT_ERROR` | `PENDING` | `ERROR` | Se conserva; el usuario puede reintentar. |
+| `PAYMENT_DECLINED` | `FAILED` | `DECLINED` | Se conserva; el usuario puede reintentar. |
+| `PAYMENT_ERROR` | `FAILED` | `ERROR` | Se conserva; el usuario puede reintentar. |
 
-El estado de orden y el de pago son conceptos separados. Aunque el modelo admite `FAILED`, las fallas recuperables de pago se mantienen como `PENDING` para permitir el reintento. El servicio de órdenes no modifica una orden que ya está confirmada.
+El estado de orden y el de pago son conceptos separados. Un rechazo, un error del servicio o un timeout marcan la orden como `FAILED` con el estado de pago correspondiente. Al pulsar «Intentar de nuevo», la misma orden vuelve a `PENDING/PENDING`, conserva su número y se usa para el nuevo intento. El servicio de órdenes no modifica una orden que ya está confirmada.
 
 ## Validación y límites actuales
 

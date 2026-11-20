@@ -18,6 +18,7 @@ import { useAnalytics } from '../features/analytics/useAnalytics'
 import { BloqueProductos } from '../features/analytics/components/BloqueProductos/BloqueProductos'
 import { useRecomendados, useVistosRecientes } from '../features/analytics/usePersonalizacion'
 import { useAuth } from '../features/auth/useAuth'
+import { obtenerSucursalConMayorStock } from '../services/inventario'
 
 type ViewMode = 'grid' | 'list'
 type Columns = 3 | 4 | 5
@@ -46,6 +47,13 @@ function CatalogContent() {
 	const vistos = useVistosRecientes()
 	const recomendados = useRecomendados()
 	const { usuario } = useAuth()
+
+	const agregarDesdeCatalogo = (p: Product) => {
+		if (usuario?.rol === 'ADMIN') return
+
+		const { branchId } = obtenerSucursalConMayorStock(p)
+		agregar(p.objectID, branchId, 1, p.name)
+	}
 
 	const [viewMode, setViewMode] = useState<ViewMode>('grid')
 	const [columns, setColumns] = useState<Columns>(4)
@@ -103,7 +111,7 @@ function CatalogContent() {
 					products={items}
 					viewMode={viewMode}
 					columns={columns}
-					onAddToCart={(p) => agregar(p.objectID, 1, p.name)}
+					onAddToCart={agregarDesdeCatalogo}
 					onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
 				/>
 			)}
@@ -116,14 +124,14 @@ function CatalogContent() {
 						productos={vistos.productos}
 						maximo={4}
 						verTodosHref={usuario ? '/analytics' : undefined}
-						onAddToCart={(p) => agregar(p.objectID, 1, p.name)}
+						onAddToCart={agregarDesdeCatalogo}
 						onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
 					/>
 					<BloqueProductos
 						titulo="Recomendados para usted"
 						productos={recomendados.productos}
 						maximo={4}
-						onAddToCart={(p) => agregar(p.objectID, 1, p.name)}
+						onAddToCart={agregarDesdeCatalogo}
 						onProductClick={(p) => navigate(`/producto/${p.objectID}`)}
 					/>
 				</div>

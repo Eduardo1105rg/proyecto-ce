@@ -46,7 +46,8 @@
 }
 
 .roleADMIN {
-    background: var(--orange-soft);
+    background: var(--orange-500);
+    color: var(--white);
 }
 
 .logout {

@@ -1,0 +1,219 @@
+[
+  {
+    "orderNumber": "DEMO-2026-0001",
+    "createdAt": "2026-10-18T14:25:00.000Z",
+    "usuarioId": "demo-b2c-001",
+    "rol": "B2C",
+    "origen": "demo",
+    "buyer": {
+      "fullName": "Ana Mora",
+      "email": "ana@correo.com",
+      "phone": "8888-1111"
+    },
+    "delivery": {
+      "province": "San José",
+      "canton": "Central",
+      "address": "Apartado 120, San José",
+      "notes": "Entregar en recepción"
+    },
+    "items": [
+      {
+        "objectID": "B000G0KAG8",
+        "name": "Strathwood Basics - Banco de madera dura para todo tipo de clima de 3 plazas",
+        "branchId": "sj-escazu",
+        "branchName": "San José, Escazú",
+        "stockAtPurchase": 23,
+        "pricingType": "B2C",
+        "unitPrice": 31300,
+        "quantity": 2,
+        "subtotal": 62600
+      }
+    ],
+    "sucursales": [
+      {
+        "id": "sj-escazu",
+        "nombre": "San José, Escazú"
+      }
+    ],
+    "condicionComercial": {
+      "tipo": "ESTANDAR",
+      "minimo": 0
+    },
+    "subtotal": 62600,
+    "tax": 8138,
+    "shipping": 5008,
+    "total": 75746,
+    "status": "CONFIRMED",
+    "paymentStatus": "APPROVED",
+    "termsAccepted": true,
+    "termsAcceptedAt": "2026-10-18T14:24:40.000Z"
+  },
+  {
+    "orderNumber": "DEMO-2026-0002",
+    "createdAt": "2026-10-24T09:10:00.000Z",
+    "usuarioId": "demo-b2b-001",
+    "rol": "B2B",
+    "origen": "demo",
+    "empresa": {
+      "nombre": "Tecnosur S.A.",
+      "cedulaJuridica": "3-101-123456"
+    },
+    "buyer": {
+      "fullName": "Carlos Vega",
+      "email": "carlos@empresa.com",
+      "phone": "2222-3344"
+    },
+    "delivery": {
+      "province": "Cartago",
+      "canton": "Central",
+      "address": "Bodega 8, Zona Industrial",
+      "notes": "Recibir de 8 a 11 a. m."
+    },
+    "items": [
+      {
+        "objectID": "B000G0KAG8",
+        "name": "Strathwood Basics - Banco de madera dura para todo tipo de clima de 3 plazas",
+        "branchId": "ct-central",
+        "branchName": "Cartago, Central",
+        "stockAtPurchase": 19,
+        "pricingType": "B2B",
+        "unitPrice": 26600,
+        "b2bReferencePrice": 26600,
+        "quantity": 12,
+        "subtotal": 319200
+      },
+      {
+        "objectID": "B000SOM5AG",
+        "name": "Pinzon, Edredón Sintético Hipoalergénico, Blanco, King, Liviano",
+        "branchId": "ct-central",
+        "branchName": "Cartago, Central",
+        "stockAtPurchase": 28,
+        "pricingType": "B2B",
+        "unitPrice": 21200,
+        "b2bReferencePrice": 21200,
+        "quantity": 12,
+        "subtotal": 254400
+      }
+    ],
+    "sucursales": [
+      {
+        "id": "ct-central",
+        "nombre": "Cartago, Central"
+      }
+    ],
+    "condicionComercial": {
+      "tipo": "CANTIDAD_MINIMA",
+      "minimo": 12
+    },
+    "subtotal": 573600,
+    "tax": 74568,
+    "shipping": 0,
+    "total": 648168,
+    "status": "CONFIRMED",
+    "paymentStatus": "APPROVED",
+    "termsAccepted": true,
+    "termsAcceptedAt": "2026-10-24T09:09:42.000Z"
+  },
+  {
+    "orderNumber": "DEMO-2026-0003",
+    "createdAt": "2026-11-02T16:45:00.000Z",
+    "usuarioId": "demo-b2c-002",
+    "rol": "B2C",
+    "origen": "demo",
+    "buyer": {
+      "fullName": "Ricardo Salas",
+      "email": "ricardo@correo.com",
+      "phone": "8777-2200"
+    },
+    "delivery": {
+      "province": "San José",
+      "canton": "Escazú",
+      "address": "Residencial Los Laureles, casa 14"
+    },
+    "items": [
+      {
+        "objectID": "B000SOQT4Y",
+        "name": "Pinzon, Edredón Sintético Hipoalergénico, Blanco, Completa/Queen, Liviano",
+        "branchId": "sj-escazu",
+        "branchName": "San José, Escazú",
+        "stockAtPurchase": 25,
+        "pricingType": "B2C",
+        "unitPrice": 18300,
+        "quantity": 1,
+        "subtotal": 18300
+      }
+    ],
+    "sucursales": [
+      {
+        "id": "sj-escazu",
+        "nombre": "San José, Escazú"
+      }
+    ],
+    "condicionComercial": {
+      "tipo": "ESTANDAR",
+      "minimo": 0
+    },
+    "subtotal": 18300,
+    "tax": 2379,
+    "shipping": 3000,
+    "total": 23679,
+    "status": "PENDING",
+    "paymentStatus": "DECLINED",
+    "termsAccepted": true,
+    "termsAcceptedAt": "2026-11-02T16:44:35.000Z"
+  },
+  {
+    "orderNumber": "DEMO-2026-0004",
+    "createdAt": "2026-11-10T11:30:00.000Z",
+    "usuarioId": "demo-b2b-002",
+    "rol": "B2B",
+    "origen": "demo",
+    "empresa": {
+      "nombre": "Ferretería del Valle S.A.",
+      "cedulaJuridica": "3-101-778899"
+    },
+    "buyer": {
+      "fullName": "Marta Jiménez",
+      "email": "compras@ferreteriavalle.com",
+      "phone": "2444-5566"
+    },
+    "delivery": {
+      "province": "Limón",
+      "canton": "Guápiles",
+      "address": "Bodega central, contiguo al mercado",
+      "notes": "Coordinar descarga con encargado"
+    },
+    "items": [
+      {
+        "objectID": "B000WJKN5G",
+        "name": "Pinzon - Cuchillo de carne 8 piezas con caja de almacenaje de madera, Manija de acero inoxidable",
+        "branchId": "lm-guapiles",
+        "branchName": "Limón, Guápiles",
+        "stockAtPurchase": 18,
+        "pricingType": "B2B",
+        "unitPrice": 10900,
+        "b2bReferencePrice": 10900,
+        "quantity": 12,
+        "subtotal": 130800
+      }
+    ],
+    "sucursales": [
+      {
+        "id": "lm-guapiles",
+        "nombre": "Limón, Guápiles"
+      }
+    ],
+    "condicionComercial": {
+      "tipo": "CANTIDAD_MINIMA",
+      "minimo": 12
+    },
+    "subtotal": 130800,
+    "tax": 17004,
+    "shipping": 0,
+    "total": 147804,
+    "status": "PENDING",
+    "paymentStatus": "ERROR",
+    "termsAccepted": true,
+    "termsAcceptedAt": "2026-11-10T11:29:20.000Z"
+  }
+]

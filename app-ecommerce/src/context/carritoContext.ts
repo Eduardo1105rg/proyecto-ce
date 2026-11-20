@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react'
 import type { ItemCarritoEnriquecido, TotalesCarrito } from '../types/carrito'
+import type { FaltanteB2B } from '../types/precios'
 
 /**
  * API pública del carrito.
@@ -8,18 +9,10 @@ import type { ItemCarritoEnriquecido, TotalesCarrito } from '../types/carrito'
  * Provider se encarga de consultar Algolia y de entregar datos utilizables,
  * de modo que ningún componente tenga que consultar el índice por su cuenta.
  *
- * La cantidad es opcional al agregar porque agregar un producto desde el
- * catálogo es la operación más común y casi siempre es de una unidad.
+ * Cada línea se identifica con `objectID::branchId`. El mismo producto puede
+ * aparecer en varias líneas si se compra en sucursales distintas.
  */
 export type ValorCarrito = {
-  /**
-   * Líneas del carrito con los datos del catálogo ya resueltos.
-   *
-   * Mientras cargando sea true, una línea puede venir sin precio y con
-   * noDisponible, aunque el producto sí exista: lo que falta es la respuesta
-   * del índice. La interfaz debe mostrar un estado de carga en ese caso, y no
-   * interpretar la bandera como que el producto desapareció.
-   */
   items: ItemCarritoEnriquecido[]
   /** Resumen de compra, recalculado en cada cambio. */
   totales: TotalesCarrito
@@ -27,18 +20,24 @@ export type ValorCarrito = {
   cargando: boolean
   /** Mensaje del último fallo al consultar productos, o null si no hubo. */
   error: string | null
+  /** Productos B2B que todavía no alcanzan la cantidad mínima. */
+  faltantesB2B: FaltanteB2B[]
+  /** true si el carrito puede pasar al checkout sin bloqueos de negocio. */
+  puedeComprar: boolean
   /**
-   * Agrega un producto por su identificador.
+   * Agrega un producto por su identificador y sucursal.
    *
    * El nombre es opcional y solo se usa para la actividad registrada: la línea
-   * del carrito no lo guarda, se consulta del índice. Si el producto ya está en
-   * el carrito, se le suma la cantidad en vez de crear una línea repetida.
+   * del carrito no lo guarda, se consulta del índice. Si ya existe una línea
+   * para la misma combinación producto/sucursal, se suma la cantidad.
    */
-  agregar: (objectID: string, cantidad?: number, nombre?: string) => void
+  agregar: (objectID: string, branchId: string, cantidad?: number, nombre?: string) => void
   /** Fija la cantidad de una línea. Un valor menor o igual a 0 la elimina. */
-  cambiarCantidad: (objectID: string, cantidad: number) => void
+  cambiarCantidad: (lineId: string, cantidad: number) => void
+  /** Cambia la sucursal de una línea, fusionándola si ya existe en el destino. */
+  cambiarSucursal: (lineId: string, branchId: string) => void
   /** Quita una línea del carrito. */
-  eliminar: (objectID: string) => void
+  eliminar: (lineId: string) => void
   /** Vacía el carrito por completo. */
   vaciar: () => void
   /**
@@ -47,7 +46,7 @@ export type ValorCarrito = {
    * La consulta es perezosa a propósito: cargar el catálogo no necesita los
    * precios del carrito, así que no se consume una búsqueda hasta que alguien
    * abre el carrito. Es idempotente, se puede llamar en cada render sin
-   * consequence alguna.
+   * consecuencia alguna.
    */
   activarConsulta: () => void
 }
